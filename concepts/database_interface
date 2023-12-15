@@ -1,0 +1,40 @@
+
+
+tables:
+    authentication (username: string, password: string)
+    user (UUID, username: string, rank: int, bookmarks: list[file UUID], upvotedFiles: list[file UUID])
+    files   (UUID, path: string, title: string, author: string, semester: int, year: int, apartment: string, upvotes: int)
+
+interface:
+
+    newEntry (table: Enum, data: dict)
+        data dict must include all fields of the table. Throws exception if field is missing.
+        throw FieldMissing: when data does not include all fields of the table
+        returns True: when successful
+
+    deleteFromList (table: Enum, searchData: dict, deleteData: dict)
+        searchData includes table values to search for the correct row in the table
+        deleteData includes list you want to delete from as key and the entry you want to delete as value
+        throw MoreThanOneRowFound: when multiple rows fit searchData description
+        returns True: when successful
+
+    addToList (table: Enum, searchData: dict, addData: dict)
+        searchData includes table values to search for the correct row in the table
+        addData includes list you want to add to as key and the entry you want to add as value
+        throw MoreThanOneRowFound: when multiple rows fit searchData description
+        returns True: when successful
+
+    insert (table: Enum, searchData: dict, insertData dict)
+        searchData includes table values to search for the correct row in the table
+        insertData includes values you want to change as key and the new value as value
+        throw MoreThanOneRowFound: when multiple rows fit searchData description
+        returns True: when successful
+
+    findOne(table: Enum, searchData: dict)
+        searchData includes table values to search for the correct row in the table
+        throw MoreThanOneRowFound: when multiple rows fit searchData description
+        returns row as dict when successful
+
+    find(searchData: dict)
+        searchData includes table values to filter
+        returns all rows fitting filter as list of dict. If none are found the list is empty

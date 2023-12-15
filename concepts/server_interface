@@ -1,0 +1,28 @@
+() = body
+[] = parameter
+
+filterCriteria = title, author, semester, year, apartment
+fileInformation = UUID
+
+MUST:
+    POST register (username, password)
+
+    POST login (username, password)
+
+    POST upload (file)
+
+    GET download [fileInformation]
+
+SHOULD:
+    GET filter [filterCriteria]
+
+    PUT UPVOTE [fileInformation]
+
+COULD:
+    GET bookmarks
+
+    PUT bookmark [fileInformation]
+
+    GET rank
+
+    GET rankList
