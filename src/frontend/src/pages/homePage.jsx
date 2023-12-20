@@ -1,6 +1,6 @@
 import React from "react";
 
-const Index = () => {
+const HomePage = () => {
   return (
     <div>
       <main>
@@ -11,4 +11,5 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default HomePage;
+
