@@ -5,7 +5,12 @@ class DatabaseException(Exception):
 
 class MoreThanOneRowFoundException(DatabaseException):
     def __init__(self, data):
-        super().__init__(f'There were more than 1 row found when calling "findOne" with the parameter: {data}')
+        super().__init__(f'When calling "findOne", there were more than 1 row found with the criteria: "{data}"')
+
+
+class NoRowFoundException(DatabaseException):
+    def __init__(self, data):
+        super().__init__(f'When calling "findOne", there was no row found when with the criteria: "{data}"')
 
 
 class FieldMissingException(DatabaseException):
@@ -20,5 +25,5 @@ class ColumnNotAListException(DatabaseException):
 
 class ColumnAListException(DatabaseException):
     def __init__(self, column):
-        super().__init__(f'The column {column} cannot be changed with this method, because it is a list. Try using a '
+        super().__init__(f'The column "{column}" cannot be changed with this method, because it is a list. Try using a '
                          f'list manipulation method')

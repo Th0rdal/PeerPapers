@@ -1,6 +1,7 @@
 import sqlite3 as sl
 import logging
 import json
+import uuid
 
 from src.database.Table import Table
 from src.database import exceptions
@@ -8,24 +9,40 @@ from src.database import exceptions
 
 class DatabaseAccessObject:
     """
-    This class is responsible for providing an interface on which to access the database on.
-    TODO add logging to all classes and implement deleteFromList
+    This class is responsible for providing an interface on which to access the database on. All methods with a _ in front
+    are to be handled as private and should not be called outside of this class! Searching by columns that save data as a list
+    is possible, but highly recommended not to. Especially when the list is empty, because python sometimes puts an empty string
+    in a dict in extra '' do differentiate it from an empty dict, but it is not consistent in doing so.
     """
 
     typeCheckMap = {Table.AUTHENTICATION: {"username": "str", "password": "str"},
-                    Table.USER: {"id": "str", "username": "str", "rank": "int", "bookmark": "list",
+                    Table.USER: {"id": "id", "username": "str", "rank": "int", "bookmarks": "list",
                                  "upvotedFiles": "list"},
-                    Table.FILES: {"id": "str", "path": "str", "title": "str", "author": "str", "semester": "int",
+                    Table.FILES: {"id": "id", "path": "str", "title": "str", "author": "str", "semester": "int",
                                   "year": "int",
                                   "department": "str", "upvotes": "int"}}
 
-    def __init__(self):
+    def __init__(self, testing=False):
         logging.info("Initializing DatabaseAccessObject")
-        self.createNewDatabase()  # this is only to test everything with a database in memory
+        if testing:
+            self.createNewDatabase()  # this is only to test everything with a database in memory
+        else:
+            # should connect to database here
+            self.createNewDatabase()
 
-    def print(self):
-        self.c.execute("SELECT * FROM AUTHENTICATION")
-        print(self.c.fetchall())
+    def printTable(self, table):
+        print(self.getTable(table))
+
+    def getTable(self, table):
+        """
+        This method prints the whole table and returns it. Use for debugging purposes!
+        :param table: Table Enum with the table that should be printed
+        :return: Whole table as list of tuples containing the values of each row
+        """
+        with self.conn:
+            self.c.execute(f"SELECT * FROM {table.value}")
+            result = self.c.fetchall()
+        return result
 
     def newEntry(self, table, data):
         """
@@ -34,136 +51,134 @@ class DatabaseAccessObject:
         :param data: The data of all columns of the table
         :return: None
         """
-        logging.info(f'ADDING: Adding a new entry "{data}" to the database {table}')
-        if not (result := self._hasAllFields(self.typeCheckMap[table], data)) != None:
-            raise exceptions.FieldMissingException(result[1])
+        logging.info(f'Adding a new entry "{data}" to the database {table}')
+        if (result := self._hasAllFields(self.typeCheckMap[table], data)) is not None:
+            raise exceptions.FieldMissingException(result)
+        if listColumns := self._getAllListColumns(table):
+            for column in listColumns:
+                data[column] = self._addDataToList("", data[column])
         if table == Table.AUTHENTICATION:
             executionText = "INSERT INTO AUTHENTICATION VALUES (:username, :password)"
         elif table == Table.USER:
-            executionText = "INSERT INTO USER VALUES (:id, :username, :rank, :bookmark, :upvotedFiles)"
+            data["id"] = str(uuid.uuid4())
+            executionText = "INSERT INTO USER VALUES (:id, :username, :rank, :bookmarks, :upvotedFiles)"
         elif table == Table.FILES:
+            data["id"] = str(uuid.uuid4())
             executionText = "INSERT INTO FILES VALUES (:id, :path, :title, :author, :semester, :year, :department, :upvotes)"
         with self.conn:
             self.c.execute(executionText, data)
 
-    def _hasAllFields(self, tableType, data):
-        """
-        This method checks if all the expected keys are present in the data
-        :param tableType: An entry of typeCheckMap that represents the table that is currently worked on
-        :param data: The data to check
-        :return: The field that is missing/too much or None if all fields are accounted for
-        """
-        for field in tableType:
-            if field not in data:
-                return field
-        return None
-
     def deleteFromList(self, table, searchData, deleteData):
-        pass
-
-    def addToList(self, table, searchData, addData):
         """
-        This method adds data to a list column of a table. It can only add to lists!
-        :param table: Table Enum with the table the new entry should be added to
+        This method deletes data from a list column of a table. It can only delete from lists!
+        :param table: Table Enum with the table that should be manipulated
         :param searchData: The data which should be used to search the row to manipulate
-        :param addData: The data which should be added in form of a dict with the key being the column name
-        and the value being the value to add
+        :param deleteData: The data which should be deleted in form of a dict with the key being the column name
+        and the value being the value to delete
         :return: None
+        :raise NoRowFoundException: If there is no row fitting the criteria given
         :raise MoreThanOneRowFoundException: If there are multiple rows fitting the search criteria
         :raise ColumnNotAListException: If the key of addData is not represented as a list in the table
         """
         try:
-            self._checkForListData(table, addData)
+            self._checkIfDataIsList(table, deleteData, True)
             row = self.findOne(table, searchData)
-            for element in addData:
-                if row[element] == "":
-                    addData[element] = json.dumps({"value": addData[element]})
-                else:
-                    data = json.load(row[element])
-                    data.append({"value": addData[element]})
-                    addData[element] = json.dumps(data)
-            self.insert(table, searchData, addData)
+            newInsertData = {}
+            for element in deleteData:
+                if (result := self._removeDataFromList(row[element], deleteData[element])) is not None:
+                    newInsertData[element] = result
+            if newInsertData:
+                self._insert(table, searchData, newInsertData)
         except exceptions.DatabaseException as e:
             raise e
 
-    def insert(self, table, searchData, insertData):
+    def addToList(self, table, searchData, addData):
         """
-        This method is used to change the value of columns in a table. Only use for non list columns.
-        :param table: Table Enum with the table the new entry should be added to
+        This method adds data to a list column of a table. It can only add to lists!
+        :param table: Table Enum with the table that should be manipulated
+        :param searchData: The data which should be used to search the row to manipulate
+        :param addData: The data which should be added in form of a dict with the key being the column name
+        and the value being the value to add
+        :return: None
+        :raise NoRowFoundException: If there is no row fitting the criteria given
+        :raise MoreThanOneRowFoundException: If there are multiple rows fitting the search criteria
+        :raise ColumnNotAListException: If the key of addData is not represented as a list in the table
+        """
+        try:
+            self._checkIfDataIsList(table, addData, True)
+            row = self.findOne(table, searchData)
+            for element in addData:
+                addData[element] = self._addDataToList(row[element], addData[element])
+            self._insert(table, searchData, addData)
+        except exceptions.DatabaseException as e:
+            raise e
+
+    def update(self, table, searchData, insertData):
+        """
+        This method is used to update the value of columns in the table. Only use on non list columns.
+        :param table: Table Enum with the table that should be manipulated
         :param searchData: The data which should be used to search the row to manipulate
         :param insertData: The data which should be added in form of a dict with the key being the column name
         and the value being the value to add
         :return: None
+        :raise NoRowFoundException: If there is no row fitting the criteria given
         :raise MoreThanOneRowFoundException: If there are multiple rows fitting the search criteria
         :raise ColumnAListException: If the key of insertData is represented as a list in the table
         """
         try:
-            self._containsListData(table, insertData)
+            self._checkIfDataIsList(table, insertData, False)
             self.findOne(table, searchData)
-            executionText = f"UPDATE {table.value} SET "
-            for key in insertData:
-                executionText = executionText + f" {key} = ? AND"
-            executionText = executionText[:-3] + "WHERE "
-            for key in searchData:
-                executionText = executionText + f" {key} = ? AND"
-            executionText = executionText[:-3]
-            with self.conn:
-                self.c.execute(executionText, tuple([insertData[key] for key in insertData]) + tuple(
-                    [searchData[key] for key in searchData]))
+            self._insert(table, searchData, insertData)
         except exceptions.DatabaseException as e:
             raise e
-
-    def _checkForListData(self, table, data):
-        """
-        This method checks if there is any data in "data" is not a list.
-        :param table: Table Enum with the table the new entry should be added to
-        :param data: The data that should be checked
-        :return: None
-        :raise ColumnNotAListException: If any key of data is not represented as a list in the table
-        """
-        for key in data:
-            if self.typeCheckMap[table][key] != "list":
-                raise exceptions.ColumnNotAListException(key)
-
-    def _containsListData(self, table, data):
-        """
-        This method checks if there is any data in "data" that is a list.
-        :param table: Table Enum with the table the new entry should be added to
-        :param data: The data that should be checked
-        :return: None
-        :raise ColumnAListException: If any key of data is represented as a list in the table
-        """
-        for key in data:
-            if self.typeCheckMap[table][key] == "list":
-                raise exceptions.ColumnAListException(key)
 
     def findOne(self, table, searchData):
         """
         This method queries the database with the searchData parameter. It should be used if the query result should
         only be one row.
-        :param table: Table Enum with the table the new entry should be added to
+        :param table: Table Enum with the table that should be manipulated
         :param searchData: The data which should be used to search the row
         :return: The row matching the searchData as a dict
+        :raise NoRowFoundException: If there is no row fitting the criteria given
         :raise MoreThanOneRowFoundException: If there are more than one row found with the help of the searchData parameter
         """
         temp = self.find(table, searchData)
         if len(temp) == 1:
-            return temp
+            return temp[0]
+        elif len(temp) == 0:
+            raise exceptions.NoRowFoundException(searchData)
         raise exceptions.MoreThanOneRowFoundException(searchData)
 
     def find(self, table, searchData):
         """
         This method queries the database with the searchData parameter and returns all rows found that fit.
-        :param table: Table Enum with the table the new entry should be added to
+        :param table: Table Enum with the table that should be manipulated
         :param searchData: The data which should be used to search the rows
         :return: All rows matching the searchData as a list of dict
         """
+        logging.info(f"Querying database for rows that fit the search criteria {searchData}")
         executionText = f"SELECT * FROM {table.value} WHERE"
         for key in searchData:
             executionText = executionText + f" {key} = :{key} AND"
+            if searchData[key] == '' or searchData[key] == []:
+                searchData[key] = '""'
         with self.conn:
             self.c.execute(executionText[:-3], searchData)
-        return self.c.fetchall()
+        rows = self.c.fetchall()
+        result = []
+        for row in rows:
+            dict = {}
+            for type, element in zip(self.typeCheckMap[table], row):
+                if self.typeCheckMap[table][type] == "list":
+                    if element == '""':
+                        dict[type] = []
+                        continue
+                    tempData = json.loads(element)
+                    dict[type] = [key["value"] for key in tempData]
+                    continue
+                dict[type] = element
+            result.append(dict)
+        return result
 
     def createNewDatabase(self):
         """
@@ -179,21 +194,22 @@ class DatabaseAccessObject:
             password TEXT 
             )""")
         self.c.execute("""CREATE TABLE USER (
-            id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(4))) || '-'
-                              || lower(hex(randomblob(2))) || '-'
-                              || '4' || substr(lower(hex(randomblob(2))),2) || '-'
-                              || 'a' || substr(lower(hex(randomblob(2))),2) || '-'
-                              || lower(hex(randomblob(6)))),
+            id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(4))) || 
+                                  lower(hex(randomblob(2))) || 
+                                  '4' || substr(lower(hex(randomblob(2))),2) || 
+                                  'a' || substr(lower(hex(randomblob(2))),2) || 
+                                  lower(hex(randomblob(6)))),
+              username TEXT,
               rank integer,
               bookmarks TEXT,
               upvotedFiles TEXT
         )""")
         self.c.execute("""CREATE TABLE FILES (
-            id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(4))) || '-'
-              || lower(hex(randomblob(2))) || '-'
-              || '4' || substr(lower(hex(randomblob(2))),2) || '-'
-              || 'a' || substr(lower(hex(randomblob(2))),2) || '-'
-              || lower(hex(randomblob(6)))),
+            id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(4))) || 
+                                  lower(hex(randomblob(2))) || 
+                                  '4' || substr(lower(hex(randomblob(2))),2) || 
+                                  'a' || substr(lower(hex(randomblob(2))),2) || 
+                                  lower(hex(randomblob(6)))),
               path TEXT,
               title TEXT,
               author TEXT,
@@ -202,3 +218,108 @@ class DatabaseAccessObject:
               department TEXT,
               upvotes integer
         )""")
+
+    # private methods
+
+    def _addDataToList(self, originalData, data):
+        """
+        This method appends data to the already saved data in the list.
+        :param originalData: The data already in the column of the database as str
+        :param data: The data that needs to be added as str
+        :return: The data as str in a format ready to save in the database
+        """
+        if originalData == "" or originalData == '""' or originalData == []:
+            if data == "" or data == []:
+                return json.dumps("")
+            else:
+                return json.dumps([{"value": data}])
+        else:
+            originalData.append(data)
+            newData = []
+            for d in originalData:
+                newData.append({"value": d})
+            return json.dumps(newData)
+
+    def _removeDataFromList(self, originalData, data):
+        """
+        This method removes data from the saved data in the list
+        :param originalData: The data already in the column of the database as str
+        :param data: The data that needs to be deleted as str
+        :return: The data as str in a format ready to save in the database. If the element is not in the list, it just
+        returns the list as is
+        """
+        if originalData == "" or originalData == '""' or originalData == []:
+            return None
+        deleteIndex = -1
+        for index, element in enumerate(originalData):
+            if element == data:
+                deleteIndex = index
+                break
+        if deleteIndex == -1:
+            return None
+        originalData.pop(deleteIndex)
+        newData = []
+        for d in originalData:
+            newData.append({"value": d})
+        return json.dumps(newData)
+
+    def _hasAllFields(self, tableType, data):
+        """
+        This method checks if all the expected keys are present in the data
+        :param tableType: An entry of typeCheckMap that represents the table that is currently worked on
+        :param data: The data to check
+        :return: The field that is missing/too much or None if all fields are accounted for
+        """
+        for field in tableType:
+            if field not in data and tableType[field] != "id":
+                return field
+        return None
+
+    def _insert(self, table, searchData, insertData):
+        """
+        This method is used to change the value of columns in a table.
+        :param table: Table Enum with the table that should be manipulated
+        :param searchData: The data which should be used to search the row to manipulate
+        :param insertData: The data which should be added in form of a dict with the key being the column name
+        and the value being the value to add
+        :return: None
+        """
+        logging.info(f"Inserting {insertData} into table {table.value} rows fitting the criteria {searchData}")
+        executionText = f"UPDATE {table.value} SET "
+        for key in insertData:
+            executionText = executionText + f" {key} = ?, "
+        executionText = executionText[:-2] + " WHERE "
+        for key in searchData:
+            executionText = executionText + f" {key} = ? AND"
+        executionText = executionText[:-3]
+        with self.conn:
+            self.c.execute(executionText, tuple([insertData[key] for key in insertData]) + tuple(
+                [searchData[key] for key in searchData]))
+
+    def _checkIfDataIsList(self, table, data, shouldBeList):
+        """
+        This method checks if there is any column in "data" that is not saved as a list in the database.
+        :param table: Table Enum with the table that should be manipulated
+        :param data: The data that should be checked
+        :param shouldBeList: boolean that is True if the data is saved as list in the database and False if it is not
+        :return: None
+        :raise ColumnNotAListException: If any key of data is not represented as a list in the table
+        :raise ColumnAListException: If any key of data is represented as a list in the table
+        """
+        for key in data:
+            if self.typeCheckMap[table][key] != "list" and shouldBeList:
+                raise exceptions.ColumnNotAListException(key)
+            if self.typeCheckMap[table][key] == "list" and not shouldBeList:
+                raise exceptions.ColumnAListException(key)
+
+    def _getAllListColumns(self, table):
+        """
+        This method returns all columns of a table that save data in a list.
+        :param table:
+        :return: A list with all columns that save a list in the database
+        """
+        listColumns = []
+        for key in self.typeCheckMap[table]:
+            if self.typeCheckMap[table][key] == "list":
+                listColumns.append(key)
+        return listColumns
