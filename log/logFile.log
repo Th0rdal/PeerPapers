@@ -1,2 +1,290 @@
 2023-12-20 14:27:28,658:main.py:Starting the server
 2023-12-20 14:27:56,030:main.py:Starting the server
+2023-12-20 14:41:07,349:main.py:Starting the server
+2023-12-20 14:55:32,979:main.py:Starting the server
+2023-12-20 14:55:32,988:_internal.py:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2023-12-20 14:55:32,989:_internal.py:[33mPress CTRL+C to quit[0m
+2023-12-20 14:55:32,992:_internal.py: * Restarting with stat
+2023-12-20 14:55:33,083:main.py:Starting the server
+2023-12-20 14:55:33,085:_internal.py: * Debugger is active!
+2023-12-20 14:55:33,096:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 15:05:44,945:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 15:05:44,996:_internal.py: * Restarting with stat
+2023-12-20 15:05:45,166:main.py:Starting the server
+2023-12-20 15:05:45,170:_internal.py: * Debugger is active!
+2023-12-20 15:05:45,178:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 15:08:49,775:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 15:08:49,811:_internal.py: * Restarting with stat
+2023-12-20 15:08:49,950:main.py:Starting the server
+2023-12-20 15:08:49,954:_internal.py: * Debugger is active!
+2023-12-20 15:08:49,960:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 15:09:01,053:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 15:09:01,103:_internal.py: * Restarting with stat
+2023-12-20 15:09:01,247:main.py:Starting the server
+2023-12-20 15:09:01,250:_internal.py: * Debugger is active!
+2023-12-20 15:09:01,257:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 15:11:44,788:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 15:11:44,808:_internal.py: * Restarting with stat
+2023-12-20 15:11:44,969:main.py:Starting the server
+2023-12-20 15:11:44,972:_internal.py: * Debugger is active!
+2023-12-20 15:11:44,981:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 15:16:59,830:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 15:16:59,854:_internal.py: * Restarting with stat
+2023-12-20 15:17:00,019:main.py:Starting the server
+2023-12-20 15:17:00,025:_internal.py: * Debugger is active!
+2023-12-20 15:17:00,033:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 15:17:30,266:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 15:17:30,301:_internal.py: * Restarting with stat
+2023-12-20 15:17:30,435:main.py:Starting the server
+2023-12-20 15:17:30,439:_internal.py: * Debugger is active!
+2023-12-20 15:17:30,446:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 15:18:05,754:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 15:18:05,781:_internal.py: * Restarting with stat
+2023-12-20 15:18:05,929:main.py:Starting the server
+2023-12-20 15:18:05,933:_internal.py: * Debugger is active!
+2023-12-20 15:18:05,939:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 15:18:38,238:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 15:18:38,276:_internal.py: * Restarting with stat
+2023-12-20 15:18:38,405:main.py:Starting the server
+2023-12-20 15:18:38,408:_internal.py: * Debugger is active!
+2023-12-20 15:18:38,415:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 15:19:11,711:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 15:19:11,751:_internal.py: * Restarting with stat
+2023-12-20 15:19:11,920:main.py:Starting the server
+2023-12-20 15:19:11,924:_internal.py: * Debugger is active!
+2023-12-20 15:19:11,931:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 15:29:30,650:_internal.py:127.0.0.1 - - [20/Dec/2023 15:29:30] "[31m[1mPOST /register HTTP/1.1[0m" 415 -
+2023-12-20 15:30:51,028:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 15:30:51,074:_internal.py: * Restarting with stat
+2023-12-20 15:35:47,605:main.py:Starting the server
+2023-12-20 15:35:47,615:_internal.py:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5099
+2023-12-20 15:35:47,615:_internal.py:[33mPress CTRL+C to quit[0m
+2023-12-20 15:35:47,620:_internal.py: * Restarting with stat
+2023-12-20 15:35:47,705:main.py:Starting the server
+2023-12-20 15:35:47,707:_internal.py: * Debugger is active!
+2023-12-20 15:35:47,715:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 15:35:51,173:_internal.py:127.0.0.1 - - [20/Dec/2023 15:35:51] "[31m[1mPOST /register HTTP/1.1[0m" 415 -
+2023-12-20 15:36:09,920:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 15:36:09,939:_internal.py: * Restarting with stat
+2023-12-20 15:36:10,025:main.py:Starting the server
+2023-12-20 15:36:10,027:_internal.py: * Debugger is active!
+2023-12-20 15:36:10,033:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 15:36:15,541:_internal.py:127.0.0.1 - - [20/Dec/2023 15:36:15] "[31m[1mPOST /register HTTP/1.1[0m" 415 -
+2023-12-20 15:36:17,589:_internal.py:127.0.0.1 - - [20/Dec/2023 15:36:17] "[31m[1mPOST /register HTTP/1.1[0m" 415 -
+2023-12-20 15:37:02,516:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 15:37:02,547:_internal.py: * Restarting with stat
+2023-12-20 15:37:02,688:main.py:Starting the server
+2023-12-20 15:37:02,691:_internal.py: * Debugger is active!
+2023-12-20 15:37:02,698:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 15:42:19,728:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 15:42:19,755:_internal.py: * Restarting with stat
+2023-12-20 15:42:19,904:main.py:Starting the server
+2023-12-20 15:42:19,908:_internal.py: * Debugger is active!
+2023-12-20 15:42:19,915:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 15:43:12,455:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 15:43:12,479:_internal.py: * Restarting with stat
+2023-12-20 15:43:12,623:main.py:Starting the server
+2023-12-20 15:43:12,626:_internal.py: * Debugger is active!
+2023-12-20 15:43:12,632:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 15:44:13,192:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 15:44:13,221:_internal.py: * Restarting with stat
+2023-12-20 15:44:13,382:main.py:Starting the server
+2023-12-20 15:44:13,386:_internal.py: * Debugger is active!
+2023-12-20 15:44:13,395:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 15:44:22,745:_internal.py:127.0.0.1 - - [20/Dec/2023 15:44:22] "[31m[1mPOST /register HTTP/1.1[0m" 415 -
+2023-12-20 15:44:39,630:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 15:44:39,660:_internal.py: * Restarting with stat
+2023-12-20 15:44:39,797:main.py:Starting the server
+2023-12-20 15:44:39,800:_internal.py: * Debugger is active!
+2023-12-20 15:44:39,807:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 15:44:52,938:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 15:44:52,970:_internal.py: * Restarting with stat
+2023-12-20 15:44:53,057:main.py:Starting the server
+2023-12-20 15:44:53,058:_internal.py: * Debugger is active!
+2023-12-20 15:44:53,064:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 15:53:56,326:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 15:53:56,352:_internal.py: * Restarting with stat
+2023-12-20 15:53:56,494:main.py:Starting the server
+2023-12-20 15:53:56,498:_internal.py: * Debugger is active!
+2023-12-20 15:53:56,505:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 15:54:42,885:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 15:54:42,906:_internal.py: * Restarting with stat
+2023-12-20 15:54:43,065:main.py:Starting the server
+2023-12-20 15:54:43,069:_internal.py: * Debugger is active!
+2023-12-20 15:54:43,077:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 15:54:49,140:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 15:54:49,168:_internal.py: * Restarting with stat
+2023-12-20 15:54:49,257:main.py:Starting the server
+2023-12-20 15:54:49,259:_internal.py: * Debugger is active!
+2023-12-20 15:54:49,264:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 15:55:27,592:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 15:55:27,614:_internal.py: * Restarting with stat
+2023-12-20 15:55:27,747:main.py:Starting the server
+2023-12-20 15:55:27,751:_internal.py: * Debugger is active!
+2023-12-20 15:55:27,757:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 15:56:42,481:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 15:56:42,522:_internal.py: * Restarting with stat
+2023-12-20 15:56:42,675:main.py:Starting the server
+2023-12-20 15:56:42,679:_internal.py: * Debugger is active!
+2023-12-20 15:56:42,685:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 15:57:00,837:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 15:57:00,876:_internal.py: * Restarting with stat
+2023-12-20 15:57:08,970:main.py:Starting the server
+2023-12-20 15:57:08,975:_internal.py:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:25202
+2023-12-20 15:57:08,975:_internal.py:[33mPress CTRL+C to quit[0m
+2023-12-20 15:57:08,976:_internal.py: * Restarting with stat
+2023-12-20 15:57:09,058:main.py:Starting the server
+2023-12-20 15:57:09,060:_internal.py: * Debugger is active!
+2023-12-20 15:57:09,066:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 15:58:02,309:_internal.py:127.0.0.1 - - [20/Dec/2023 15:58:02] "[31m[1mPOST /register HTTP/1.1[0m" 415 -
+2023-12-20 16:00:09,680:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 16:00:09,706:_internal.py: * Restarting with stat
+2023-12-20 16:00:09,865:main.py:Starting the server
+2023-12-20 16:00:09,868:_internal.py: * Debugger is active!
+2023-12-20 16:00:09,876:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 16:00:13,051:_internal.py:127.0.0.1 - - [20/Dec/2023 16:00:13] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:02:40,126:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 16:02:40,148:_internal.py: * Restarting with stat
+2023-12-20 16:02:40,281:main.py:Starting the server
+2023-12-20 16:02:40,285:_internal.py: * Debugger is active!
+2023-12-20 16:02:40,292:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 16:04:13,654:_internal.py:127.0.0.1 - - [20/Dec/2023 16:04:13] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:05:42,271:_internal.py:127.0.0.1 - - [20/Dec/2023 16:05:42] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:06:01,051:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 16:06:01,085:_internal.py: * Restarting with stat
+2023-12-20 16:06:01,231:main.py:Starting the server
+2023-12-20 16:06:01,235:_internal.py: * Debugger is active!
+2023-12-20 16:06:01,241:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 16:06:09,662:_internal.py:127.0.0.1 - - [20/Dec/2023 16:06:09] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:06:38,144:_internal.py:127.0.0.1 - - [20/Dec/2023 16:06:38] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:07:37,024:_internal.py:127.0.0.1 - - [20/Dec/2023 16:07:37] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:09:02,803:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 16:09:02,831:_internal.py: * Restarting with stat
+2023-12-20 16:09:02,973:main.py:Starting the server
+2023-12-20 16:09:02,977:_internal.py: * Debugger is active!
+2023-12-20 16:09:02,986:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 16:09:06,260:_internal.py:127.0.0.1 - - [20/Dec/2023 16:09:06] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:10:00,412:_internal.py:127.0.0.1 - - [20/Dec/2023 16:10:00] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:13:02,035:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 16:13:02,055:_internal.py: * Restarting with stat
+2023-12-20 16:13:02,198:main.py:Starting the server
+2023-12-20 16:13:02,201:_internal.py: * Debugger is active!
+2023-12-20 16:13:02,208:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 16:13:10,436:_internal.py:127.0.0.1 - - [20/Dec/2023 16:13:10] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:13:42,046:_internal.py:127.0.0.1 - - [20/Dec/2023 16:13:42] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:14:35,501:_internal.py:127.0.0.1 - - [20/Dec/2023 16:14:35] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:14:53,176:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 16:14:53,202:_internal.py: * Restarting with stat
+2023-12-20 16:14:53,353:main.py:Starting the server
+2023-12-20 16:14:53,357:_internal.py: * Debugger is active!
+2023-12-20 16:14:53,364:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 16:14:57,671:_internal.py:127.0.0.1 - - [20/Dec/2023 16:14:57] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:16:51,140:_internal.py:127.0.0.1 - - [20/Dec/2023 16:16:51] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:20:41,759:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 16:20:41,794:_internal.py: * Restarting with stat
+2023-12-20 16:20:41,936:main.py:Starting the server
+2023-12-20 16:20:41,939:_internal.py: * Debugger is active!
+2023-12-20 16:20:41,946:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 16:20:48,511:_internal.py:127.0.0.1 - - [20/Dec/2023 16:20:48] "[31m[1mPOST /register HTTP/1.1[0m" 400 -
+2023-12-20 16:24:55,033:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 16:24:55,072:_internal.py: * Restarting with stat
+2023-12-20 16:24:55,209:main.py:Starting the server
+2023-12-20 16:24:55,212:_internal.py: * Debugger is active!
+2023-12-20 16:24:55,218:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 16:25:01,257:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 16:25:01,279:_internal.py: * Restarting with stat
+2023-12-20 16:25:01,364:main.py:Starting the server
+2023-12-20 16:25:01,366:_internal.py: * Debugger is active!
+2023-12-20 16:25:01,371:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 16:25:05,234:_internal.py:127.0.0.1 - - [20/Dec/2023 16:25:05] "[31m[1mPOST /register HTTP/1.1[0m" 400 -
+2023-12-20 16:25:55,576:_internal.py:127.0.0.1 - - [20/Dec/2023 16:25:55] "[31m[1mPOST /register HTTP/1.1[0m" 400 -
+2023-12-20 16:26:43,801:_internal.py:127.0.0.1 - - [20/Dec/2023 16:26:43] "[31m[1mPOST /register HTTP/1.1[0m" 415 -
+2023-12-20 16:27:23,608:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 16:27:23,646:_internal.py: * Restarting with stat
+2023-12-20 16:27:23,795:main.py:Starting the server
+2023-12-20 16:27:23,799:_internal.py: * Debugger is active!
+2023-12-20 16:27:23,806:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 16:27:27,032:_internal.py:127.0.0.1 - - [20/Dec/2023 16:27:27] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:27:34,347:_internal.py:127.0.0.1 - - [20/Dec/2023 16:27:34] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:28:23,272:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 16:28:23,291:_internal.py: * Restarting with stat
+2023-12-20 16:28:23,424:main.py:Starting the server
+2023-12-20 16:28:23,427:_internal.py: * Debugger is active!
+2023-12-20 16:28:23,434:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 16:28:27,716:_internal.py:127.0.0.1 - - [20/Dec/2023 16:28:27] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:28:54,657:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 16:28:54,688:_internal.py: * Restarting with stat
+2023-12-20 16:28:54,792:main.py:Starting the server
+2023-12-20 16:28:54,795:_internal.py: * Debugger is active!
+2023-12-20 16:28:54,801:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 16:28:56,784:_internal.py:127.0.0.1 - - [20/Dec/2023 16:28:56] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:30:21,541:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 16:30:21,581:_internal.py: * Restarting with stat
+2023-12-20 16:30:21,725:main.py:Starting the server
+2023-12-20 16:30:21,728:_internal.py: * Debugger is active!
+2023-12-20 16:30:21,734:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 16:32:21,862:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 16:32:21,911:_internal.py: * Restarting with stat
+2023-12-20 16:32:22,078:main.py:Starting the server
+2023-12-20 16:32:22,092:_internal.py: * Debugger is active!
+2023-12-20 16:32:22,123:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 16:32:23,905:_internal.py:127.0.0.1 - - [20/Dec/2023 16:32:23] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:34:14,021:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 16:34:14,045:_internal.py: * Restarting with stat
+2023-12-20 16:34:14,184:main.py:Starting the server
+2023-12-20 16:34:14,188:_internal.py: * Debugger is active!
+2023-12-20 16:34:14,195:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 16:34:17,583:_internal.py:127.0.0.1 - - [20/Dec/2023 16:34:17] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:34:48,116:_internal.py:127.0.0.1 - - [20/Dec/2023 16:34:48] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:35:56,053:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 16:35:56,083:_internal.py: * Restarting with stat
+2023-12-20 16:35:56,227:main.py:Starting the server
+2023-12-20 16:35:56,231:_internal.py: * Debugger is active!
+2023-12-20 16:35:56,238:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 16:36:00,655:_internal.py:127.0.0.1 - - [20/Dec/2023 16:36:00] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:37:11,397:_internal.py:127.0.0.1 - - [20/Dec/2023 16:37:11] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:38:10,899:_internal.py:127.0.0.1 - - [20/Dec/2023 16:38:10] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:40:09,386:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 16:40:09,430:_internal.py: * Restarting with stat
+2023-12-20 16:40:09,579:main.py:Starting the server
+2023-12-20 16:40:09,582:_internal.py: * Debugger is active!
+2023-12-20 16:40:09,588:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 16:41:25,221:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 16:41:25,255:_internal.py: * Restarting with stat
+2023-12-20 16:41:25,383:main.py:Starting the server
+2023-12-20 16:41:25,386:_internal.py: * Debugger is active!
+2023-12-20 16:41:25,393:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 16:41:27,342:_internal.py:127.0.0.1 - - [20/Dec/2023 16:41:27] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:41:54,676:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 16:41:54,713:_internal.py: * Restarting with stat
+2023-12-20 16:41:54,805:main.py:Starting the server
+2023-12-20 16:41:54,807:_internal.py: * Debugger is active!
+2023-12-20 16:41:54,813:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 16:41:55,821:_internal.py:127.0.0.1 - - [20/Dec/2023 16:41:55] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:42:12,941:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 16:42:12,965:_internal.py: * Restarting with stat
+2023-12-20 16:42:13,063:main.py:Starting the server
+2023-12-20 16:42:13,065:_internal.py: * Debugger is active!
+2023-12-20 16:42:13,070:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 16:42:14,362:_internal.py:127.0.0.1 - - [20/Dec/2023 16:42:14] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:42:40,297:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 16:42:40,324:_internal.py: * Restarting with stat
+2023-12-20 16:42:40,413:main.py:Starting the server
+2023-12-20 16:42:40,415:_internal.py: * Debugger is active!
+2023-12-20 16:42:40,421:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 16:42:42,358:_internal.py:127.0.0.1 - - [20/Dec/2023 16:42:42] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:43:33,850:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 16:43:33,884:_internal.py: * Restarting with stat
+2023-12-20 16:43:34,023:main.py:Starting the server
+2023-12-20 16:43:34,027:_internal.py: * Debugger is active!
+2023-12-20 16:43:34,034:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 16:43:35,382:_internal.py:127.0.0.1 - - [20/Dec/2023 16:43:35] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2023-12-20 16:43:54,226:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/main.py', reloading
+2023-12-20 16:43:54,252:_internal.py: * Restarting with stat
+2023-12-20 16:43:54,349:main.py:Starting the server
+2023-12-20 16:43:54,351:_internal.py: * Debugger is active!
+2023-12-20 16:43:54,357:_internal.py: * Debugger PIN: 762-081-406
+2023-12-20 16:43:56,271:_internal.py:127.0.0.1 - - [20/Dec/2023 16:43:56] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
