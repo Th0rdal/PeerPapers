@@ -1,5 +1,6 @@
 
 from flask import Flask, request, jsonify
+import sqlite3 as sql
 import logging
 
 app = Flask(__name__)
@@ -8,10 +9,32 @@ app = Flask(__name__)
 @app.route('/register', methods=['POST'])
 def register ():
     
-    username = request.data.decode
-    #test = request.data
-    print(request)
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
     print(username)
+    print(password)
+    if not username or not password:
+        return jsonify({'error': 'Both username and password are required'}), 400
+    con = sql.connect('database.py')
+    c = con.cursor()
+    c.execute("INSERT INTO USER VALUES (:id, :username, :rank, :bookmarks, :upvotedFiles)", ("", username, password, "", "", ))
+    con.commit()
+    con.close()
+    
+    return jsonify({'message': 'Registration successful'}), 200
+
+    '''
+    database_url = 'http://database.py/newEntry'
+    
+    response = requests.post(database_url, json={'username': username, 'password': password})
+    
+    if response.status_code == 201:
+        return jsonify({'message': 'Registration successful'}), 201
+    else:
+        return jsonify({'error': 'Error in database layer'}), 500
+
+    '''
     pass
 
 @app.route('/login', methods=['POST'])
