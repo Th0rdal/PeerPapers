@@ -11,7 +11,9 @@ app = Flask(__name__)
 #MUST
 @app.route('/register', methods=['POST'])
 def register ():
-    
+    '''
+    Endpoint for user registration with username and password. Username and password must be sent in method body.
+    '''
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
@@ -23,7 +25,7 @@ def register ():
         databaseAccess.findOne(Table.AUTHENTICATION, {'username': username})
         logging.info('Username is taken')
         return jsonify({'message': 'Username is already taken'}), 400
-    except NoRowFoundException as e:
+    except NoRowFoundException as e: #When NoRowFoundException is triggered, username is not taken.
         databaseAccess.newEntry(Table.AUTHENTICATION, {'username': username, 'password': password})
     #databaseAccess.printTable(Table.AUTHENTICATION)
     logging.info('Registration successful')

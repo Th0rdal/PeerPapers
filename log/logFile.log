@@ -987,3 +987,18 @@
 2023-12-29 11:51:06,800:main.py:Starting the server
 2023-12-29 11:51:06,913:_internal.py: * Debugger is active!
 2023-12-29 11:51:06,919:_internal.py: * Debugger PIN: 604-966-114
+2023-12-29 11:58:00,787:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/endpoints.py', reloading
+2023-12-29 11:58:00,809:_internal.py: * Restarting with stat
+2023-12-29 11:58:00,835:main.py:Starting the server
+2023-12-29 11:58:00,940:_internal.py: * Debugger is active!
+2023-12-29 11:58:00,946:_internal.py: * Debugger PIN: 604-966-114
+2023-12-29 11:59:53,486:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/endpoints.py', reloading
+2023-12-29 11:59:53,508:_internal.py: * Restarting with stat
+2023-12-29 11:59:53,540:main.py:Starting the server
+2023-12-29 11:59:53,652:_internal.py: * Debugger is active!
+2023-12-29 11:59:53,658:_internal.py: * Debugger PIN: 604-966-114
+2023-12-29 12:00:31,876:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/endpoints.py', reloading
+2023-12-29 12:00:31,896:_internal.py: * Restarting with stat
+2023-12-29 12:00:31,926:main.py:Starting the server
+2023-12-29 12:00:32,041:_internal.py: * Debugger is active!
+2023-12-29 12:00:32,047:_internal.py: * Debugger PIN: 604-966-114
