@@ -25,10 +25,10 @@ class DatabaseAccessObject:
     def __init__(self, testing=False):
         logging.info("Initializing DatabaseAccessObject")
         if testing:
-            self.createNewDatabase()  # this is only to test everything with a database in memory
+            self.__createNewDatabase()  # this is only to test everything with a database in memory
         else:
             # should connect to database here
-            self.createNewDatabase()
+            self.__createNewDatabase()
 
     def printTable(self, table):
         print(self.getTable(table))
@@ -52,11 +52,11 @@ class DatabaseAccessObject:
         :return: None
         """
         logging.info(f'Adding a new entry "{data}" to the database {table}')
-        if (result := self._hasAllFields(self.typeCheckMap[table], data)) is not None:
+        if (result := self.__hasAllFields(self.typeCheckMap[table], data)) is not None:
             raise exceptions.FieldMissingException(result)
-        if listColumns := self._getAllListColumns(table):
+        if listColumns := self.__getAllListColumns(table):
             for column in listColumns:
-                data[column] = self._addDataToList("", data[column])
+                data[column] = self.__addDataToList("", data[column])
         if table == Table.AUTHENTICATION:
             executionText = "INSERT INTO AUTHENTICATION VALUES (:username, :password)"
         elif table == Table.USER:
@@ -81,14 +81,14 @@ class DatabaseAccessObject:
         :raise ColumnNotAListException: If the key of addData is not represented as a list in the table
         """
         try:
-            self._checkIfDataIsList(table, deleteData, True)
+            self.__checkIfDataIsList(table, deleteData, True)
             row = self.findOne(table, searchData)
             newInsertData = {}
             for element in deleteData:
-                if (result := self._removeDataFromList(row[element], deleteData[element])) is not None:
+                if (result := self.__removeDataFromList(row[element], deleteData[element])) is not None:
                     newInsertData[element] = result
             if newInsertData:
-                self._insert(table, searchData, newInsertData)
+                self.__insert(table, searchData, newInsertData)
         except exceptions.DatabaseException as e:
             raise e
 
@@ -105,11 +105,11 @@ class DatabaseAccessObject:
         :raise ColumnNotAListException: If the key of addData is not represented as a list in the table
         """
         try:
-            self._checkIfDataIsList(table, addData, True)
+            self.__checkIfDataIsList(table, addData, True)
             row = self.findOne(table, searchData)
             for element in addData:
-                addData[element] = self._addDataToList(row[element], addData[element])
-            self._insert(table, searchData, addData)
+                addData[element] = self.__addDataToList(row[element], addData[element])
+            self.__insert(table, searchData, addData)
         except exceptions.DatabaseException as e:
             raise e
 
@@ -126,9 +126,9 @@ class DatabaseAccessObject:
         :raise ColumnAListException: If the key of insertData is represented as a list in the table
         """
         try:
-            self._checkIfDataIsList(table, insertData, False)
+            self.__checkIfDataIsList(table, insertData, False)
             self.findOne(table, searchData)
-            self._insert(table, searchData, insertData)
+            self.__insert(table, searchData, insertData)
         except exceptions.DatabaseException as e:
             raise e
 
