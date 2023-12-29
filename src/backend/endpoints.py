@@ -2,6 +2,9 @@
 from flask import Flask, request, jsonify
 import sqlite3 as sql
 import logging
+from database.database import DatabaseAccessObject
+from database.Table import Table
+from database.exceptions import NoRowFoundException
 
 app = Flask(__name__)
 
@@ -12,30 +15,19 @@ def register ():
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
-    print(username)
-    print(password)
     if not username or not password:
+        logging.info('Registration not successful')
         return jsonify({'error': 'Both username and password are required'}), 400
-    con = sql.connect('database.py')
-    c = con.cursor()
-    c.execute('INSERT INTO authentication (username, password) VALUES (?, ?)', (username, password))
-    con.commit()
-    con.close()
-    
+    databaseAccess = DatabaseAccessObject()
+    try:
+        databaseAccess.findOne(Table.AUTHENTICATION, {'username': username})
+        logging.info('Username is taken')
+        return jsonify({'message': 'Username is already taken'}), 400
+    except NoRowFoundException as e:
+        databaseAccess.newEntry(Table.AUTHENTICATION, {'username': username, 'password': password})
+    #databaseAccess.printTable(Table.AUTHENTICATION)
+    logging.info('Registration successful')
     return jsonify({'message': 'Registration successful'}), 200
-
-    '''
-    database_url = 'http://database.py/newEntry'
-    
-    response = requests.post(database_url, json={'username': username, 'password': password})
-    
-    if response.status_code == 201:
-        return jsonify({'message': 'Registration successful'}), 201
-    else:
-        return jsonify({'error': 'Error in database layer'}), 500
-
-    '''
-    pass
 
 @app.route('/login', methods=['POST'])
 def login ():
@@ -75,7 +67,4 @@ def rank ():
 def rankList ():
     pass
 
-if __name__ == '__main__':
-    logging.basicConfig(filename="log/logFile.log", level=logging.INFO, format="%(asctime)s:%(filename)s:%(message)s")
-    logging.info('Starting the server')
-    app.run(debug=True, port=25202)
+app.run(debug=True, port=25202)

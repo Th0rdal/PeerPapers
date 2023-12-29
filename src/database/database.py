@@ -3,8 +3,8 @@ import logging
 import json
 import uuid
 
-from src.database.Table import Table
-from src.database import exceptions
+from database.Table import Table
+from database import exceptions
 
 
 class DatabaseAccessObject:
