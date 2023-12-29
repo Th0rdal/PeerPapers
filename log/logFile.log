@@ -1002,3 +1002,146 @@
 2023-12-29 12:00:31,926:main.py:Starting the server
 2023-12-29 12:00:32,041:_internal.py: * Debugger is active!
 2023-12-29 12:00:32,047:_internal.py: * Debugger PIN: 604-966-114
+2023-12-29 14:16:49,563:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/endpoints.py', reloading
+2023-12-29 14:16:49,584:_internal.py: * Restarting with stat
+2023-12-29 14:16:49,615:main.py:Starting the server
+2023-12-29 14:16:49,742:_internal.py: * Debugger is active!
+2023-12-29 14:16:49,749:_internal.py: * Debugger PIN: 604-966-114
+2023-12-29 14:41:08,271:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/endpoints.py', reloading
+2023-12-29 14:41:08,292:_internal.py: * Restarting with stat
+2023-12-29 14:41:08,326:main.py:Starting the server
+2023-12-29 14:41:08,462:_internal.py: * Debugger is active!
+2023-12-29 14:41:08,474:_internal.py: * Debugger PIN: 604-966-114
+2023-12-29 14:45:53,949:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/endpoints.py', reloading
+2023-12-29 14:45:53,979:_internal.py: * Restarting with stat
+2023-12-29 14:45:54,010:main.py:Starting the server
+2023-12-29 14:45:54,134:_internal.py: * Debugger is active!
+2023-12-29 14:45:54,141:_internal.py: * Debugger PIN: 604-966-114
+2023-12-29 15:54:40,935:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/endpoints.py', reloading
+2023-12-29 15:54:40,959:_internal.py: * Restarting with stat
+2023-12-29 15:54:40,993:main.py:Starting the server
+2023-12-29 15:54:41,124:_internal.py: * Debugger is active!
+2023-12-29 15:54:41,133:_internal.py: * Debugger PIN: 604-966-114
+2023-12-29 15:55:01,370:database.py:Initializing DatabaseAccessObject
+2023-12-29 15:55:01,370:database.py:Creating new Database in memory
+2023-12-29 15:55:01,373:database.py:Querying database for rows that fit the search criteria {'username': 'simon', 'password': '1234'}
+2023-12-29 15:55:01,374:_internal.py:127.0.0.1 - - [29/Dec/2023 15:55:01] "POST /login HTTP/1.1" 200 -
+2023-12-29 15:55:20,170:database.py:Initializing DatabaseAccessObject
+2023-12-29 15:55:20,170:database.py:Creating new Database in memory
+2023-12-29 15:55:20,170:database.py:Querying database for rows that fit the search criteria {'username': 'simon'}
+2023-12-29 15:55:20,170:database.py:Adding a new entry "{'username': 'simon', 'password': '1234'}" to the database Table.AUTHENTICATION
+2023-12-29 15:55:20,170:endpoints.py:Registration successful
+2023-12-29 15:55:20,171:_internal.py:127.0.0.1 - - [29/Dec/2023 15:55:20] "POST /register HTTP/1.1" 200 -
+2023-12-29 15:55:27,355:database.py:Initializing DatabaseAccessObject
+2023-12-29 15:55:27,355:database.py:Creating new Database in memory
+2023-12-29 15:55:27,355:database.py:Querying database for rows that fit the search criteria {'username': 'simon', 'password': '1234'}
+2023-12-29 15:55:27,355:_internal.py:127.0.0.1 - - [29/Dec/2023 15:55:27] "POST /login HTTP/1.1" 200 -
+2023-12-29 15:57:14,872:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/endpoints.py', reloading
+2023-12-29 15:57:14,888:_internal.py: * Restarting with stat
+2023-12-29 15:57:14,908:main.py:Starting the server
+2023-12-29 15:57:14,981:_internal.py: * Debugger is active!
+2023-12-29 15:57:14,987:_internal.py: * Debugger PIN: 604-966-114
+2023-12-29 15:57:22,751:database.py:Initializing DatabaseAccessObject
+2023-12-29 15:57:22,751:database.py:Creating new Database in memory
+2023-12-29 15:57:22,752:database.py:Querying database for rows that fit the search criteria {'username': 'simon', 'password': '1234'}
+2023-12-29 15:57:22,752:endpoints.py:Login not successful
+2023-12-29 15:57:22,752:_internal.py:127.0.0.1 - - [29/Dec/2023 15:57:22] "[31m[1mPOST /login HTTP/1.1[0m" 400 -
+2023-12-29 15:57:29,206:database.py:Initializing DatabaseAccessObject
+2023-12-29 15:57:29,206:database.py:Creating new Database in memory
+2023-12-29 15:57:29,206:database.py:Querying database for rows that fit the search criteria {'username': 'simon'}
+2023-12-29 15:57:29,206:database.py:Adding a new entry "{'username': 'simon', 'password': '1234'}" to the database Table.AUTHENTICATION
+2023-12-29 15:57:29,206:endpoints.py:Registration successful
+2023-12-29 15:57:29,207:_internal.py:127.0.0.1 - - [29/Dec/2023 15:57:29] "POST /register HTTP/1.1" 200 -
+2023-12-29 15:57:34,412:database.py:Initializing DatabaseAccessObject
+2023-12-29 15:57:34,412:database.py:Creating new Database in memory
+2023-12-29 15:57:34,412:database.py:Querying database for rows that fit the search criteria {'username': 'simon', 'password': '1234'}
+2023-12-29 15:57:34,412:endpoints.py:Login not successful
+2023-12-29 15:57:34,413:_internal.py:127.0.0.1 - - [29/Dec/2023 15:57:34] "[31m[1mPOST /login HTTP/1.1[0m" 400 -
+2023-12-29 15:59:01,537:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/endpoints.py', reloading
+2023-12-29 15:59:01,554:_internal.py: * Restarting with stat
+2023-12-29 15:59:01,573:main.py:Starting the server
+2023-12-29 15:59:01,644:_internal.py: * Debugger is active!
+2023-12-29 15:59:01,650:_internal.py: * Debugger PIN: 604-966-114
+2023-12-29 15:59:08,304:database.py:Initializing DatabaseAccessObject
+2023-12-29 15:59:08,305:database.py:Creating new Database in memory
+2023-12-29 15:59:08,305:database.py:Querying database for rows that fit the search criteria {'username': 'simon', 'password': '1234'}
+2023-12-29 15:59:08,305:endpoints.py:Login not successful
+2023-12-29 15:59:08,305:_internal.py:127.0.0.1 - - [29/Dec/2023 15:59:08] "[31m[1mPOST /login HTTP/1.1[0m" 400 -
+2023-12-29 15:59:38,845:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/endpoints.py', reloading
+2023-12-29 15:59:38,864:_internal.py: * Restarting with stat
+2023-12-29 15:59:38,885:main.py:Starting the server
+2023-12-29 15:59:38,985:main.py:Starting the server
+2023-12-29 15:59:39,017:main.py:Starting the server
+2023-12-29 15:59:39,047:main.py:Starting the server
+2023-12-29 15:59:39,080:main.py:Starting the server
+2023-12-29 16:16:56,473:main.py:Starting the server
+2023-12-29 16:16:56,561:_internal.py:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:25202
+2023-12-29 16:16:56,561:_internal.py:[33mPress CTRL+C to quit[0m
+2023-12-29 16:16:56,563:_internal.py: * Restarting with stat
+2023-12-29 16:16:56,582:main.py:Starting the server
+2023-12-29 16:16:56,651:_internal.py: * Debugger is active!
+2023-12-29 16:16:56,658:_internal.py: * Debugger PIN: 604-966-114
+2023-12-29 16:17:04,870:database.py:Initializing DatabaseAccessObject
+2023-12-29 16:17:04,870:database.py:Creating new Database in memory
+2023-12-29 16:17:04,871:database.py:Querying database for rows that fit the search criteria {'username': 'simon', 'password': '1234'}
+2023-12-29 16:17:04,871:_internal.py:127.0.0.1 - - [29/Dec/2023 16:17:04] "[31m[1mPOST /login HTTP/1.1[0m" 400 -
+2023-12-29 16:17:44,897:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/endpoints.py', reloading
+2023-12-29 16:17:44,913:_internal.py: * Restarting with stat
+2023-12-29 16:17:44,931:main.py:Starting the server
+2023-12-29 16:17:45,001:_internal.py: * Debugger is active!
+2023-12-29 16:17:45,007:_internal.py: * Debugger PIN: 604-966-114
+2023-12-29 16:17:51,327:database.py:Initializing DatabaseAccessObject
+2023-12-29 16:17:51,330:database.py:Creating new Database in memory
+2023-12-29 16:17:51,330:database.py:Querying database for rows that fit the search criteria {'username': 'simon', 'password': '1234'}
+2023-12-29 16:17:51,331:_internal.py:127.0.0.1 - - [29/Dec/2023 16:17:51] "[31m[1mPOST /login HTTP/1.1[0m" 400 -
+2023-12-29 16:18:06,830:database.py:Initializing DatabaseAccessObject
+2023-12-29 16:18:06,830:database.py:Creating new Database in memory
+2023-12-29 16:18:06,830:database.py:Querying database for rows that fit the search criteria {'username': 'simon'}
+2023-12-29 16:18:06,831:database.py:Adding a new entry "{'username': 'simon', 'password': '1234'}" to the database Table.AUTHENTICATION
+2023-12-29 16:18:06,831:endpoints.py:Registration successful
+2023-12-29 16:18:06,831:_internal.py:127.0.0.1 - - [29/Dec/2023 16:18:06] "POST /register HTTP/1.1" 200 -
+2023-12-29 16:18:19,588:database.py:Initializing DatabaseAccessObject
+2023-12-29 16:18:19,588:database.py:Creating new Database in memory
+2023-12-29 16:18:19,589:database.py:Querying database for rows that fit the search criteria {'username': 'simon', 'password': '1234'}
+2023-12-29 16:18:19,589:_internal.py:127.0.0.1 - - [29/Dec/2023 16:18:19] "[31m[1mPOST /login HTTP/1.1[0m" 400 -
+2023-12-29 16:18:34,256:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/endpoints.py', reloading
+2023-12-29 16:18:34,273:_internal.py: * Restarting with stat
+2023-12-29 16:18:34,293:main.py:Starting the server
+2023-12-29 16:18:34,370:_internal.py: * Debugger is active!
+2023-12-29 16:18:34,375:_internal.py: * Debugger PIN: 604-966-114
+2023-12-29 16:18:36,812:database.py:Initializing DatabaseAccessObject
+2023-12-29 16:18:36,813:database.py:Creating new Database in memory
+2023-12-29 16:18:36,813:database.py:Querying database for rows that fit the search criteria {'username': 'simon', 'password': '1234'}
+2023-12-29 16:18:36,813:_internal.py:127.0.0.1 - - [29/Dec/2023 16:18:36] "[31m[1mPOST /login HTTP/1.1[0m" 400 -
+2023-12-29 16:18:43,406:database.py:Initializing DatabaseAccessObject
+2023-12-29 16:18:43,406:database.py:Creating new Database in memory
+2023-12-29 16:18:43,407:database.py:Querying database for rows that fit the search criteria {'username': 'simon'}
+2023-12-29 16:18:43,407:database.py:Adding a new entry "{'username': 'simon', 'password': '1234'}" to the database Table.AUTHENTICATION
+2023-12-29 16:18:43,407:endpoints.py:Registration successful
+2023-12-29 16:18:43,407:_internal.py:127.0.0.1 - - [29/Dec/2023 16:18:43] "POST /register HTTP/1.1" 200 -
+2023-12-29 16:19:01,569:database.py:Initializing DatabaseAccessObject
+2023-12-29 16:19:01,569:database.py:Creating new Database in memory
+2023-12-29 16:19:01,570:database.py:Querying database for rows that fit the search criteria {'username': 'simon', 'password': '1234'}
+2023-12-29 16:19:01,570:_internal.py:127.0.0.1 - - [29/Dec/2023 16:19:01] "[31m[1mPOST /login HTTP/1.1[0m" 400 -
+2023-12-29 16:21:04,088:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/endpoints.py', reloading
+2023-12-29 16:21:04,105:_internal.py: * Restarting with stat
+2023-12-29 16:21:04,124:main.py:Starting the server
+2023-12-29 16:21:04,196:_internal.py: * Debugger is active!
+2023-12-29 16:21:04,202:_internal.py: * Debugger PIN: 604-966-114
+2023-12-29 16:21:24,555:database.py:Initializing DatabaseAccessObject
+2023-12-29 16:21:24,555:database.py:Creating new Database in memory
+2023-12-29 16:21:24,555:database.py:Querying database for rows that fit the search criteria {'username': 'simon'}
+2023-12-29 16:21:24,555:database.py:Adding a new entry "{'username': 'simon', 'password': '1234'}" to the database Table.AUTHENTICATION
+2023-12-29 16:21:24,556:endpoints.py:Registration successful
+2023-12-29 16:21:24,556:_internal.py:127.0.0.1 - - [29/Dec/2023 16:21:24] "POST /register HTTP/1.1" 200 -
+2023-12-29 16:21:41,002:database.py:Initializing DatabaseAccessObject
+2023-12-29 16:21:41,002:database.py:Creating new Database in memory
+2023-12-29 16:21:41,003:database.py:Querying database for rows that fit the search criteria {'username': 'simon', 'password': '1234'}
+2023-12-29 16:21:41,003:endpoints.py:Login not successful, username or password incorrect
+2023-12-29 16:21:41,003:_internal.py:127.0.0.1 - - [29/Dec/2023 16:21:41] "[31m[1mPOST /login HTTP/1.1[0m" 400 -
+2023-12-29 16:22:37,743:_internal.py: * Detected change in '/Users/simonweisser/Desktop/CSDC/Semester3/peerpapers/PeerPapers/src/backend/endpoints.py', reloading
+2023-12-29 16:22:37,760:_internal.py: * Restarting with stat
+2023-12-29 16:22:37,780:main.py:Starting the server
+2023-12-29 16:22:37,853:_internal.py: * Debugger is active!
+2023-12-29 16:22:37,860:_internal.py: * Debugger PIN: 604-966-114
