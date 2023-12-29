@@ -18,7 +18,7 @@ def register ():
         return jsonify({'error': 'Both username and password are required'}), 400
     con = sql.connect('database.py')
     c = con.cursor()
-    c.execute("INSERT INTO USER VALUES (:id, :username, :rank, :bookmarks, :upvotedFiles)", ("", username, password, "", "", ))
+    c.execute('INSERT INTO authentication (username, password) VALUES (?, ?)', (username, password))
     con.commit()
     con.close()
     
