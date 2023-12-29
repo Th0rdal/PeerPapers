@@ -180,7 +180,7 @@ class DatabaseAccessObject:
             result.append(dict)
         return result
 
-    def createNewDatabase(self):
+    def __createNewDatabase(self):
         """
         This function creates a new database in memory for debugging purposes
         :return: None
@@ -221,7 +221,7 @@ class DatabaseAccessObject:
 
     # private methods
 
-    def _addDataToList(self, originalData, data):
+    def __addDataToList(self, originalData, data):
         """
         This method appends data to the already saved data in the list.
         :param originalData: The data already in the column of the database as str
@@ -240,7 +240,7 @@ class DatabaseAccessObject:
                 newData.append({"value": d})
             return json.dumps(newData)
 
-    def _removeDataFromList(self, originalData, data):
+    def __removeDataFromList(self, originalData, data):
         """
         This method removes data from the saved data in the list
         :param originalData: The data already in the column of the database as str
@@ -263,7 +263,7 @@ class DatabaseAccessObject:
             newData.append({"value": d})
         return json.dumps(newData)
 
-    def _hasAllFields(self, tableType, data):
+    def __hasAllFields(self, tableType, data):
         """
         This method checks if all the expected keys are present in the data
         :param tableType: An entry of typeCheckMap that represents the table that is currently worked on
@@ -275,7 +275,7 @@ class DatabaseAccessObject:
                 return field
         return None
 
-    def _insert(self, table, searchData, insertData):
+    def __insert(self, table, searchData, insertData):
         """
         This method is used to change the value of columns in a table.
         :param table: Table Enum with the table that should be manipulated
@@ -296,7 +296,7 @@ class DatabaseAccessObject:
             self.c.execute(executionText, tuple([insertData[key] for key in insertData]) + tuple(
                 [searchData[key] for key in searchData]))
 
-    def _checkIfDataIsList(self, table, data, shouldBeList):
+    def __checkIfDataIsList(self, table, data, shouldBeList):
         """
         This method checks if there is any column in "data" that is not saved as a list in the database.
         :param table: Table Enum with the table that should be manipulated
@@ -312,7 +312,7 @@ class DatabaseAccessObject:
             if self.typeCheckMap[table][key] == "list" and not shouldBeList:
                 raise exceptions.ColumnAListException(key)
 
-    def _getAllListColumns(self, table):
+    def __getAllListColumns(self, table):
         """
         This method returns all columns of a table that save data in a list.
         :param table:
