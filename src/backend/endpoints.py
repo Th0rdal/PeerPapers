@@ -35,19 +35,22 @@ def register ():
 def login ():
     '''
     Endpoint for user login with username and password. Username and password must be sent in method body.
+    Wir werden später einen JWT in der response schicken, also am besten bereits die function zum erstellen des JWT kreieren
+    und einfach in den körper pass schreiben. Ist egal, dass das jwt feld leer ist. Du willst immer eine function fertig schreiben, selbst
+    wenn manche sachen noch nicht implementiert sind. Später zurück zur funktion ist immer schlecht
     '''
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
     if not username or not password:
         logging.info('Login not successful, username and password are required')
-        return jsonify({'error': 'Both username and password are required'}), 400
+        return jsonify({'error': 'Both username and password are required'}), 400 # keine extra infos geben. Einfach "Username or Password incorrect" und das wars
     databaseAccess = DatabaseAccessObject()
     databaseAccess.printTable(Table.AUTHENTICATION)
     try:
         databaseAccess.findOne(Table.AUTHENTICATION, {'username': username, 'password': password})
         return jsonify({'message': 'Login successful'}), 200
-    except NoRowFoundException as e: #When NoRowFoundException is triggered, username is not taken.
+    except NoRowFoundException as e: # When NoRowFoundException is triggered, username is not taken.
         logging.info('Login not successful, username or password incorrect')
         return jsonify({'message': 'Username or Password incorrect'}), 400    
     
