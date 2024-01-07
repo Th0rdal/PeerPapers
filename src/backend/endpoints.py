@@ -7,6 +7,15 @@ from database.Table import Table
 from database.exceptions import NoRowFoundException
 
 app = Flask(__name__)
+#app.config['SECRET_KEY'] = '1234'
+#app.config['ALLOWED_EXTENSIONS'] = {'pdf'}
+
+def create_jwt_token(): #method to create the jwt token
+    pass
+
+def allowed_file(file):
+    return '.' in file and file.r
+
 
 #MUST
 @app.route('/register', methods=['POST'])
@@ -42,14 +51,19 @@ def login ():
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
-    if not username or not password:
+    if not data or not username or not password:
         logging.info('Login not successful, username and password are required')
-        return jsonify({'error': 'Both username and password are required'}), 400 # keine extra infos geben. Einfach "Username or Password incorrect" und das wars
+        return jsonify({'error': 'Username or Password incorrect'}), 400
+    
     databaseAccess = DatabaseAccessObject()
     databaseAccess.printTable(Table.AUTHENTICATION)
+    
     try:
-        databaseAccess.findOne(Table.AUTHENTICATION, {'username': username, 'password': password})
-        return jsonify({'message': 'Login successful'}), 200
+        databaseAccess.findOne(Table.AUTHENTICATION, {'username': username, 'password': password}) #checks if username and pw matches with existing one
+        user = databaseAccess.find(Table.USER, {'username': username}) #looking for userdata of specific user to receive user id for jwt
+        token = create_jwt_token(user)
+        #return jsonify({'message': 'Login successful', 'access_token': token.decode('utf-8')}), 200
+        pass
     except NoRowFoundException as e: # When NoRowFoundException is triggered, username is not taken.
         logging.info('Login not successful, username or password incorrect')
         return jsonify({'message': 'Username or Password incorrect'}), 400    
@@ -57,6 +71,15 @@ def login ():
     
 @app.route('/upload', methods=['POST'])
 def upload ():
+    
+    if 'file' not in request.files:
+        return jsonify({'message': 'No file sent'}), 400
+    
+    file = request.files['file']
+    filename = file.name
+    print(filename)
+    
+    
     pass
 
 @app.route('/download', methods=['GET'])
