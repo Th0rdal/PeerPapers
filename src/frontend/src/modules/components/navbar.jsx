@@ -52,6 +52,9 @@ function Navbar() {
               <CNavItem>
                 <CNavLink href="/register">Register/Login</CNavLink>
               </CNavItem>
+              <CNavItem>
+                <CNavLink href="/erweiterteSuche">Erweiterte Suche</CNavLink>
+              </CNavItem>
             </CNavbarNav>
             <CForm className="d-flex">
               <CFormInput type="search" className="me-2" placeholder="Search" />

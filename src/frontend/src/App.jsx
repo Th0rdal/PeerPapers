@@ -5,6 +5,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Test from "./pages/test";
 import HomePage from "./pages/homePage";
 import Navbar from "./modules/components/navbar";
+import Register from "./pages/register";
+import ExtendedSearch from "./pages/extendedSearch";
 
 function App() {
   return (
@@ -13,6 +15,8 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/test" element={<Test />} />
+        <Route path="/register" element={<Register />}></Route>
+        <Route path="/erweiterteSuche" element={<ExtendedSearch />}></Route>
       </Routes>
     </Router>
   );

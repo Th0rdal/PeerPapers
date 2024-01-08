@@ -1,3 +1,4 @@
+import sqlite3
 import sqlite3 as sl
 import logging
 import json
@@ -25,12 +26,17 @@ class DatabaseAccessObject:
     def __init__(self, testing=False):
         logging.info("Initializing DatabaseAccessObject")
         if testing:
-            self.__createNewDatabase()  # this is only to test everything with a database in memory
-        else:
-            # should connect to database here
-            logging.info("Connecting to database")
-            self.conn = sl.connect('resources/database/database.db')
+            logging.info("Creating test database in memory")
+            self.__createNewDatabase(":memory:")
+            return
+        # should connect to database here
+        logging.info("Connecting to database")
+        try:
+            self.conn = sl.connect('file:resources/database/database.db?mode=rw', uri=True)
             self.c = self.conn.cursor()
+        except sqlite3.OperationalError as e:
+            self.__createNewDatabase("resources/database/database.db")
+
 
     def printTable(self, table):
         print(self.getTable(table))
@@ -182,14 +188,14 @@ class DatabaseAccessObject:
             result.append(dict)
         return result
 
-    def __createNewDatabase(self):
+    def __createNewDatabase(self, path):
         """
         This function creates a new database in memory for debugging purposes
         :return: None
         """
 
         logging.info("Creating new Database")
-        self.conn = sl.connect('resources/database/database.db')
+        self.conn = sl.connect(path)
         self.c = self.conn.cursor()
         self.c.execute("""CREATE TABLE AUTHENTICATION (
             username TEXT,
