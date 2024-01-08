@@ -14,7 +14,7 @@ def create_jwt_token(): #method to create the jwt token
     pass
 
 def allowed_file(file):
-    return '.' in file and file.r
+    pass
 
 
 #MUST
@@ -36,7 +36,9 @@ def register ():
         return jsonify({'message': 'Username is already taken'}), 400
     except NoRowFoundException as e: #When NoRowFoundException is triggered, username is not taken.
         databaseAccess.newEntry(Table.AUTHENTICATION, {'username': username, 'password': password})
+        databaseAccess.newEntry(Table.USER, {'username': username, 'rank': 0, 'bookmarks': '', 'upvotedFiles': ''})
     databaseAccess.printTable(Table.AUTHENTICATION)
+    databaseAccess.printTable(Table.USER)
     logging.info('Registration successful')
     return jsonify({'message': 'Registration successful'}), 200
 
@@ -60,10 +62,10 @@ def login ():
     
     try:
         databaseAccess.findOne(Table.AUTHENTICATION, {'username': username, 'password': password}) #checks if username and pw matches with existing one
-        user = databaseAccess.find(Table.USER, {'username': username}) #looking for userdata of specific user to receive user id for jwt
-        token = create_jwt_token(user)
+        #user = databaseAccess.find(Table.USER, {'username': username}) #looking for userdata of specific user to receive user id for jwt
+        #token = create_jwt_token(user)
         #return jsonify({'message': 'Login successful', 'access_token': token.decode('utf-8')}), 200
-        pass
+        return jsonify({'message': 'Login successful'})
     except NoRowFoundException as e: # When NoRowFoundException is triggered, username is not taken.
         logging.info('Login not successful, username or password incorrect')
         return jsonify({'message': 'Username or Password incorrect'}), 400    
