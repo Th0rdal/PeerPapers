@@ -28,7 +28,9 @@ class DatabaseAccessObject:
             self.__createNewDatabase()  # this is only to test everything with a database in memory
         else:
             # should connect to database here
-            self.__createNewDatabase()
+            logging.info("Connecting to database")
+            self.conn = sl.connect('resources/database/database.db')
+            self.c = self.conn.cursor()
 
     def printTable(self, table):
         print(self.getTable(table))
@@ -186,8 +188,8 @@ class DatabaseAccessObject:
         :return: None
         """
 
-        logging.info("Creating new Database in memory")
-        self.conn = sl.connect(':memory:')
+        logging.info("Creating new Database")
+        self.conn = sl.connect('resources/database/database.db')
         self.c = self.conn.cursor()
         self.c.execute("""CREATE TABLE AUTHENTICATION (
             username TEXT,
