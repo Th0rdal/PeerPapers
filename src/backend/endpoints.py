@@ -3,7 +3,7 @@ import logging
 from database.database import DatabaseAccessObject
 from database.Table import Table
 from database.exceptions import NoRowFoundException
-from backend.util import hashPassword, checkHashedPassword
+from backend.util import hashPassword, checkHashedPassword, create_jwt_token
 
 app = Flask(__name__)
 
@@ -113,6 +113,5 @@ def rank():
 @app.route('/rankList', methods=['GET'])
 def rankList():
     pass
-
 
 app.run(debug=True, port=25202)

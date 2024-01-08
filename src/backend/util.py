@@ -1,8 +1,18 @@
+import datetime
 import bcrypt
 import jwt
 
-def create_jwt_token():  # method to create the jwt token
-    pass
+secret = "PeerPaper"
+
+
+def create_jwt_token(username, id):  # method to create the jwt token
+    payload = {
+        "username": username,
+        "id": id,
+        "expires": datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+    }
+    token = jwt.encode(payload, secret, algorithm="HS256")
+    print(token)
 
 
 def allowed_file(file):
@@ -10,8 +20,8 @@ def allowed_file(file):
 
 
 def hashPassword(password):
-    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+    return bcrypt.hashpw(password.encode('utf-8') + secret, bcrypt.gensalt())
 
 
 def checkHashedPassword(hashedPW, password):
-    return bcrypt.checkpw(password.encode('utf-8'), hashedPW)
+    return bcrypt.checkpw(password.encode('utf-8') + secret, hashedPW)
