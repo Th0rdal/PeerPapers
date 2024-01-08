@@ -62,7 +62,7 @@ def login ():
     databaseAccess.printTable(Table.AUTHENTICATION)
     
     try:
-        databaseAccess.findOne(Table.AUTHENTICATION, {'username': username, 'password': password}) #checks if username and pw matches with existing one
+        databaseAccess.findOne(Table.AUTHENTICATION, {'username': username, 'password': password}) # checks if username and pw matches with existing one
         #user = databaseAccess.find(Table.USER, {'username': username}) #looking for userdata of specific user to receive user id for jwt
         #token = create_jwt_token(user)
         #return jsonify({'message': 'Login successful', 'access_token': token.decode('utf-8')}), 200
