@@ -37,7 +37,7 @@ const ExtendedSearch = () => {
           <input
             type="text"
             className="form-control"
-            placeholder="Search..."
+            placeholder="Titel..."
             value={searchTerm}
             onChange={handleSearchChange}
           />

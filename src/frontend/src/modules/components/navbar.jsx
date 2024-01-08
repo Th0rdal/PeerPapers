@@ -37,10 +37,10 @@ function Navbar() {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        return response.json();
+        return response;
       })
       .then((jsonData) => {
-        console.log("Response JSON: " + JSON.stringify(jsonData));
+        console.log("Response JSON: " + jsonData.status);
       })
       .catch((error) => {
         console.error("An error occurred:", error);
