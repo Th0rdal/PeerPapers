@@ -30,11 +30,8 @@ function Navbar() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Query" + JSON.stringify(searchQuery));
-    fetch(`/api/filter`, {
+    fetch(`/api/filter?searchQuery=${searchQuery}`, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
     })
       .then((response) => {
         if (!response.ok) {

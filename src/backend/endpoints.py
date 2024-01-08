@@ -92,6 +92,7 @@ def download ():
 #SHOULD
 @app.route('/filter', methods=['GET'])
 def filter ():
+    return jsonify({'filtertest': 'filterTest'})
     pass
 
 @app.route('/upvote', methods=['PUT'])
