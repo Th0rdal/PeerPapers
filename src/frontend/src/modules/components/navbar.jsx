@@ -21,6 +21,31 @@ import "@coreui/coreui/dist/css/coreui.min.css";
 
 function Navbar() {
   const [visible, setVisible] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const searchQuery = {
+    searchTerm: searchTerm,
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Query" + JSON.stringify(searchQuery));
+    fetch(`/api/filter?searchQuery=${searchQuery}`, {
+      method: "GET",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response;
+      })
+      .then((jsonData) => {
+        console.log("Response JSON: " + jsonData.status);
+      })
+      .catch((error) => {
+        console.error("An error occurred:", error);
+      });
+  };
 
   return (
     <>
@@ -52,9 +77,17 @@ function Navbar() {
               <CNavItem>
                 <CNavLink href="/register">Register/Login</CNavLink>
               </CNavItem>
+              <CNavItem>
+                <CNavLink href="/erweiterteSuche">Erweiterte Suche</CNavLink>
+              </CNavItem>
             </CNavbarNav>
-            <CForm className="d-flex">
-              <CFormInput type="search" className="me-2" placeholder="Search" />
+            <CForm className="d-flex" onSubmit={handleSubmit}>
+              <CFormInput
+                type="search"
+                className="me-2"
+                placeholder="Search"
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
               <CButton type="submit" color="success" variant="outline">
                 Search
               </CButton>

@@ -1,20 +1,40 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 
 // import of pages -> always also define the name of the page
 import Test from "./pages/test";
 import HomePage from "./pages/homePage";
 import Navbar from "./modules/components/navbar";
 import Register from "./pages/register";
+import ExtendedSearch from "./pages/extendedSearch";
+
+import { isAuthenticated } from "./auth";
 
 function App() {
   return (
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/test" element={<Test />} />
-        <Route path="/register" element={<Register />}></Route>
+        <Route path="/" element={<Register />} />
+        <Route
+          path="/home"
+          element={isAuthenticated() ? <HomePage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/test"
+          element={isAuthenticated() ? <Test /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/erweiterteSuche"
+          element={
+            isAuthenticated() ? <ExtendedSearch /> : <Navigate to="/login" />
+          }
+        />
       </Routes>
     </Router>
   );
