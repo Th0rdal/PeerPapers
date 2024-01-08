@@ -5,4 +5,15 @@ import { VitePWA } from "vite-plugin-pwa";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), VitePWA({})],
+  server: {
+    proxy: {
+      // Alle Anfragen an /api werden an den Backend-Server weitergeleitet
+      "/api": {
+        target: "http://localhost:25202",
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
+  },
 });
