@@ -1,5 +1,5 @@
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, make_response
 import sqlite3 as sql
 import logging
 from database.database import DatabaseAccessObject
@@ -15,6 +15,8 @@ def create_jwt_token(): #method to create the jwt token
 
 def allowed_file(file):
     pass
+
+dummy_pdf_content = b'%PDF-1.4\n1 0 obj\n<< /Title (Dummy PDF) /Creator (Flask) >>\nendobj\n2 0 obj\n<< /Type /Catalog /Pages 3 0 R >>\nendobj\n3 0 obj\n<< /Type /Pages /Kids [4 0 R] /Count 1 >>\nendobj\n4 0 obj\n<< /Type /Page /Parent 3 0 R /MediaBox [0 0 612 792] /Contents 5 0 R >>\nendobj\n5 0 obj\n<< /Length 44 >>\nstream\nBT\n/F1 12 Tf\n72 712 Td\n(Dummy PDF Content) Tj\nET\nendstream\nendobj\nxref\n0 6\n0000000000 65535 f\n0000000010 00000 n\n0000000070 00000 n\n0000000111 00000 n\n0000000269 00000 n\n0000000332 00000 n\ntrailer\n<< /Size 6 /Root 2 0 R >>\nstartxref\n399\n%%EOF'
 
 
 #MUST
@@ -92,7 +94,10 @@ def download ():
 #SHOULD
 @app.route('/filter', methods=['GET'])
 def filter ():
-    return jsonify({'filtertest': 'filterTest'})
+    response = make_response(dummy_pdf_content)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = 'inline; filename=dummy.pdf'
+    return response
     pass
 
 @app.route('/upvote', methods=['PUT'])
