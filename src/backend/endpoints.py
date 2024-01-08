@@ -35,6 +35,7 @@ def register ():
         logging.info('Username is taken')
         return jsonify({'message': 'Username is already taken'}), 400
     except NoRowFoundException as e: #When NoRowFoundException is triggered, username is not taken.
+        print("exception triggered")
         databaseAccess.newEntry(Table.AUTHENTICATION, {'username': username, 'password': password})
         databaseAccess.newEntry(Table.USER, {'username': username, 'rank': 0, 'bookmarks': '', 'upvotedFiles': ''})
     databaseAccess.printTable(Table.AUTHENTICATION)
