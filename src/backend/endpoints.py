@@ -1,9 +1,9 @@
 from flask import Flask, request, jsonify
 import logging
-from database.database import DatabaseAccessObject
-from database.Table import Table
-from database.exceptions import NoRowFoundException
-from backend.util import hashPassword, checkHashedPassword, create_jwt_token
+from ..database.database import DatabaseAccessObject
+from ..database.Table import Table
+from ..database.exceptions import NoRowFoundException
+from ..backend.util import hashPassword, checkHashedPassword, create_jwt_token
 
 app = Flask(__name__)
 
@@ -57,7 +57,8 @@ def login():
     databaseAccess.printTable(Table.AUTHENTICATION)
 
     try:
-        row = databaseAccess.findOne(Table.AUTHENTICATION, {'username': username})  # checks if username and pw matches with existing one
+        row = databaseAccess.findOne(Table.AUTHENTICATION,
+                                     {'username': username})  # checks if username and pw matches with existing one
         if checkHashedPassword(row["password"], password):
             return jsonify({'message': 'Login successful'})
         return jsonify({"message": "Username or Password incorrect"}, 400)
@@ -114,4 +115,7 @@ def rank():
 def rankList():
     pass
 
-app.run(debug=True, port=25202)
+
+def startServer():
+    logging.info('Starting the server')
+    app.run(debug=True, port=25202)

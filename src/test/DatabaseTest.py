@@ -209,21 +209,21 @@ class DatabaseTest(unittest.TestCase):
         expected = None
 
         # checking for list when data is a list
-        result = self.database._checkIfDataIsList(Table.USER, dataList, True)
+        result = self.database._DatabaseAccessObject__checkIfDataIsList(Table.USER, dataList, True)
         self.assertEqual(result, expected)
 
         # checking for non list when data is not a list
-        result = self.database._checkIfDataIsList(Table.USER, dataNoList, False)
+        result = self.database._DatabaseAccessObject__checkIfDataIsList(Table.USER, dataNoList, False)
         self.assertEqual(result, expected)
 
         # checkin for list when data is not a list
         with self.assertRaises(exceptions.ColumnNotAListException) as context:
-            self.database._checkIfDataIsList(Table.USER, dataNoList, True)
+            self.database._DatabaseAccessObject__checkIfDataIsList(Table.USER, dataNoList, True)
         self.assertEqual(str(context.exception), f'The column "username" does not save lists')
 
         # checkin for non list when data is a list
         with self.assertRaises(exceptions.ColumnAListException) as context:
-            self.database._checkIfDataIsList(Table.USER, dataList, False)
+            self.database._DatabaseAccessObject__checkIfDataIsList(Table.USER, dataList, False)
         self.assertEqual(str(context.exception), f'The column "bookmarks" cannot be changed with this method, because it is a list. Try using a '
                          f'list manipulation method')
 
