@@ -1,9 +1,9 @@
 import copy
 import unittest
 
-from src.database import exceptions
-from src.database.Table import Table
-from src.database.database import DatabaseAccessObject
+from src.backend.database import exceptions
+from src.backend.database.Table import Table
+from src.backend.database.database import DatabaseAccessObject
 
 
 class DatabaseTest(unittest.TestCase):

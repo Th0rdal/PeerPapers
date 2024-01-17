@@ -1,9 +1,13 @@
-from flask import Flask, request, jsonify
 import logging
-from ..database.database import DatabaseAccessObject
-from ..database.Table import Table
-from ..database.exceptions import NoRowFoundException
-from ..backend.util import hashPassword, checkHashedPassword, create_jwt_token
+import os
+
+from flask import Flask, request, jsonify
+
+from util import hashPassword, checkHashedPassword
+
+from database.Table import Table
+from database.database import DatabaseAccessObject
+from database.exceptions import NoRowFoundException
 
 app = Flask(__name__)
 
@@ -117,5 +121,11 @@ def rankList():
 
 
 def startServer():
+    path = os.path.abspath(os.path.join(os.path.abspath(__file__), "..", "..", "..", "log", "logFile.log"))
+    logging.basicConfig(filename=path, level=logging.INFO, format="%(asctime)s:%(filename)s:%(message)s")
     logging.info('Starting the server')
     app.run(debug=True, port=25202)
+
+
+if __name__ == '__main__':
+    startServer()

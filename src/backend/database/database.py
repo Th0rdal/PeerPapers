@@ -4,8 +4,8 @@ import logging
 import json
 import uuid
 
-from ..database.Table import Table
-from ..database import exceptions
+from .Table import Table
+from . import exceptions
 
 
 class DatabaseAccessObject:
