@@ -10,6 +10,8 @@ const ExtendedSearch = () => {
     // Add more filters as needed
   });
 
+  const [filter1Error, setFilter1Error] = useState("");
+
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -22,8 +24,12 @@ const ExtendedSearch = () => {
     const { name, value, type, checked } = event.target;
 
     // Validate numeric input for "Filter 1" (Year)
-    if (name === "filter1" && isNaN(value)) {
-      return;
+    if (name === "filter1") {
+      if (!/^\d{4}$/.test(value)) {
+        setFilter1Error("Year must be a 4-digit number");
+      } else {
+        setFilter1Error("");
+      }
     }
 
     setFilters((prevFilters) => ({
@@ -34,6 +40,7 @@ const ExtendedSearch = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
     // Perform search with searchTerm, author, and filters
     console.log("Searching with", searchTerm, author, filters);
   };
@@ -63,17 +70,24 @@ const ExtendedSearch = () => {
 
         <div className="mb-3 d-flex justify-content-start align-items-center">
           {/* Use an input field for "Year" */}
-          <div className="form-check form-check-inline text-start">
+          <div className="form-check form-check-inline text-start" style={{ height: "2.5rem" }}>
             <input
-              className="form-control"
+              className={`form-control ${filter1Error ? "is-invalid" : ""}`}
               type="text"
               name="filter1"
               id="filter1"
               value={filters.filter1}
               onChange={handleFilterChange}
-              onKeyDown={(e) => !/\d/.test(e.key) && e.preventDefault()} // Allow only numeric keys
+              onKeyDown={(e) => {
+                if (!(e.key === "Backspace" || /^\d$/.test(e.key))) {
+                  e.preventDefault();
+                }
+              }}
               placeholder="Year"
             />
+            {filter1Error && (
+              <div className="invalid-feedback">{filter1Error}</div>
+            )}
           </div>
 
           {/* Dropdown for "Filter 2" */}
@@ -127,3 +141,6 @@ const ExtendedSearch = () => {
 };
 
 export default ExtendedSearch;
+
+
+
