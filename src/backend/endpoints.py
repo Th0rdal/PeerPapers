@@ -73,14 +73,40 @@ def login():
 
 @app.route('/upload', methods=['POST'])
 def upload():
-    if 'file' not in request.files:
-        return jsonify({'message': 'No file sent'}), 400
+      # Zugriff auf die gesendeten Daten und Dateien mit request
+    title = request.form.get('title')
+    author = request.form.get('author')
+    semester = request.form.get('semester')
+    year = request.form.get('year')
+    department = request.form.get('department')
+    
+    print("title " + title)
+    print("author " + author)
+    print("semester " + semester)
+    print("year " + year)
+    print("department " + department)
+    
+    # Zugriff auf die hochgeladene Datei
+    file = request.files.get('file')
+    
+    if not file:
+        return jsonify({'error': 'Keine Datei hochgeladen'}), 400
 
-    file = request.files['file']
-    filename = file.name
-    print(filename)
+    # Erstelle den relativen Pfad, z.B. "Peerpapers/resources/database/files"
+    relative_path = os.path.join('resources', 'database', 'files')
+    print("relative Path: " + relative_path)
+    # Stelle sicher, dass der Zielordner existiert, sonst erstelle ihn
+    os.makedirs(relative_path, exist_ok=True)
 
-    pass
+    # Kombiniere den relativen Pfad mit dem Dateinamen
+    save_path = os.path.join(relative_path, file.filename)
+    print("save Path " + save_path)
+    # Speichere die Datei auf dem Server im relativen Pfad
+    file.save(save_path)
+
+    # Gib eine Erfolgsmeldung zurück
+    return jsonify({'message': 'Datei erfolgreich hochgeladen'}), 200
+    
 
 
 @app.route('/download', methods=['GET'])

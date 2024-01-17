@@ -1,33 +1,87 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Upload = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
-  const [filters, setFilters] = useState({
-    filter1: false,
-    filter2: false,
-    // Add more filters as needed
-  });
+  const [semester, setSemester] = useState("");
+  const [year, setYear] = useState("");
+  const [department, setDepartment] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [fileName, setFileName] = useState(""); // Zustand für den Dateinamen
+  const navigate = useNavigate();
 
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value);
   };
 
   const handleAuthorChange = (event) => {
     setAuthor(event.target.value);
   };
 
-  const handleFilterChange = (event) => {
-    setFilters({
-      ...filters,
-      [event.target.name]: event.target.checked,
-    });
+  const handleSemesterChange = (event) => {
+    setSemester(event.target.value);
+  };
+
+  const handleYearChange = (event) => {
+    setYear(event.target.value);
+  };
+
+  const handleDepartmentChange = (event) => {
+    setDepartment(event.target.value);
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedFile(file);
+
+    if (file) {
+      setFileName(file.name); // Speichere den Dateinamen im Zustand
+    } else {
+      setFileName(""); // Lösche den Dateinamen, falls keine Datei ausgewählt ist
+    }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Perform search with searchTerm, author, and filters
-    console.log("Searching with", searchTerm, author, filters);
+
+    if (!selectedFile) {
+      alert("Du musst eine Datei hinzufügen");
+      return;
+    }
+
+    // Erstelle ein FormData-Objekt, um die Daten zu senden
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("author", author);
+    formData.append("semester", semester);
+    formData.append("year", year);
+    formData.append("department", department);
+    formData.append("file", selectedFile);
+
+    // Sende die POST-Anfrage mit Axios
+    axios
+      .post("api/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Setze den Header für FormData
+        },
+      })
+      .then((response) => {
+        // Hier kannst du auf die Antwort des Servers reagieren, z.B. Erfolgsmeldungen anzeigen
+        if (response.status == 200) {
+          alert("Datei erfolgreich hochgeladen");
+          navigate("/home");
+        } else {
+          alert("etwas ist schief gelaufen versuchen Sie es nocheinmal");
+        }
+        console.log("Antwort vom Server:", response.data);
+      })
+      .catch((error) => {
+        // Bei einem Fehler wird dieser Block ausgeführt
+        alert("keine Verbindung zum Server");
+        console.error("Fehler bei der API-Anfrage:", error);
+      });
   };
 
   return (
@@ -38,11 +92,10 @@ const Upload = () => {
             type="text"
             className="form-control"
             placeholder="Titel..."
-            value={searchTerm}
-            onChange={handleSearchChange}
+            value={title}
+            onChange={handleTitleChange}
           />
         </div>
-
         <div className="mb-3">
           <input
             type="text"
@@ -53,35 +106,50 @@ const Upload = () => {
           />
         </div>
 
-        <div className="form-check mb-3 text-start">
+        <div className="mb-3">
           <input
-            className="form-check-input"
-            type="checkbox"
-            name="filter1"
-            id="filter1"
-            checked={filters.filter1}
-            onChange={handleFilterChange}
+            type="text"
+            className="form-control"
+            placeholder="Semester..."
+            value={semester}
+            onChange={handleSemesterChange}
           />
-          <label className="form-check-label" htmlFor="filter1">
-            Filter 1
-          </label>
         </div>
 
-        <div className="form-check mb-3 text-start">
+        <div className="mb-3">
           <input
-            className="form-check-input"
-            type="checkbox"
-            name="filter2"
-            id="filter2"
-            checked={filters.filter2}
-            onChange={handleFilterChange}
+            type="text"
+            className="form-control"
+            placeholder="Year..."
+            value={year}
+            onChange={handleYearChange}
           />
-          <label className="form-check-label" htmlFor="filter2">
-            Filter 2
-          </label>
         </div>
 
-        {/* Add more filters as needed */}
+        <div className="mb-3">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Department..."
+            value={department}
+            onChange={handleDepartmentChange}
+          />
+        </div>
+
+        <p>Nur PDF's sind erlaubt</p>
+        {fileName && <p>Datei: {fileName}</p>}
+        <div className="mb-3">
+          <label className="btn btn-primary">
+            Datei auswählen
+            <input
+              type="file"
+              className="form-control-file"
+              onChange={handleFileChange}
+              accept=".pdf"
+              style={{ display: "none" }}
+            />
+          </label>
+        </div>
 
         <button type="submit" className="btn btn-primary">
           Upload
