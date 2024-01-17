@@ -67,10 +67,17 @@ const Upload = () => {
       })
       .then((response) => {
         // Hier kannst du auf die Antwort des Servers reagieren, z.B. Erfolgsmeldungen anzeigen
+        if (response.status == 200) {
+          alert("Datei erfolgreich hochgeladen");
+          navigate("/home");
+        } else {
+          alert("etwas ist schief gelaufen versuchen Sie es nocheinmal");
+        }
         console.log("Antwort vom Server:", response.data);
       })
       .catch((error) => {
         // Bei einem Fehler wird dieser Block ausgeführt
+        alert("keine Verbindung zum Server");
         console.error("Fehler bei der API-Anfrage:", error);
       });
   };
@@ -127,6 +134,7 @@ const Upload = () => {
           />
         </div>
 
+        <p>Nur PDF's sind erlaubt</p>
         {fileName && <p>Datei: {fileName}</p>}
         <div className="mb-3">
           <label className="btn btn-primary">
