@@ -30,10 +30,16 @@ function App() {
           path="/test"
           element={isAuthenticated() ? <Test /> : <Navigate to="/login" />}
         />
+        <Route
+          path="/erweiterteSuche"
+          element={
+            isAuthenticated() ? <ExtendedSearch /> : <Navigate to="/login" />
+          }
+        />
 
         <Route
           path="/upload"
-          element={isAuthenticated() ? <Upload /> : <Navigate to="/login" />}
+          element={isAuthenticated() ? <Upload /> : <Navigate to="/upload" />}
         />
       </Routes>
     </Router>

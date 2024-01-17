@@ -84,7 +84,7 @@ const Upload = () => {
         {/* Add more filters as needed */}
 
         <button type="submit" className="btn btn-primary">
-          Upoload
+          Upload
         </button>
       </form>
     </div>
