@@ -3,7 +3,7 @@ import os
 
 from flask import Flask, request, jsonify
 
-from util import hashPassword, checkHashedPassword
+from util import hashPassword, checkHashedPassword, getTotalPath
 
 from database.Table import Table
 from database.database import DatabaseAccessObject
@@ -93,10 +93,9 @@ def upload():
         return jsonify({'error': 'Keine Datei hochgeladen'}), 400
 
     # Erstelle den relativen Pfad, z.B. "Peerpapers/resources/database/files"
-    relative_path = os.path.join('resources', 'database', 'files')
+    relative_path = getTotalPath("resources/database/files")
     print("relative Path: " + relative_path)
-    # Stelle sicher, dass der Zielordner existiert, sonst erstelle ihn
-    os.makedirs(relative_path, exist_ok=True)
+
 
 
     # Kombiniere den relativen Pfad mit dem Dateinamen
