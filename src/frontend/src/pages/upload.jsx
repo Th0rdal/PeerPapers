@@ -1,12 +1,18 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 const Upload = () => {
+  const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [semester, setSemester] = useState("");
   const [year, setYear] = useState("");
   const [department, setDepartment] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState(""); // Zustand für den Dateinamen
+
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value);
+  };
 
   const handleAuthorChange = (event) => {
     setAuthor(event.target.value);
@@ -37,16 +43,50 @@ const Upload = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Verwende die ausgewählte Datei (selectedFile) für den Upload
-    if (selectedFile) {
-      console.log("Ausgewählte Datei:", selectedFile);
-      // Hier kannst du die Datei an das Backend senden oder weitere Aktionen ausführen
+
+    if (!selectedFile) {
+      alert("Du musst eine Datei hinzufügen");
+      return;
     }
+
+    // Erstelle ein FormData-Objekt, um die Daten zu senden
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("author", author);
+    formData.append("semester", semester);
+    formData.append("year", year);
+    formData.append("department", department);
+    formData.append("file", selectedFile);
+
+    // Sende die POST-Anfrage mit Axios
+    axios
+      .post("api/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Setze den Header für FormData
+        },
+      })
+      .then((response) => {
+        // Hier kannst du auf die Antwort des Servers reagieren, z.B. Erfolgsmeldungen anzeigen
+        console.log("Antwort vom Server:", response.data);
+      })
+      .catch((error) => {
+        // Bei einem Fehler wird dieser Block ausgeführt
+        console.error("Fehler bei der API-Anfrage:", error);
+      });
   };
 
   return (
     <div className="container my-4">
       <form onSubmit={handleSubmit} className="text-center">
+        <div className="mb-3">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Titel..."
+            value={title}
+            onChange={handleTitleChange}
+          />
+        </div>
         <div className="mb-3">
           <input
             type="text"
