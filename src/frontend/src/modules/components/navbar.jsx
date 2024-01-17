@@ -64,7 +64,7 @@ function Navbar() {
                   Home
                 </CNavLink>
               </CNavItem>
-
+              
               <CNavItem>
                 <CNavLink href="/upload" active>
                   Upload File
