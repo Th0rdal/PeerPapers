@@ -141,6 +141,3 @@ const ExtendedSearch = () => {
 };
 
 export default ExtendedSearch;
-
-
-
