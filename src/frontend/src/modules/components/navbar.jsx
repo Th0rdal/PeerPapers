@@ -64,16 +64,12 @@ function Navbar() {
                   Home
                 </CNavLink>
               </CNavItem>
-              <CDropdown variant="nav-item" popper={false}>
-                <CDropdownToggle color="secondary">Apartments </CDropdownToggle>
-                <CDropdownMenu>
-                  <CDropdownItem href="/test">Apartment 1</CDropdownItem>
-                  <CDropdownItem href="/apartment2">Apartment 2</CDropdownItem>
-                  {/* <CDropdownDivider />
-                  <CDropdownItem href="#">Something else here</CDropdownItem> */}
-                </CDropdownMenu>
-              </CDropdown>
 
+              <CNavItem>
+                <CNavLink href="/upload" active>
+                  Upload File
+                </CNavLink>
+              </CNavItem>
               {/* <CNavItem>
                 <CNavLink href="/register">Register/Login</CNavLink>
               </CNavItem> */}

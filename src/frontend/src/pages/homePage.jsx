@@ -17,7 +17,7 @@ const HomePage = () => {
           <p className="card-text">Department: {item.department}</p>
           <p className="card-text">Upvotes: {item.upvotes}</p>
           <button className="btn btn-primary" onClick={download}>
-            test
+            download
           </button>
         </div>
       </div>

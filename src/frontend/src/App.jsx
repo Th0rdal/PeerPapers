@@ -14,6 +14,7 @@ import Register from "./pages/register";
 import ExtendedSearch from "./pages/extendedSearch";
 
 import { isAuthenticated } from "./auth";
+import Upload from "./pages/upload";
 
 function App() {
   return (
@@ -29,11 +30,10 @@ function App() {
           path="/test"
           element={isAuthenticated() ? <Test /> : <Navigate to="/login" />}
         />
+
         <Route
-          path="/erweiterteSuche"
-          element={
-            isAuthenticated() ? <ExtendedSearch /> : <Navigate to="/login" />
-          }
+          path="/upload"
+          element={isAuthenticated() ? <Upload /> : <Navigate to="/login" />}
         />
       </Routes>
     </Router>
