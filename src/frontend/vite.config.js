@@ -9,7 +9,7 @@ export default defineConfig({
     proxy: {
       // Alle Anfragen an /api werden an den Backend-Server weitergeleitet
       "/api": {
-        target: "http://localhost:25202",
+        target: "http://127.0.0.1:25202",
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, ""),
