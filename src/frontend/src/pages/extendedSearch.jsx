@@ -21,6 +21,11 @@ const ExtendedSearch = () => {
   const handleFilterChange = (event) => {
     const { name, value, type, checked } = event.target;
 
+    // Validate numeric input for "Filter 1" (Year)
+    if (name === "filter1" && isNaN(value)) {
+      return;
+    }
+
     setFilters((prevFilters) => ({
       ...prevFilters,
       [name]: type === "checkbox" ? checked : value,
@@ -66,6 +71,7 @@ const ExtendedSearch = () => {
               id="filter1"
               value={filters.filter1}
               onChange={handleFilterChange}
+              onKeyDown={(e) => !/\d/.test(e.key) && e.preventDefault()} // Allow only numeric keys
               placeholder="Year"
             />
           </div>
@@ -121,4 +127,3 @@ const ExtendedSearch = () => {
 };
 
 export default ExtendedSearch;
-
