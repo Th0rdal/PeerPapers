@@ -98,6 +98,7 @@ def upload():
     # Stelle sicher, dass der Zielordner existiert, sonst erstelle ihn
     os.makedirs(relative_path, exist_ok=True)
 
+
     # Kombiniere den relativen Pfad mit dem Dateinamen
     save_path = os.path.join(relative_path, file.filename)
     print("save Path " + save_path)
