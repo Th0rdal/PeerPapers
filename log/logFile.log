@@ -1188,3 +1188,91 @@
 2024-01-08 14:46:20,396:main.py:Starting the server
 2024-01-08 14:46:20,527:_internal.py: * Debugger is active!
 2024-01-08 14:46:20,533:_internal.py: * Debugger PIN: 109-977-269
+2024-01-08 18:39:50,496:main.py:Starting the server
+2024-01-08 18:39:50,624:_internal.py: * Debugger is active!
+2024-01-08 18:39:50,629:_internal.py: * Debugger PIN: 109-977-269
+2024-01-08 18:45:34,421:_internal.py:127.0.0.1 - - [08/Jan/2024 18:45:34] "GET /filter HTTP/1.1" 200 -
+2024-01-08 18:46:35,265:_internal.py:127.0.0.1 - - [08/Jan/2024 18:46:35] "GET /filter?searchQuery=[object%20Object] HTTP/1.1" 200 -
+2024-01-08 18:47:37,931:_internal.py:127.0.0.1 - - [08/Jan/2024 18:47:37] "GET /filter?searchQuery=[object%20Object] HTTP/1.1" 200 -
+2024-01-08 18:47:40,508:_internal.py:127.0.0.1 - - [08/Jan/2024 18:47:40] "GET /filter?searchQuery=[object%20Object] HTTP/1.1" 200 -
+2024-01-08 18:48:17,651:_internal.py:127.0.0.1 - - [08/Jan/2024 18:48:17] "GET /filter HTTP/1.1" 200 -
+2024-01-08 19:07:13,696:_internal.py:127.0.0.1 - - [08/Jan/2024 19:07:13] "GET /filter?searchQuery=[object%20Object] HTTP/1.1" 200 -
+2024-01-08 19:07:14,605:_internal.py:127.0.0.1 - - [08/Jan/2024 19:07:14] "GET /filter?searchQuery=[object%20Object] HTTP/1.1" 200 -
+2024-01-08 19:07:14,791:_internal.py:127.0.0.1 - - [08/Jan/2024 19:07:14] "GET /filter?searchQuery=[object%20Object] HTTP/1.1" 200 -
+2024-01-08 19:07:15,132:_internal.py:127.0.0.1 - - [08/Jan/2024 19:07:15] "GET /filter?searchQuery=[object%20Object] HTTP/1.1" 200 -
+2024-01-08 19:07:15,302:_internal.py:127.0.0.1 - - [08/Jan/2024 19:07:15] "GET /filter?searchQuery=[object%20Object] HTTP/1.1" 200 -
+2024-01-08 19:07:15,459:_internal.py:127.0.0.1 - - [08/Jan/2024 19:07:15] "GET /filter?searchQuery=[object%20Object] HTTP/1.1" 200 -
+2024-01-08 19:07:15,622:_internal.py:127.0.0.1 - - [08/Jan/2024 19:07:15] "GET /filter?searchQuery=[object%20Object] HTTP/1.1" 200 -
+2024-01-08 19:09:44,339:database.py:Initializing DatabaseAccessObject
+2024-01-08 19:09:44,340:database.py:Connecting to database
+2024-01-08 19:09:44,368:database.py:Creating new Database
+2024-01-08 19:09:44,371:database.py:Querying database for rows that fit the search criteria {'username': 'test@test.at'}
+2024-01-08 19:09:44,372:database.py:Adding a new entry "{'username': 'test@test.at', 'password': 'test@test.at'}" to the database Table.AUTHENTICATION
+2024-01-08 19:09:44,372:database.py:Adding a new entry "{'username': 'test@test.at', 'rank': 0, 'bookmarks': '', 'upvotedFiles': ''}" to the database Table.USER
+2024-01-08 19:09:44,373:endpoints.py:Registration successful
+2024-01-08 19:09:44,374:_internal.py:127.0.0.1 - - [08/Jan/2024 19:09:44] "POST /register HTTP/1.1" 200 -
+2024-01-08 19:09:48,111:database.py:Initializing DatabaseAccessObject
+2024-01-08 19:09:48,111:database.py:Connecting to database
+2024-01-08 19:09:48,112:database.py:Querying database for rows that fit the search criteria {'username': 'test@test.at'}
+2024-01-08 19:09:48,113:endpoints.py:Username is taken
+2024-01-08 19:09:48,113:_internal.py:127.0.0.1 - - [08/Jan/2024 19:09:48] "[31m[1mPOST /register HTTP/1.1[0m" 400 -
+2024-01-08 19:09:56,377:database.py:Initializing DatabaseAccessObject
+2024-01-08 19:09:56,378:database.py:Connecting to database
+2024-01-08 19:09:56,379:database.py:Querying database for rows that fit the search criteria {'username': 'test@test.at'}
+2024-01-08 19:09:56,383:endpoints.py:Username is taken
+2024-01-08 19:09:56,384:_internal.py:127.0.0.1 - - [08/Jan/2024 19:09:56] "[31m[1mPOST /register HTTP/1.1[0m" 400 -
+2024-01-08 19:10:01,283:database.py:Initializing DatabaseAccessObject
+2024-01-08 19:10:01,283:database.py:Connecting to database
+2024-01-08 19:10:01,286:database.py:Querying database for rows that fit the search criteria {'username': 'test@test.at', 'password': 'test@test.at'}
+2024-01-08 19:10:01,287:_internal.py:127.0.0.1 - - [08/Jan/2024 19:10:01] "POST /login HTTP/1.1" 200 -
+2024-01-08 19:10:17,741:database.py:Initializing DatabaseAccessObject
+2024-01-08 19:10:17,742:database.py:Connecting to database
+2024-01-08 19:10:17,742:database.py:Querying database for rows that fit the search criteria {'username': 'neu@at.at'}
+2024-01-08 19:10:17,743:database.py:Adding a new entry "{'username': 'neu@at.at', 'password': 'neu@at.at'}" to the database Table.AUTHENTICATION
+2024-01-08 19:10:17,745:database.py:Adding a new entry "{'username': 'neu@at.at', 'rank': 0, 'bookmarks': '', 'upvotedFiles': ''}" to the database Table.USER
+2024-01-08 19:10:17,747:endpoints.py:Registration successful
+2024-01-08 19:10:17,748:_internal.py:127.0.0.1 - - [08/Jan/2024 19:10:17] "POST /register HTTP/1.1" 200 -
+2024-01-08 19:10:20,410:database.py:Initializing DatabaseAccessObject
+2024-01-08 19:10:20,410:database.py:Connecting to database
+2024-01-08 19:10:20,411:database.py:Querying database for rows that fit the search criteria {'username': 'neu@at.at'}
+2024-01-08 19:10:20,412:endpoints.py:Username is taken
+2024-01-08 19:10:20,413:_internal.py:127.0.0.1 - - [08/Jan/2024 19:10:20] "[31m[1mPOST /register HTTP/1.1[0m" 400 -
+2024-01-08 19:10:57,083:database.py:Initializing DatabaseAccessObject
+2024-01-08 19:10:57,084:database.py:Connecting to database
+2024-01-08 19:10:57,088:database.py:Querying database for rows that fit the search criteria {'username': 'simob@sf.at'}
+2024-01-08 19:10:57,088:database.py:Adding a new entry "{'username': 'simob@sf.at', 'password': 'simob@sf.at'}" to the database Table.AUTHENTICATION
+2024-01-08 19:10:57,091:database.py:Adding a new entry "{'username': 'simob@sf.at', 'rank': 0, 'bookmarks': '', 'upvotedFiles': ''}" to the database Table.USER
+2024-01-08 19:10:57,092:endpoints.py:Registration successful
+2024-01-08 19:10:57,093:_internal.py:127.0.0.1 - - [08/Jan/2024 19:10:57] "POST /register HTTP/1.1" 200 -
+2024-01-08 19:12:31,056:_internal.py: * Detected change in '/Users/tristanwestreicher/Library/CloudStorage/OneDrive-Personal/FH-Campus/3_Semester_23_24/Software Engeneering/peerPapers_project/PeerPapers/src/backend/endpoints.py', reloading
+2024-01-08 19:12:31,130:main.py:Starting the server
+2024-01-08 19:12:31,275:_internal.py: * Debugger is active!
+2024-01-08 19:12:31,282:_internal.py: * Debugger PIN: 109-977-269
+2024-01-08 19:12:33,299:_internal.py: * Detected change in '/Users/tristanwestreicher/Library/CloudStorage/OneDrive-Personal/FH-Campus/3_Semester_23_24/Software Engeneering/peerPapers_project/PeerPapers/src/backend/endpoints.py', reloading
+2024-01-08 19:12:33,354:main.py:Starting the server
+2024-01-08 19:12:33,439:_internal.py: * Debugger is active!
+2024-01-08 19:12:33,444:_internal.py: * Debugger PIN: 109-977-269
+2024-01-08 19:12:38,492:_internal.py: * Detected change in '/Users/tristanwestreicher/Library/CloudStorage/OneDrive-Personal/FH-Campus/3_Semester_23_24/Software Engeneering/peerPapers_project/PeerPapers/src/backend/endpoints.py', reloading
+2024-01-08 19:12:38,545:main.py:Starting the server
+2024-01-08 19:12:38,642:_internal.py: * Debugger is active!
+2024-01-08 19:12:38,649:_internal.py: * Debugger PIN: 109-977-269
+2024-01-08 19:12:42,690:_internal.py: * Detected change in '/Users/tristanwestreicher/Library/CloudStorage/OneDrive-Personal/FH-Campus/3_Semester_23_24/Software Engeneering/peerPapers_project/PeerPapers/src/backend/endpoints.py', reloading
+2024-01-08 19:12:42,723:main.py:Starting the server
+2024-01-08 19:12:42,805:_internal.py: * Debugger is active!
+2024-01-08 19:12:42,809:_internal.py: * Debugger PIN: 109-977-269
+2024-01-08 19:12:44,830:_internal.py: * Detected change in '/Users/tristanwestreicher/Library/CloudStorage/OneDrive-Personal/FH-Campus/3_Semester_23_24/Software Engeneering/peerPapers_project/PeerPapers/src/backend/endpoints.py', reloading
+2024-01-08 19:12:44,870:main.py:Starting the server
+2024-01-08 19:12:44,964:_internal.py: * Debugger is active!
+2024-01-08 19:12:44,968:_internal.py: * Debugger PIN: 109-977-269
+2024-01-08 19:13:00,086:_internal.py: * Detected change in '/Users/tristanwestreicher/Library/CloudStorage/OneDrive-Personal/FH-Campus/3_Semester_23_24/Software Engeneering/peerPapers_project/PeerPapers/src/backend/endpoints.py', reloading
+2024-01-08 19:13:00,135:main.py:Starting the server
+2024-01-08 19:13:00,254:_internal.py: * Debugger is active!
+2024-01-08 19:13:00,262:_internal.py: * Debugger PIN: 109-977-269
+2024-01-08 19:13:19,892:database.py:Initializing DatabaseAccessObject
+2024-01-08 19:13:19,893:database.py:Connecting to database
+2024-01-08 19:13:19,912:database.py:Querying database for rows that fit the search criteria {'username': 'test@test.at', 'password': 'test@test.at'}
+2024-01-08 19:13:19,913:_internal.py:127.0.0.1 - - [08/Jan/2024 19:13:19] "POST /login HTTP/1.1" 200 -
+2024-01-08 19:14:10,901:_internal.py: * Detected change in '/Users/tristanwestreicher/Library/CloudStorage/OneDrive-Personal/FH-Campus/3_Semester_23_24/Software Engeneering/peerPapers_project/PeerPapers/src/backend/endpoints.py', reloading
+2024-01-08 19:14:10,955:main.py:Starting the server
+2024-01-08 19:14:11,104:_internal.py: * Debugger is active!
+2024-01-08 19:14:11,110:_internal.py: * Debugger PIN: 109-977-269

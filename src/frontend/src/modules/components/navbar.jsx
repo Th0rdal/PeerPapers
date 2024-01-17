@@ -60,7 +60,7 @@ function Navbar() {
           <CCollapse className="navbar-collapse" visible={visible}>
             <CNavbarNav>
               <CNavItem>
-                <CNavLink href="/" active>
+                <CNavLink href="/home" active>
                   Home
                 </CNavLink>
               </CNavItem>
@@ -74,9 +74,9 @@ function Navbar() {
                 </CDropdownMenu>
               </CDropdown>
 
-              <CNavItem>
+              {/* <CNavItem>
                 <CNavLink href="/register">Register/Login</CNavLink>
-              </CNavItem>
+              </CNavItem> */}
               <CNavItem>
                 <CNavLink href="/erweiterteSuche">Erweiterte Suche</CNavLink>
               </CNavItem>
