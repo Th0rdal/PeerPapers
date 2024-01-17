@@ -51,7 +51,7 @@ const Register = () => {
       Cookies.set("token", responseData.token);
 
       alert("Successfully registered!");
-      navigate("/"); // return to home when successfully registred
+      navigate("/home"); // return to home when successfully registred
     } else if (response.status === 404) {
       alert("fail");
     } else {

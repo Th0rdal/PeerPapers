@@ -39,7 +39,7 @@ function App() {
 
         <Route
           path="/upload"
-          element={isAuthenticated() ? <Upload /> : <Navigate to="/upload" />}
+          element={isAuthenticated() ? <Upload /> : <Navigate to="/login" />}
         />
       </Routes>
     </Router>
