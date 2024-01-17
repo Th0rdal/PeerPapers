@@ -20,7 +20,7 @@ def allowed_file(file):
 
 
 def hashPassword(password):
-    return bcrypt.hashpw(password.encode('utf-8') + secret, bcrypt.gensalt())
+    return bcrypt.hashpw((password + secret).encode('utf-8'), bcrypt.gensalt())
 
 
 def checkHashedPassword(hashedPW, password):

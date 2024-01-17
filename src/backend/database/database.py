@@ -1,3 +1,4 @@
+import os
 import sqlite3
 import sqlite3 as sl
 import logging
@@ -32,10 +33,16 @@ class DatabaseAccessObject:
         # should connect to database here
         logging.info("Connecting to database")
         try:
-            self.conn = sl.connect('file:resources/database/database.db?mode=rw', uri=True)
+            components = os.path.abspath(__file__).split(os.path.sep)
+            i = components.index("PeerPapers")
+            path = os.path.join(components[0], os.sep)
+            for part in components[1:i+1]:
+                path = os.path.join(path, part)
+            path = os.path.join(path,  r"resources\database\database.db")
+            self.conn = sl.connect(f'file:{path}?mode=rw', uri=True)
             self.c = self.conn.cursor()
         except sqlite3.OperationalError as e:
-            self.__createNewDatabase("resources/database/database.db")
+            self.__createNewDatabase(path)
 
 
     def printTable(self, table):
