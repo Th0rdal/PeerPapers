@@ -95,16 +95,18 @@ def upload():
     print("filename " + fileUUID + ".pdf")
     print("save Path " + save_path)
 
-    # uploadFile = {
-    #             "id": fileUUID,
-    #             "title": title,
-    #             "author": author,
-    #             "semester": semester,
-    #             "year": year,
-    #             "department": department
-    #             }
+    uploadFile = {
+                "id": fileUUID,
+                "path": "",
+                "title": title,
+                "author": author,
+                "semester": semester,
+                "year": year,
+                "department": department,
+                "upvotes" : 0
+                }
 
-    # databaseAccess.newEntry(Table.FILES, uploadFile)
+    databaseAccess.newEntry(Table.FILES, uploadFile)
 
     print("title " + title)
     print("author " + author)
