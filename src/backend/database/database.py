@@ -6,7 +6,7 @@ import uuid
 
 from .Table import Table
 from . import exceptions
-from util import getTotalPath
+from util import getTotalPath, createUUID
 
 class DatabaseAccessObject:
     """
@@ -68,10 +68,11 @@ class DatabaseAccessObject:
         if table == Table.AUTHENTICATION:
             executionText = "INSERT INTO AUTHENTICATION VALUES (:username, :password)"
         elif table == Table.USER:
-            data["id"] = str(uuid.uuid4())
+            data["id"] = createUUID()
             executionText = "INSERT INTO USER VALUES (:id, :username, :rank, :bookmarks, :upvotedFiles)"
         elif table == Table.FILES:
-            data["id"] = str(uuid.uuid4())
+            if "id" not in data:
+                data["id"] = createUUID()
             executionText = "INSERT INTO FILES VALUES (:id, :path, :title, :author, :semester, :year, :department, :upvotes)"
         with self.conn:
             self.c.execute(executionText, data)

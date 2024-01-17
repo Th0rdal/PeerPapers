@@ -1,6 +1,6 @@
 import datetime
 import os
-
+import uuid
 import bcrypt
 import jwt
 
@@ -28,6 +28,7 @@ def hashPassword(password):
 def checkHashedPassword(hashedPW, password):
     return bcrypt.checkpw(password.encode('utf-8') + secret, hashedPW)
 
+
 def getTotalPath(pathAdd):
     """
     calculates the absolute path to the certain file specified in pathAdd.
@@ -43,3 +44,11 @@ def getTotalPath(pathAdd):
     for part in pathAddComponents:
         path = os.path.join(path, part)
     return path
+
+
+def createUUID():
+    """
+    Creates a valid uuid.
+    :return: uuid as string
+    """
+    return str(uuid.uuid4())
