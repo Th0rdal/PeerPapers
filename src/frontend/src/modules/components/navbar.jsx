@@ -47,50 +47,73 @@ function Navbar() {
       });
   };
 
+  const handleLogout = () => {
+    // Implement your logout logic here
+    console.log("Logout clicked");
+    // Redirect to the register page
+    window.location.href = "/";
+  };
+
   return (
     <>
-      <CNavbar expand="lg" colorScheme="light" className="bg-light">
-        <CContainer fluid>
-          <CNavbarBrand href="/">PeerPapers</CNavbarBrand>
-          <CNavbarToggler
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <div className="container-fluid">
+          <a className="navbar-brand" href="/">
+            PeerPapers
+          </a>
+          <button
+            className="navbar-toggler"
+            type="button"
             aria-label="Toggle navigation"
             aria-expanded={visible}
             onClick={() => setVisible(!visible)}
-          />
-          <CCollapse className="navbar-collapse" visible={visible}>
-            <CNavbarNav>
-              <CNavItem>
-                <CNavLink href="/home" active>
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className={`collapse navbar-collapse ${visible ? "show" : ""}`}>
+            <ul className="navbar-nav">
+              <li className="nav-item">
+                <a className="nav-link" href="/home" active>
                   Home
-                </CNavLink>
-              </CNavItem>
-              
-              <CNavItem>
-                <CNavLink href="/upload" active>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/upload">
                   Upload File
-                </CNavLink>
-              </CNavItem>
-              {/* <CNavItem>
-                <CNavLink href="/register">Register/Login</CNavLink>
-              </CNavItem> */}
-              <CNavItem>
-                <CNavLink href="/erweiterteSuche">Erweiterte Suche</CNavLink>
-              </CNavItem>
-            </CNavbarNav>
-            <CForm className="d-flex" onSubmit={handleSubmit}>
-              <CFormInput
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/erweiterteSuche">
+                  Erweiterte Suche
+                </a>
+              </li>
+            </ul>
+            <form className="d-flex" onSubmit={handleSubmit}>
+              <input
                 type="search"
-                className="me-2"
+                className="form-control me-2"
                 placeholder="Search"
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <CButton type="submit" color="success" variant="outline">
+              <button
+                type="submit"
+                className="btn btn-outline-danger"
+              >
                 Search
-              </CButton>
-            </CForm>
-          </CCollapse>
-        </CContainer>
-      </CNavbar>
+              </button>
+            </form>
+            <div className="ms-auto">
+              <button
+                className="btn"
+                style={{ backgroundColor: '#ba4141', color: 'white'}}
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
     </>
   );
 }
