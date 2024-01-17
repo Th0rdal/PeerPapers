@@ -3,7 +3,7 @@ import os
 
 from flask import Flask, request, jsonify
 
-from util import hashPassword, checkHashedPassword, getTotalPath
+from util import hashPassword, checkHashedPassword, getTotalPath, createUUID
 
 from database.Table import Table
 from database.database import DatabaseAccessObject
@@ -73,13 +73,39 @@ def login():
 
 @app.route('/upload', methods=['POST'])
 def upload():
+
+    databaseAccess = DatabaseAccessObject()
+
+    fileUUID = createUUID()
       # Zugriff auf die gesendeten Daten und Dateien mit request
     title = request.form.get('title')
     author = request.form.get('author')
     semester = request.form.get('semester')
     year = request.form.get('year')
     department = request.form.get('department')
-    
+
+    relative_path = getTotalPath("resources/database/files")
+    print("relative Path: " + relative_path)
+
+
+
+    # Kombiniere den relativen Pfad mit dem Dateinamen
+    save_path = os.path.join(relative_path, fileUUID + ".pdf")
+
+    print("filename " + fileUUID + ".pdf")
+    print("save Path " + save_path)
+
+    # uploadFile = {
+    #             "id": fileUUID,
+    #             "title": title,
+    #             "author": author,
+    #             "semester": semester,
+    #             "year": year,
+    #             "department": department
+    #             }
+
+    # databaseAccess.newEntry(Table.FILES, uploadFile)
+
     print("title " + title)
     print("author " + author)
     print("semester " + semester)
@@ -93,14 +119,7 @@ def upload():
         return jsonify({'error': 'Keine Datei hochgeladen'}), 400
 
     # Erstelle den relativen Pfad, z.B. "Peerpapers/resources/database/files"
-    relative_path = getTotalPath("resources/database/files")
-    print("relative Path: " + relative_path)
-
-
-
-    # Kombiniere den relativen Pfad mit dem Dateinamen
-    save_path = os.path.join(relative_path, file.filename)
-    print("save Path " + save_path)
+   
     # Speichere die Datei auf dem Server im relativen Pfad
     file.save(save_path)
 
