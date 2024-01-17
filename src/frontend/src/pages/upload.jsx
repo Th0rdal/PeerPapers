@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Upload = () => {
   const [title, setTitle] = useState("");
@@ -9,6 +10,7 @@ const Upload = () => {
   const [department, setDepartment] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState(""); // Zustand für den Dateinamen
+  const navigate = useNavigate();
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);

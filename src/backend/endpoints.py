@@ -73,14 +73,10 @@ def login():
 
 @app.route('/upload', methods=['POST'])
 def upload():
-    if 'file' not in request.files:
-        return jsonify({'message': 'No file sent'}), 400
+        
+        return jsonify({'message': 'JUHU'}), 200
 
-    file = request.files['file']
-    filename = file.name
-    print(filename)
-
-    pass
+    
 
 
 @app.route('/download', methods=['GET'])
