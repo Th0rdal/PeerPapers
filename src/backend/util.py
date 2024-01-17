@@ -7,14 +7,40 @@ import jwt
 secret = "PeerPaper"
 
 
-def create_jwt_token(username, id):  # method to create the jwt token
+def createJWTToken(username, id):
+    """
+    Creates a JWT token with the username, id and expiration date as payload
+    :param username: username of the user to create the token for
+    :param id: id of the user to create the token for
+    :return: JWT
+    """
     payload = {
         "username": username,
         "id": id,
-        "expires": datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+        "expires": (datetime.datetime.utcnow() + datetime.timedelta(hours=1)).strftime("%Y-%m-%d-%#H:%M")
     }
-    token = jwt.encode(payload, secret, algorithm="HS256")
-    print(token)
+    return jwt.encode(payload, secret, algorithm="HS256")
+
+
+def isJWTValid(token):
+    """
+    Checks if the JWT token is valid based on if the expiration date is not crossed, the signature is not
+    expired and the token is not invalid.
+    :param token:
+    :return:
+    """
+    try:
+        decodedToken = jwt.decode(token, secret, algorithms=["HS256"])
+
+        # check expiration date
+        if datetime.utcfromtimestamp(decodedToken["expires"]) < datetime.utcnow():
+            return False
+    except jwt.ExpiredSignatureError:
+        return False
+    except jwt.InvalidTokenError:
+        return False
+
+    return True
 
 
 def allowed_file(file):
@@ -22,11 +48,16 @@ def allowed_file(file):
 
 
 def hashPassword(password):
+    """
+    Hashes a password for saving in the database
+    :param password: password to hash
+    :return: hashed password
+    """
     return bcrypt.hashpw((password + secret).encode('utf-8'), bcrypt.gensalt())
 
 
 def checkHashedPassword(hashedPW, password):
-    return bcrypt.checkpw(password.encode('utf-8') + secret, hashedPW)
+    return bcrypt.checkpw((password + secret).encode('utf-8'), hashedPW)
 
 
 def getTotalPath(pathAdd):

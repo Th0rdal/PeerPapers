@@ -3,7 +3,7 @@ import os
 
 from flask import Flask, request, jsonify
 
-from util import hashPassword, checkHashedPassword, getTotalPath
+from util import hashPassword, checkHashedPassword, getTotalPath, createJWTToken
 
 from database.Table import Table
 from database.database import DatabaseAccessObject
@@ -64,7 +64,8 @@ def login():
         row = databaseAccess.findOne(Table.AUTHENTICATION,
                                      {'username': username})  # checks if username and pw matches with existing one
         if checkHashedPassword(row["password"], password):
-            return jsonify({'message': 'Login successful'})
+            userRow = databaseAccess.findOne(Table.USER, {"username":username})
+            return jsonify({'message': 'Login successful', "token": f"Bearer {createJWTToken(username, userRow['id'])}"})
         return jsonify({"message": "Username or Password incorrect"}, 400)
     except NoRowFoundException as e:  # When NoRowFoundException is triggered, username is not taken.
         logging.info('Login not successful, username or password incorrect')
