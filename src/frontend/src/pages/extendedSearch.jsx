@@ -16,7 +16,7 @@ const ExtendedSearch = () => {
     department,
   }).toString();
 
-  const handleSearchChange = (event) => {
+  const handleTitleChange = (event) => {
     setTitle(event.target.value);
   };
 
@@ -62,7 +62,7 @@ const ExtendedSearch = () => {
             className="form-control"
             placeholder="Title..."
             value={title}
-            onChange={handleSearchChange}
+            onChange={handleTitleChange}
           />
         </div>
 
@@ -76,19 +76,19 @@ const ExtendedSearch = () => {
           />
         </div>
 
-        <div className="mb-3">
-          <input
-            type="number"
-            className="form-control"
-            placeholder="Year..."
-            value={year}
-            onChange={handleYearChange}
-          />
-        </div>
+        <div className="mb-3 d-flex justify-content-start align-items-center">
+          <div className="me-3">
+            <input
+              type="number"
+              className="form-control"
+              placeholder="Year..."
+              value={year}
+              onChange={handleYearChange}
+            />
+          </div>
 
-        <div className="form-check form-check-inline text-start">
           <select
-            className="form-select"
+            className="form-select me-3"
             value={semester}
             onChange={handleSemesterChange}
           >
@@ -100,9 +100,7 @@ const ExtendedSearch = () => {
             <option value="5">Semester 5</option>
             <option value="6">Semester 6</option>
           </select>
-        </div>
 
-        <div className="form-check form-check-inline text-start">
           <select
             className="form-select"
             value={department}
@@ -127,11 +125,9 @@ const ExtendedSearch = () => {
           </select>
         </div>
 
-        <div className="mb-3">
-          <button type="submit" className="btn btn-primary">
-            Search
-          </button>
-        </div>
+        <button type="submit" className="btn btn-primary">
+          Suche
+        </button>
       </form>
     </div>
   );
