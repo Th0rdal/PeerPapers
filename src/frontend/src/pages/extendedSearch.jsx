@@ -4,9 +4,9 @@ const ExtendedSearch = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [author, setAuthor] = useState("");
   const [filters, setFilters] = useState({
-    filter1: "", // Changed to a string to store the selected year
-    filter2: "", // Changed to a string to store the selected semester
-    filter3: "", // Changed to a string to store the selected program
+    year: "", // Changed to a string to store the selected year
+    semester: "", // Changed to a string to store the selected semester
+    department: "", // Changed to a string to store the selected program
     // Add more filters as needed
   });
 
@@ -22,22 +22,22 @@ const ExtendedSearch = () => {
 
   const handleFilterChange = (event) => {
     const { name, value, type, checked } = event.target;
-
+  
     // Validate numeric input for "Filter 1" (Year)
-    if (name === "filter1") {
+    if (name === "year") {
       if (!/^\d{4}$/.test(value)) {
         setFilter1Error("Year must be a 4-digit number");
       } else {
         setFilter1Error("");
       }
     }
-
+  
     setFilters((prevFilters) => ({
       ...prevFilters,
       [name]: type === "checkbox" ? checked : value,
     }));
   };
-
+  
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -74,9 +74,9 @@ const ExtendedSearch = () => {
             <input
               className={`form-control ${filter1Error ? "is-invalid" : ""}`}
               type="text"
-              name="filter1"
+              name="year" // Change to "year"
               id="filter1"
-              value={filters.filter1}
+              value={filters.year}
               onChange={handleFilterChange}
               onKeyDown={(e) => {
                 if (!(e.key === "Backspace" || /^\d$/.test(e.key))) {
@@ -94,9 +94,9 @@ const ExtendedSearch = () => {
           <div className="form-check form-check-inline text-start">
             <select
               className="form-select"
-              name="filter2"
+              name="semester" // Change to "semester"
               id="filter2"
-              value={filters.filter2}
+              value={filters.semester}
               onChange={handleFilterChange}
             >
               <option value="">Select Semester</option>
@@ -113,9 +113,9 @@ const ExtendedSearch = () => {
           <div className="form-check form-check-inline text-start">
             <select
               className="form-select"
-              name="filter3"
+              name="department" // Change to "department"
               id="filter3"
-              value={filters.filter3}
+              value={filters.department}
               onChange={handleFilterChange}
             >
               <option value="">Select Program</option>
@@ -141,3 +141,4 @@ const ExtendedSearch = () => {
 };
 
 export default ExtendedSearch;
+

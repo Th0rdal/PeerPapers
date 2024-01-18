@@ -146,7 +146,6 @@ def filter():
     
     #databaseAccess.find(Table.FILES)
     pass
-    return jsonify({'message': 'test test test'}), 200
 
 
 @app.route('/upvote', methods=['PUT'])
