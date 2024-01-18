@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+
 import {
   CNavbar,
   CContainer,
@@ -22,9 +25,16 @@ import "@coreui/coreui/dist/css/coreui.min.css";
 function Navbar() {
   const [visible, setVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
 
   const searchQuery = {
     searchTerm: searchTerm,
+  };
+
+  const logout = async (e) => {
+    Cookies.remove("token");
+    alert("You are logged out now");
+    navigate("/");
   };
 
   const handleSubmit = async (e) => {
@@ -87,7 +97,7 @@ function Navbar() {
               <CButton type="submit" color="success" variant="outline">
                 Search
               </CButton>
-              <CButton type="submit" color="success" variant="outline">
+              <CButton color="success" variant="outline" onClick={logout}>
                 Logout
               </CButton>
             </CForm>
