@@ -16,11 +16,11 @@ app = Flask(__name__)
 # app.config['ALLOWED_EXTENSIONS'] = {'pdf'}
 @app.before_request
 def checkAuthentication():
-     if "/register" in request.full_path:
+     if "/register" in request.full_path or "/login" in request.full_path:
          return
-     if isJWTValid(request.get_json().get("token")):
-         return
-     return jsonify("error: invalid token!"), 400
+     #if isJWTValid(request.get_json().get("token")):
+     return
+     #return jsonify("error: invalid token!"), 400
 
 # MUST
 @app.route('/register', methods=['POST'])
@@ -80,7 +80,7 @@ def login():
 
 @app.route('/upload', methods=['POST'])
 def upload():
-
+    print("HI")
     databaseAccess = DatabaseAccessObject()
 
     fileUUID = createUUID()
@@ -104,13 +104,12 @@ def upload():
 
     uploadFile = {
                 "id": fileUUID,
-                "path": "",
                 "title": title,
                 "author": author,
                 "semester": semester,
                 "year": year,
                 "department": department,
-                "upvotes" : 0
+                "upvotes": 0
                 }
 
     databaseAccess.newEntry(Table.FILES, uploadFile)
@@ -178,7 +177,25 @@ def filter():
 
 @app.route('/upvote', methods=['PUT'])
 def upvote():
-    pass
+
+    data = request.get_json()
+    fileID = request.args.get('fileID')
+    userID = getJWTPayload(data.get("token"))["id"]
+    databaseAccess = DatabaseAccessObject()
+    databaseAccess.printTable(Table.FILES)
+    upvotedFilesList = databaseAccess.findOne(Table.USER, {"id": userID})["upvotedFiles"]
+
+    addBookmarkFlag = True
+    for key in upvotedFilesList:
+        if key == fileID:
+            addBookmarkFlag = False
+
+    if addBookmarkFlag:
+        databaseAccess.addToList(Table.USER, {"id": userID}, {"upvotedFiles": fileID})
+    else:
+        databaseAccess.deleteFromList(Table.USER, {"id": userID}, {"upvotedFiles": fileID})
+    databaseAccess.update(Table.FILES, {"id": fileID}, {"upvotes": "+1" if addBookmarkFlag else "-1"})
+    return make_response("", 200)
 
 
 # COULD
@@ -200,11 +217,9 @@ def bookmarks():
 def bookmark():
     data = request.get_json()
     fileID = data.get('fileID')
-    userID = data.get('username')
+    userID = getJWTPayload(data.get("token"))["id"]
     databaseAccess = DatabaseAccessObject()
-    userTabel = databaseAccess.findOne(Table.USER, {"username": userID})
-    userBookmarks = userTabel["bookmarks"]
-    print(userTabel)
+    userBookmarks = databaseAccess.findOne(Table.USER, {"id": userID})["bookmarks"]
 
     addBookmarkFlag = True
     for key in userBookmarks:
@@ -212,9 +227,9 @@ def bookmark():
             addBookmarkFlag = False
 
     if addBookmarkFlag:
-        databaseAccess.addToList(Table.USER, {"username": userID}, {"bookmarks": fileID})
+        databaseAccess.addToList(Table.USER, {"id": userID}, {"bookmarks": fileID})
     else:
-        databaseAccess.deleteFromList(Table.USER, {"username": userID}, {"bookmarks": fileID})
+        databaseAccess.deleteFromList(Table.USER, {"id": userID}, {"bookmarks": fileID})
     return make_response("", 200)
 
 @app.route('/rank', methods=['GET'])

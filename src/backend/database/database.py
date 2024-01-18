@@ -73,7 +73,7 @@ class DatabaseAccessObject:
         elif table == Table.FILES:
             if "id" not in data:
                 data["id"] = createUUID()
-            executionText = "INSERT INTO FILES VALUES (:id, :path, :title, :author, :semester, :year, :department, :upvotes)"
+            executionText = "INSERT INTO FILES VALUES (:id, :title, :author, :semester, :year, :department, :upvotes)"
         with self.conn:
             self.c.execute(executionText, data)
 
@@ -136,7 +136,13 @@ class DatabaseAccessObject:
         """
         try:
             self.__checkIfDataIsList(table, insertData, False)
-            self.findOne(table, searchData)
+            row = self.findOne(table, searchData)
+            for element in insertData:
+                if insertData[element].startswith("+"):
+                    insertData[element] = row[element] + int(insertData[element][1:])
+                elif insertData[element].startswith("-"):
+                    insertData[element] = row[element] - int(insertData[element][1:])
+            print(insertData)
             self.__insert(table, searchData, insertData)
         except exceptions.DatabaseException as e:
             raise e

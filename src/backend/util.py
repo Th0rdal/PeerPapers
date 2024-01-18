@@ -1,3 +1,4 @@
+from datetime import datetime as dt
 import datetime
 import os
 import uuid
@@ -17,7 +18,7 @@ def createJWTToken(username, id):
     payload = {
         "username": username,
         "id": id,
-        "expires": (datetime.datetime.utcnow() + datetime.timedelta(hours=1)).strftime("%Y-%m-%d-%#H:%M")
+        "expires": (datetime.datetime.utcnow() + datetime.timedelta(hours=1)).strftime("%Y-%m-%d-%H:%M")
     }
     return jwt.encode(payload, secret, algorithm="HS256")
 
@@ -36,7 +37,7 @@ def isJWTValid(token):
         decodedToken = jwt.decode(token, secret, algorithms=["HS256"])
 
         # check expiration date
-        if datetime.utcfromtimestamp(decodedToken["expires"]) < datetime.utcnow():
+        if dt.strptime(decodedToken["expires"], "%Y-%m-%d-%H:%M") < datetime.datetime.utcnow():
             return False
     except jwt.ExpiredSignatureError:
         return False
@@ -53,7 +54,7 @@ def getJWTPayload(token):
     :param token: Token to decode and get the payload from
     :return: payload of token as dict
     """
-    return jwt.decode(token, secret, algorithms=["HS256"])
+    return jwt.decode(token.split(" ")[1], secret, algorithms=["HS256"])
 
 
 
