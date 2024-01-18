@@ -178,11 +178,31 @@ def upvote():
 # COULD
 @app.route('/bookmarks', methods=['GET'])
 def bookmarks():
+    iD = request.args.get('id')
+    print("id " + iD)
+    databaseAccess = DatabaseAccessObject()
+    
+    bookmarks = databaseAccess.findOne(Table.USER, {"id": iD})["bookmarks"]
+    
+
     pass
 
 
 @app.route('/bookmark', methods=['PUT'])
 def bookmark():
+    fileID = request.args.get('fileID')
+    userID = request.args.get('userID')
+    print("fileID " + fileID)
+    print("userID " + userID)
+    databaseAccess = DatabaseAccessObject()
+    
+    userTabel = databaseAccess.findOne(Table.USER, {"id": userID})
+    userBookmarks = userTabel["bookmarks"]
+
+    for key in userBookmarks:
+            if key == fileID:
+                
+
     pass
 
 
