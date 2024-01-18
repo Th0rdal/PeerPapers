@@ -16,7 +16,7 @@ resources
 
 .venv
 
-
+__pychache__
 resource
 
 node_modules
