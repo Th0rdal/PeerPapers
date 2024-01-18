@@ -1,7 +1,7 @@
 import logging
 import os
 
-from flask import Flask, request, jsonify
+from flask import Flask, abort, request, jsonify, send_file
 
 from util import hashPassword, checkHashedPassword, getTotalPath, createJWTToken, createUUID
 
@@ -133,6 +133,21 @@ def upload():
 
 @app.route('/download', methods=['GET'])
 def download():
+    iD = request.args.get('id')
+    print("id " + iD)
+
+    relative_path = getTotalPath("resources/database/files")
+    fullPath = relative_path + ("/" + iD + ".pdf")
+    print("path "+ fullPath)
+
+
+    if not os.path.exists(fullPath):
+        # Wenn die Datei nicht existiert, sende einen 500-Fehler
+        abort(404)
+        
+
+    return send_file(fullPath, as_attachment=True)
+
     pass
 
 
