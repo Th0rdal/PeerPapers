@@ -1,9 +1,9 @@
 import logging
 import os
 
-from flask import Flask, abort, request, jsonify, send_file
+from flask import Flask, abort, request, jsonify, send_file, make_response
 
-from util import hashPassword, checkHashedPassword, getTotalPath, createJWTToken, createUUID
+from util import hashPassword, checkHashedPassword, getTotalPath, createJWTToken, createUUID, getJWTPayload
 
 from database.Table import Table
 from database.database import DatabaseAccessObject
@@ -178,33 +178,38 @@ def upvote():
 # COULD
 @app.route('/bookmarks', methods=['GET'])
 def bookmarks():
-    iD = request.args.get('id')
-    print("id " + iD)
+    data = request.get_json()
+    data = getJWTPayload(data.get("token").split(" ")[1])
     databaseAccess = DatabaseAccessObject()
-    
-    bookmarks = databaseAccess.findOne(Table.USER, {"id": iD})["bookmarks"]
-    
 
-    pass
+    bookmarks = databaseAccess.findOne(Table.USER, {"id": data["id"]})["bookmarks"]
+    result = {}
+    for bookmark in bookmarks:
+        row = databaseAccess.findOne(Table.FILES, {"id": bookmark})
+        result[row["id"]] = row
+    return jsonify(result), 200
 
 
 @app.route('/bookmark', methods=['PUT'])
 def bookmark():
-    fileID = request.args.get('fileID')
-    userID = request.args.get('userID')
-    print("fileID " + fileID)
-    print("userID " + userID)
+    data = request.get_json()
+    fileID = data.get('fileID')
+    userID = data.get('username')
     databaseAccess = DatabaseAccessObject()
-    
-    userTabel = databaseAccess.findOne(Table.USER, {"id": userID})
+    userTabel = databaseAccess.findOne(Table.USER, {"username": userID})
     userBookmarks = userTabel["bookmarks"]
+    print(userTabel)
 
+    addBookmarkFlag = True
     for key in userBookmarks:
-            if key == fileID:
-                
+        if key == fileID:
+            addBookmarkFlag = False
 
-    pass
-
+    if addBookmarkFlag:
+        databaseAccess.addToList(Table.USER, {"username": userID}, {"bookmarks": fileID})
+    else:
+        databaseAccess.deleteFromList(Table.USER, {"username": userID}, {"bookmarks": fileID})
+    return make_response("", 200)
 
 @app.route('/rank', methods=['GET'])
 def rank():

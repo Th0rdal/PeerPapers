@@ -26,8 +26,8 @@ def isJWTValid(token):
     """
     Checks if the JWT token is valid based on if the expiration date is not crossed, the signature is not
     expired and the token is not invalid.
-    :param token:
-    :return:
+    :param token: Token to check
+    :return: True if valid, else False
     """
     try:
         decodedToken = jwt.decode(token, secret, algorithms=["HS256"])
@@ -41,6 +41,16 @@ def isJWTValid(token):
         return False
 
     return True
+
+
+def getJWTPayload(token):
+    """
+    Decodes and returns the payload of the given JWT token.
+    :param token: Token to decode and get the payload from
+    :return: payload of token as dict
+    """
+    return jwt.decode(token, secret, algorithms=["HS256"])
+
 
 
 def allowed_file(file):
