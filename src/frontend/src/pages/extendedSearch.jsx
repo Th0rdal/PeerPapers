@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { saveAs } from "file-saver";
 
 const ExtendedSearch = () => {
   const [title, setTitle] = useState("");
@@ -58,8 +59,21 @@ const ExtendedSearch = () => {
     console.log("Searching with", params.toString());
   };
 
-  const download = () => {
-    // Implementierung für Download-Funktion
+  const download = (id) => {
+    // Zeigt ein Bestätigungsfenster an
+    if (window.confirm("Möchten Sie die Datei wirklich herunterladen?")) {
+      axios
+        .get(`api/download?id=${id}`, { responseType: "blob" })
+        .then((response) => {
+          const pdfBlob = new Blob([response.data], {
+            type: "application/pdf",
+          });
+          saveAs(pdfBlob, `${title}.pdf`); // Speichert die Datei als PDF
+        })
+        .catch((error) => {
+          console.error("Fehler beim Herunterladen der Datei:", error);
+        });
+    }
   };
 
   return (
@@ -150,7 +164,11 @@ const ExtendedSearch = () => {
                 <p className="card-text">Year: {item.year}</p>
                 <p className="card-text">Department: {item.department}</p>
                 <p className="card-text">Upvotes: {item.upvotes}</p>
-                <button className="btn btn-primary" onClick={download}>
+
+                <button
+                  className="btn btn-primary"
+                  onClick={() => download(item.id)}
+                >
                   Download
                 </button>
               </div>
