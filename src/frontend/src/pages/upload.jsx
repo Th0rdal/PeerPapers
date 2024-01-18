@@ -9,7 +9,7 @@ const Upload = () => {
   const [year, setYear] = useState("");
   const [department, setDepartment] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
-  const [fileName, setFileName] = useState(""); // Zustand für den Dateinamen
+  const [fileName, setFileName] = useState("");
   const navigate = useNavigate();
 
   const handleTitleChange = (event) => {
@@ -35,23 +35,17 @@ const Upload = () => {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
-
-    if (file) {
-      setFileName(file.name); // Speichere den Dateinamen im Zustand
-    } else {
-      setFileName(""); // Lösche den Dateinamen, falls keine Datei ausgewählt ist
-    }
+    setFileName(file ? file.name : "");
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     if (!selectedFile) {
-      alert("Du musst eine Datei hinzufügen");
+      alert("Bitte füge eine Datei hinzu");
       return;
     }
 
-    // Erstelle ein FormData-Objekt, um die Daten zu senden
     const formData = new FormData();
     formData.append("title", title);
     formData.append("author", author);
@@ -60,26 +54,22 @@ const Upload = () => {
     formData.append("department", department);
     formData.append("file", selectedFile);
 
-    // Sende die POST-Anfrage mit Axios
     axios
       .post("api/upload", formData, {
         headers: {
-          "Content-Type": "multipart/form-data", // Setze den Header für FormData
+          "Content-Type": "multipart/form-data",
         },
       })
       .then((response) => {
-        // Hier kannst du auf die Antwort des Servers reagieren, z.B. Erfolgsmeldungen anzeigen
-        if (response.status == 200) {
+        if (response.status === 200) {
           alert("Datei erfolgreich hochgeladen");
           navigate("/home");
         } else {
-          alert("etwas ist schief gelaufen versuchen Sie es nocheinmal");
+          alert("Etwas ist schief gelaufen. Bitte versuche es erneut");
         }
-        console.log("Antwort vom Server:", response.data);
       })
       .catch((error) => {
-        // Bei einem Fehler wird dieser Block ausgeführt
-        alert("keine Verbindung zum Server");
+        alert("Keine Verbindung zum Server");
         console.error("Fehler bei der API-Anfrage:", error);
       });
   };
@@ -91,11 +81,12 @@ const Upload = () => {
           <input
             type="text"
             className="form-control"
-            placeholder="Titel..."
+            placeholder="Title..."
             value={title}
             onChange={handleTitleChange}
           />
         </div>
+
         <div className="mb-3">
           <input
             type="text"
@@ -106,38 +97,58 @@ const Upload = () => {
           />
         </div>
 
-        <div className="mb-3">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Semester..."
+        <div className="mb-3 d-flex justify-content-start align-items-center">
+          <div className="me-3">
+            <input
+              type="number"
+              className="form-control"
+              placeholder="Year..."
+              value={year}
+              onChange={handleYearChange}
+            />
+          </div>
+
+          <select
+            className="form-select me-3"
             value={semester}
             onChange={handleSemesterChange}
-          />
-        </div>
+          >
+            <option value="">Select Semester</option>
+            <option value="1">Semester 1</option>
+            <option value="2">Semester 2</option>
+            <option value="3">Semester 3</option>
+            <option value="4">Semester 4</option>
+            <option value="5">Semester 5</option>
+            <option value="6">Semester 6</option>
+          </select>
 
-        <div className="mb-3">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Year..."
-            value={year}
-            onChange={handleYearChange}
-          />
-        </div>
-
-        <div className="mb-3">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Department..."
+          <select
+            className="form-select"
             value={department}
             onChange={handleDepartmentChange}
-          />
+          >
+            <option value="">Select Program</option>
+            <option value="Molekulare Biotechnologie">
+              Molekulare Biotechnologie
+            </option>
+            <option value="Computer Science and Digital Communications">
+              Computer Science and Digital Communications
+            </option>
+            <option value="Architektur - Green Building">
+              Architektur - Green Building
+            </option>
+            <option value="Public Management">Public Management</option>
+            <option value="Orthoptik">Orthoptik</option>
+            <option value="Gesundheits- und Krankenpflege">
+              Gesundheits- und Krankenpflege
+            </option>
+            <option value="Soziale Arbeit">Soziale Arbeit</option>
+          </select>
         </div>
 
-        <p>Nur PDF's sind erlaubt</p>
+        <p>Nur PDFs sind erlaubt</p>
         {fileName && <p>Datei: {fileName}</p>}
+
         <div className="mb-3">
           <label className="btn btn-primary">
             Datei auswählen
