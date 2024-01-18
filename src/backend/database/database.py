@@ -19,7 +19,7 @@ class DatabaseAccessObject:
     typeCheckMap = {Table.AUTHENTICATION: {"username": "str", "password": "str"},
                     Table.USER: {"id": "id", "username": "str", "rank": "int", "bookmarks": "list",
                                  "upvotedFiles": "list"},
-                    Table.FILES: {"id": "id", "path": "str", "title": "str", "author": "str", "semester": "int",
+                    Table.FILES: {"id": "id", "title": "str", "author": "str", "semester": "int",
                                   "year": "int",
                                   "department": "str", "upvotes": "int"}}
 
@@ -219,7 +219,6 @@ class DatabaseAccessObject:
                                   '4' || substr(lower(hex(randomblob(2))),2) || 
                                   'a' || substr(lower(hex(randomblob(2))),2) || 
                                   lower(hex(randomblob(6)))),
-              path TEXT,
               title TEXT,
               author TEXT,
               semester integer,
