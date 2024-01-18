@@ -1,48 +1,56 @@
+import axios from "axios";
 import React, { useState } from "react";
 
 const ExtendedSearch = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
-  const [filters, setFilters] = useState({
-    year: "", // Changed to a string to store the selected year
-    semester: "", // Changed to a string to store the selected semester
-    department: "", // Changed to a string to store the selected program
-    // Add more filters as needed
-  });
+  const [year, setYear] = useState("");
+  const [semester, setSemester] = useState("");
+  const [department, setDepartment] = useState("");
 
-  const [filter1Error, setFilter1Error] = useState("");
+  const params = new URLSearchParams({
+    title,
+    author,
+    year,
+    semester,
+    department,
+  }).toString();
 
   const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
+    setTitle(event.target.value);
   };
 
   const handleAuthorChange = (event) => {
     setAuthor(event.target.value);
   };
 
-  const handleFilterChange = (event) => {
-    const { name, value, type, checked } = event.target;
-  
-    // Validate numeric input for "Filter 1" (Year)
-    if (name === "year") {
-      if (!/^\d{4}$/.test(value)) {
-        setFilter1Error("Year must be a 4-digit number");
-      } else {
-        setFilter1Error("");
-      }
-    }
-  
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+  const handleYearChange = (event) => {
+    setYear(event.target.value);
   };
-  
+
+  const handleSemesterChange = (event) => {
+    setSemester(event.target.value);
+  };
+
+  const handleDepartmentChange = (event) => {
+    setDepartment(event.target.value);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // Perform search with searchTerm, author, and filters
-    console.log("Searching with", searchTerm, author, filters);
+    axios
+      .get(`api/filter?${params}`)
+      .then((response) => {
+        // Verarbeiten der Antwort
+        console.log("Response:", response.data);
+      })
+      .catch((error) => {
+        // Fehlerbehandlung
+        console.error("Error fetching data:", error);
+      });
+    // Perform search with title, author, year, semester, and department
+    console.log("Searching with", params);
   };
 
   return (
@@ -53,7 +61,7 @@ const ExtendedSearch = () => {
             type="text"
             className="form-control"
             placeholder="Title..."
-            value={searchTerm}
+            value={title}
             onChange={handleSearchChange}
           />
         </div>
@@ -68,66 +76,55 @@ const ExtendedSearch = () => {
           />
         </div>
 
-        <div className="mb-3 d-flex justify-content-start align-items-center">
-          {/* Use an input field for "Year" */}
-          <div className="form-check form-check-inline text-start" style={{ height: "2.5rem" }}>
-            <input
-              className={`form-control ${filter1Error ? "is-invalid" : ""}`}
-              type="text"
-              name="year" // Change to "year"
-              id="filter1"
-              value={filters.year}
-              onChange={handleFilterChange}
-              onKeyDown={(e) => {
-                if (!(e.key === "Backspace" || /^\d$/.test(e.key))) {
-                  e.preventDefault();
-                }
-              }}
-              placeholder="Year"
-            />
-            {filter1Error && (
-              <div className="invalid-feedback">{filter1Error}</div>
-            )}
-          </div>
+        <div className="mb-3">
+          <input
+            type="number"
+            className="form-control"
+            placeholder="Year..."
+            value={year}
+            onChange={handleYearChange}
+          />
+        </div>
 
-          {/* Dropdown for "Filter 2" */}
-          <div className="form-check form-check-inline text-start">
-            <select
-              className="form-select"
-              name="semester" // Change to "semester"
-              id="filter2"
-              value={filters.semester}
-              onChange={handleFilterChange}
-            >
-              <option value="">Select Semester</option>
-              <option value="Semester 1">Semester 1</option>
-              <option value="Semester 2">Semester 2</option>
-              <option value="Semester 3">Semester 3</option>
-              <option value="Semester 4">Semester 4</option>
-              <option value="Semester 5">Semester 5</option>
-              <option value="Semester 6">Semester 6</option>
-            </select>
-          </div>
+        <div className="form-check form-check-inline text-start">
+          <select
+            className="form-select"
+            value={semester}
+            onChange={handleSemesterChange}
+          >
+            <option value="">Select Semester</option>
+            <option value="1">Semester 1</option>
+            <option value="2">Semester 2</option>
+            <option value="3">Semester 3</option>
+            <option value="4">Semester 4</option>
+            <option value="5">Semester 5</option>
+            <option value="6">Semester 6</option>
+          </select>
+        </div>
 
-          {/* Dropdown for "Filter 3" */}
-          <div className="form-check form-check-inline text-start">
-            <select
-              className="form-select"
-              name="department" // Change to "department"
-              id="filter3"
-              value={filters.department}
-              onChange={handleFilterChange}
-            >
-              <option value="">Select Program</option>
-              <option value="Molekulare Biotechnologie">Molekulare Biotechnologie</option>
-              <option value="Computer Science and Digital Communications">Computer Science and Digital Communications</option>
-              <option value="Architektur – Green Building">Architektur – Green Building</option>
-              <option value="Public Management">Public Management</option>
-              <option value="Orthoptik">Orthoptik</option>
-              <option value="Gesundheits- und Krankenpflege">Gesundheits- und Krankenpflege</option>
-              <option value="Soziale Arbeit">Soziale Arbeit</option>
-            </select>
-          </div>
+        <div className="form-check form-check-inline text-start">
+          <select
+            className="form-select"
+            value={department}
+            onChange={handleDepartmentChange}
+          >
+            <option value="">Select Program</option>
+            <option value="Molekulare Biotechnologie">
+              Molekulare Biotechnologie
+            </option>
+            <option value="Computer Science and Digital Communications">
+              Computer Science and Digital Communications
+            </option>
+            <option value="Architektur - Green Building">
+              Architektur - Green Building
+            </option>
+            <option value="Public Management">Public Management</option>
+            <option value="Orthoptik">Orthoptik</option>
+            <option value="Gesundheits- und Krankenpflege">
+              Gesundheits- und Krankenpflege
+            </option>
+            <option value="Soziale Arbeit">Soziale Arbeit</option>
+          </select>
         </div>
 
         <div className="mb-3">
@@ -141,4 +138,3 @@ const ExtendedSearch = () => {
 };
 
 export default ExtendedSearch;
-
