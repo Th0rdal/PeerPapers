@@ -14,6 +14,7 @@ const ExtendedSearch = () => {
   if (year) params.append("year", year);
   if (semester) params.append("semester", semester);
   if (department) params.append("department", department);
+  const [searchResults, setSearchResults] = useState([]);
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
@@ -41,6 +42,11 @@ const ExtendedSearch = () => {
     axios
       .get(`api/filter?${params.toString()}`)
       .then((response) => {
+        if (response.data[1].length === 0) {
+          alert("keine passende Datei gefunden");
+        } else {
+          setSearchResults(response.data[1]); // Annahme, dass die Daten im zweiten Element sind
+        }
         // Verarbeiten der Antwort
         console.log("Response:", response.data);
       })
@@ -50,6 +56,10 @@ const ExtendedSearch = () => {
       });
     // Perform search with title, author, year, semester, and department
     console.log("Searching with", params.toString());
+  };
+
+  const download = () => {
+    // Implementierung für Download-Funktion
   };
 
   return (
@@ -128,6 +138,26 @@ const ExtendedSearch = () => {
           Suche
         </button>
       </form>
+
+      <div className="row">
+        {searchResults.map((item, index) => (
+          <div key={index} className="col-md-6 mb-3">
+            <div className="card">
+              <div className="card-body">
+                <h5 className="card-title">{item.title}</h5>
+                <p className="card-text">Author: {item.author}</p>
+                <p className="card-text">Semester: {item.semester}</p>
+                <p className="card-text">Year: {item.year}</p>
+                <p className="card-text">Department: {item.department}</p>
+                <p className="card-text">Upvotes: {item.upvotes}</p>
+                <button className="btn btn-primary" onClick={download}>
+                  Download
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
