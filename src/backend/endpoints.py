@@ -140,14 +140,14 @@ def download():
 @app.route('/filter', methods=['GET'])
 def filter():
     databaseAccess = DatabaseAccessObject()
-
+    
     title = request.args.get('searchTerm')
     author = request.args.get('author')
     year = request.args.get('year')
     semester = request.args.get('semester')
     department = request.args.get('department')
-
-
+    
+    
     filteredFiles = databaseAccess.find(Table.FILES, {'title': title, 'author': author, 'semester': semester, 'year': year, 'department': department})
     print(filteredFiles)
     return jsonify({'message': 'successful filtered'}, filteredFiles, 200)
