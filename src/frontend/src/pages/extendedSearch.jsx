@@ -8,13 +8,12 @@ const ExtendedSearch = () => {
   const [semester, setSemester] = useState("");
   const [department, setDepartment] = useState("");
 
-  const params = new URLSearchParams({
-    title,
-    author,
-    year,
-    semester,
-    department,
-  }).toString();
+  const params = new URLSearchParams();
+  if (title) params.append("title", title);
+  if (author) params.append("author", author);
+  if (year) params.append("year", year);
+  if (semester) params.append("semester", semester);
+  if (department) params.append("department", department);
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
@@ -40,7 +39,7 @@ const ExtendedSearch = () => {
     event.preventDefault();
 
     axios
-      .get(`api/filter?${params}`)
+      .get(`api/filter?${params.toString()}`)
       .then((response) => {
         // Verarbeiten der Antwort
         console.log("Response:", response.data);
@@ -50,7 +49,7 @@ const ExtendedSearch = () => {
         console.error("Error fetching data:", error);
       });
     // Perform search with title, author, year, semester, and department
-    console.log("Searching with", params);
+    console.log("Searching with", params.toString());
   };
 
   return (
