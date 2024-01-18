@@ -11,16 +11,15 @@ from database.exceptions import NoRowFoundException
 
 app = Flask(__name__)
 
-
 # app.config['SECRET_KEY'] = '1234'
 # app.config['ALLOWED_EXTENSIONS'] = {'pdf'}
 @app.before_request
 def checkAuthentication():
      if "/register" in request.full_path or "/login" in request.full_path:
          return
-     #if isJWTValid(request.get_json().get("token")):
-     return
-     #return jsonify("error: invalid token!"), 400
+     if isJWTValid(request.headers.get('Authorization')):
+        return
+     return jsonify("error: invalid token!"), 400
 
 # MUST
 @app.route('/register', methods=['POST'])
@@ -172,9 +171,8 @@ def filter():
 @app.route('/upvote', methods=['PUT'])
 def upvote():
 
-    data = request.get_json()
     fileID = request.args.get('fileID')
-    userID = getJWTPayload(data.get("token"))["id"]
+    userID = getJWTPayload(request.headers.get('Authorization'))["id"]
     databaseAccess = DatabaseAccessObject()
     databaseAccess.printTable(Table.FILES)
     upvotedFilesList = databaseAccess.findOne(Table.USER, {"id": userID})["upvotedFiles"]
@@ -195,8 +193,7 @@ def upvote():
 # COULD
 @app.route('/bookmarks', methods=['GET'])
 def bookmarks():
-    data = request.get_json()
-    data = getJWTPayload(data.get("token"))
+    data = getJWTPayload(request.headers.get('Authorization'))
     databaseAccess = DatabaseAccessObject()
 
     bookmarks = databaseAccess.findOne(Table.USER, {"id": data["id"]})["bookmarks"]
@@ -211,7 +208,7 @@ def bookmarks():
 def bookmark():
     data = request.get_json()
     fileID = data.get('fileID')
-    userID = getJWTPayload(data.get("token"))["id"]
+    userID = getJWTPayload(request.headers.get('Authorization'))["id"]
     databaseAccess = DatabaseAccessObject()
     userBookmarks = databaseAccess.findOne(Table.USER, {"id": userID})["bookmarks"]
 
