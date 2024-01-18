@@ -30,6 +30,9 @@ def isJWTValid(token):
     :return: True if valid, else False
     """
     try:
+        if token is None:
+            return False
+        token = token.split(" ")[1]
         decodedToken = jwt.decode(token, secret, algorithms=["HS256"])
 
         # check expiration date
@@ -39,7 +42,8 @@ def isJWTValid(token):
         return False
     except jwt.InvalidTokenError:
         return False
-
+    except IndexError:
+        return False
     return True
 
 

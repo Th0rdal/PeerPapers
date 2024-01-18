@@ -3,7 +3,7 @@ import os
 
 from flask import Flask, abort, request, jsonify, send_file, make_response
 
-from util import hashPassword, checkHashedPassword, getTotalPath, createJWTToken, createUUID, getJWTPayload
+from util import hashPassword, checkHashedPassword, getTotalPath, createJWTToken, createUUID, isJWTValid, getJWTPayload
 
 from database.Table import Table
 from database.database import DatabaseAccessObject
@@ -14,7 +14,13 @@ app = Flask(__name__)
 
 # app.config['SECRET_KEY'] = '1234'
 # app.config['ALLOWED_EXTENSIONS'] = {'pdf'}
-
+@app.before_request
+def checkAuthentication():
+     if "/register" in request.full_path:
+         return
+     if isJWTValid(request.get_json().get("token")):
+         return
+     return jsonify("error: invalid token!"), 400
 
 # MUST
 @app.route('/register', methods=['POST'])
@@ -179,7 +185,7 @@ def upvote():
 @app.route('/bookmarks', methods=['GET'])
 def bookmarks():
     data = request.get_json()
-    data = getJWTPayload(data.get("token").split(" ")[1])
+    data = getJWTPayload(data.get("token"))
     databaseAccess = DatabaseAccessObject()
 
     bookmarks = databaseAccess.findOne(Table.USER, {"id": data["id"]})["bookmarks"]
