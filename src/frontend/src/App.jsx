@@ -24,22 +24,20 @@ function App() {
         <Route path="/" element={<Register />} />
         <Route
           path="/home"
-          element={isAuthenticated() ? <HomePage /> : <Navigate to="/login" />}
+          element={isAuthenticated() ? <HomePage /> : <Navigate to="/" />}
         />
         <Route
           path="/test"
-          element={isAuthenticated() ? <Test /> : <Navigate to="/login" />}
+          element={isAuthenticated() ? <Test /> : <Navigate to="/" />}
         />
         <Route
           path="/erweiterteSuche"
-          element={
-            isAuthenticated() ? <ExtendedSearch /> : <Navigate to="/login" />
-          }
+          element={isAuthenticated() ? <ExtendedSearch /> : <Navigate to="/" />}
         />
 
         <Route
           path="/upload"
-          element={isAuthenticated() ? <Upload /> : <Navigate to="/login" />}
+          element={isAuthenticated() ? <Upload /> : <Navigate to="/" />}
         />
       </Routes>
     </Router>

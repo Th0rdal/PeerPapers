@@ -26,7 +26,7 @@ const Register = () => {
     if (response.status === 200) {
       Cookies.set("token", data.token);
       alert("login Succesfull");
-      navigate("/"); // return to home when successfully login
+      navigate("/home"); // return to home when successfully login
     } else if (response.status === 401 || response.status === 400) {
       alert("Wrong username or Password!");
     }
