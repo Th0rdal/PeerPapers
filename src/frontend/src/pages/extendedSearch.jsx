@@ -4,9 +4,9 @@ const ExtendedSearch = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [author, setAuthor] = useState("");
   const [filters, setFilters] = useState({
-    filter1: "", // Changed to a string to store the selected year
-    filter2: "", // Changed to a string to store the selected semester
-    filter3: "", // Changed to a string to store the selected program
+    year: "", // Changed to a string to store the selected year
+    semester: "", // Changed to a string to store the selected semester
+    department: "", // Changed to a string to store the selected program
     // Add more filters as needed
   });
 
@@ -38,11 +38,58 @@ const ExtendedSearch = () => {
     }));
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  //const handleSubmit = (event) => {
+    //event.preventDefault();
 
     // Perform search with searchTerm, author, and filters
-    console.log("Searching with", searchTerm, author, filters);
+    //console.log("Searching with", searchTerm, author, filters);
+  //};
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+  
+    // Validate filters or handle any other validation logic if needed
+    if (filter1Error) {
+      // Handle invalid filter state
+      return;
+    }
+  
+    // Prepare the search query object
+    const searchQuery = {
+      searchTerm: searchTerm,
+      author: author,
+      filter1: filters.year,
+      filter2: filters.semester,
+      filter3: filters.department,
+    };
+  
+    // Convert the searchQuery object to URL parameters
+    const queryParams = new URLSearchParams(searchQuery).toString();
+  
+    try {
+      // Send the search request to the backend using GET method
+      const response = await fetch(`/api/filter?${queryParams}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      if (response.status == 200) {
+        alert("Filter applied");
+      }
+      const jsonData = await response.json();
+      console.log("Search results:", jsonData);
+      // Handle the search results as needed
+    } catch (error) {
+      console.error("An error occurred:", error);
+      // Handle errors or display an error message to the user
+    }
+    console.log("Search results:", jsonData.message);
   };
 
   return (
@@ -74,9 +121,9 @@ const ExtendedSearch = () => {
             <input
               className={`form-control ${filter1Error ? "is-invalid" : ""}`}
               type="text"
-              name="filter1"
-              id="filter1"
-              value={filters.filter1}
+              name="year"
+              id="year"
+              value={filters.year}
               onChange={handleFilterChange}
               onKeyDown={(e) => {
                 if (!(e.key === "Backspace" || /^\d$/.test(e.key))) {
@@ -94,9 +141,9 @@ const ExtendedSearch = () => {
           <div className="form-check form-check-inline text-start">
             <select
               className="form-select"
-              name="filter2"
-              id="filter2"
-              value={filters.filter2}
+              name="semester"
+              id="semester"
+              value={filters.semester}
               onChange={handleFilterChange}
             >
               <option value="">Select Semester</option>
@@ -115,7 +162,7 @@ const ExtendedSearch = () => {
               className="form-select"
               name="filter3"
               id="filter3"
-              value={filters.filter3}
+              value={filters.department}
               onChange={handleFilterChange}
             >
               <option value="">Select Program</option>
