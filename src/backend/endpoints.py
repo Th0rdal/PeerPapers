@@ -139,6 +139,13 @@ def download():
 # SHOULD
 @app.route('/filter', methods=['GET'])
 def filter():
+    
+    databaseAccess = DatabaseAccessObject()
+    
+    data = request.args.get()
+    print(data)
+    
+    #databaseAccess.find(Table.FILES)
     pass
 
 
