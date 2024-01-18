@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { saveAs } from "file-saver";
+import Cookies from "js-cookie";
 
 const ExtendedSearch = () => {
   const [title, setTitle] = useState("");
@@ -8,6 +9,9 @@ const ExtendedSearch = () => {
   const [year, setYear] = useState("");
   const [semester, setSemester] = useState("");
   const [department, setDepartment] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+
+  const token = Cookies.get("token");
 
   const params = new URLSearchParams();
   if (title) params.append("title", title);
@@ -15,7 +19,6 @@ const ExtendedSearch = () => {
   if (year) params.append("year", year);
   if (semester) params.append("semester", semester);
   if (department) params.append("department", department);
-  const [searchResults, setSearchResults] = useState([]);
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
@@ -39,9 +42,14 @@ const ExtendedSearch = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log("token: " + token);
 
     axios
-      .get(`api/filter?${params.toString()}`)
+      .get(`api/filter?${params.toString()}`, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      })
       .then((response) => {
         if (response.data[1].length === 0) {
           alert("keine passende Datei gefunden");
@@ -59,11 +67,16 @@ const ExtendedSearch = () => {
     console.log("Searching with", params.toString());
   };
 
-  const download = (id) => {
+  const download = (id, title) => {
     // Zeigt ein Bestätigungsfenster an
     if (window.confirm("Möchten Sie die Datei wirklich herunterladen?")) {
       axios
-        .get(`api/download?id=${id}`, { responseType: "blob" })
+        .get(`api/download?id=${id}`, {
+          responseType: "blob",
+          headers: {
+            Authorization: `${token}`, // Bearer-Token aus dem Cookie holen
+          },
+        })
         .then((response) => {
           const pdfBlob = new Blob([response.data], {
             type: "application/pdf",
@@ -75,6 +88,31 @@ const ExtendedSearch = () => {
         });
     }
   };
+
+  const bookmark = (id) => {
+    console.log("token: " + token);
+    axios
+      .put(
+        `api/bookmark`,
+        { fileID: id },
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          alert("bookmarked");
+        }
+      })
+      .catch((error) => {
+        alert("Server Fehler");
+        console.error("Fehler beim bookmarken der Datei:", error);
+      });
+  };
+
+  const upvote = (id) => {};
 
   return (
     <div className="container my-4">
@@ -165,12 +203,32 @@ const ExtendedSearch = () => {
                 <p className="card-text">Department: {item.department}</p>
                 <p className="card-text">Upvotes: {item.upvotes}</p>
 
-                <button
-                  className="btn btn-primary"
-                  onClick={() => download(item.id)}
-                >
-                  Download
-                </button>
+                <div className="row">
+                  <div className="col">
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => download(item.id, item.title)}
+                    >
+                      Download
+                    </button>
+                  </div>
+                  <div className="col">
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => bookmark(item.id)}
+                    >
+                      Bookmark
+                    </button>
+                  </div>
+                  <div className="col">
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => upvote(item.id)}
+                    >
+                      Upvote
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
