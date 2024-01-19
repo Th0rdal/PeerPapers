@@ -155,11 +155,11 @@ class DatabaseAccessObject:
             self.__checkIfDataIsList(table, insertData, False)
             row = self.findOne(table, searchData)
             for element in insertData:
-                if insertData[element].startswith("+"):
-                    insertData[element] = row[element] + int(insertData[element][1:])
-                elif insertData[element].startswith("-"):
-                    insertData[element] = row[element] - int(insertData[element][1:])
-            print(insertData)
+                if self.typeCheckMap[table][element] == "str":
+                    if insertData[element].startswith("+"):
+                        insertData[element] = row[element] + int(insertData[element][1:])
+                    elif insertData[element].startswith("-"):
+                        insertData[element] = row[element] - int(insertData[element][1:])
             self.__insert(table, searchData, insertData)
         except exceptions.DatabaseException as e:
             raise e
@@ -210,15 +210,18 @@ class DatabaseAccessObject:
 
         self.c.execute("SELECT SUM(rank) FROM USER")
         self.averageRank = self.c.fetchone()[0]
+        if self.averageRank < 100:
+            self.averageRank = 100
 
         self.c.execute("SELECT COUNT(*) FROM USER")
         userNumber = self.c.fetchone()[0]
-
         # get rank values for each division
         for key in self.rankDivision:
-            temp = (userNumber / 100) * self.rankDivision[key]
+            temp = int((userNumber / 100) * self.rankDivision[key]) if int((userNumber / 100) * self.rankDivision[key]) < userNumber else userNumber-1
             self.c.execute(f"SELECT * FROM USER ORDER BY rank ASC LIMIT 1 OFFSET {temp}")
-            self.rankDict[key] = self.c.fetchone()[0]["rank"]
+            temp2 = self.c.fetchone()
+            temp = self.__createDictOutOfRow([temp2], Table.USER)[0]["rank"]
+            self.rankDict[key] = temp
 
     def getTopRanks(self, amount):
         """
@@ -226,7 +229,7 @@ class DatabaseAccessObject:
         :return: List of object
         """
         self.c.execute(f"SELECT * FROM USER ORDER BY rank DESC LIMIT {amount}")
-        temp = self.__createDictOutOfRow(self.c.fetchall(), Table.USER)
+        temp = self.__createDictOutOfRow0(self.c.fetchall(), Table.USER)
 
         self.topRanks = []
         for key in temp:

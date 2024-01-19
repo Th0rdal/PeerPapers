@@ -1,4 +1,5 @@
 import logging
+import math
 import os
 
 from flask import Flask, abort, request, jsonify, send_file, make_response
@@ -43,9 +44,7 @@ def register():
         return jsonify({'message': 'Username is already taken'}), 400
     except NoRowFoundException as e:  # When NoRowFoundException is triggered, username is not taken.
         databaseAccess.newEntry(Table.AUTHENTICATION, {'username': username, 'password': hashPassword(password)})
-        databaseAccess.newEntry(Table.USER, {'username': username, 'rank': 0, 'bookmarks': '', 'upvotedFiles': ''})
-    databaseAccess.printTable(Table.AUTHENTICATION)
-    databaseAccess.printTable(Table.USER)
+        databaseAccess.newEntry(Table.USER, {'username': username, 'rank': 1, 'bookmarks': '', 'upvotedFiles': ''})
     logging.info('Registration successful')
     return jsonify({'message': 'Registration successful'}), 200
 
@@ -66,7 +65,6 @@ def login():
         return jsonify({'error': 'Username or Password incorrect'}), 400
 
     databaseAccess = DatabaseAccessObject()
-    databaseAccess.printTable(Table.AUTHENTICATION)
 
     try:
         row = databaseAccess.findOne(Table.AUTHENTICATION,
@@ -83,7 +81,6 @@ def login():
 
 @app.route('/upload', methods=['POST'])
 def upload():
-    print("HI")
     databaseAccess = DatabaseAccessObject()
 
     fileUUID = createUUID()
@@ -95,13 +92,9 @@ def upload():
     department = request.form.get('department')
 
     relative_path = getTotalPath("resources/database/files")
-    print("relative Path: " + relative_path)
 
     # Kombiniere den relativen Pfad mit dem Dateinamen
     save_path = os.path.join(relative_path, fileUUID + ".pdf")
-
-    print("filename " + fileUUID + ".pdf")
-    print("save Path " + save_path)
 
     uploadFile = {
         "id": fileUUID,
@@ -114,12 +107,6 @@ def upload():
     }
 
     databaseAccess.newEntry(Table.FILES, uploadFile)
-
-    print("title " + title)
-    print("author " + author)
-    print("semester " + semester)
-    print("year " + year)
-    print("department " + department)
 
     # Zugriff auf die hochgeladene Datei
     file = request.files.get('file')
@@ -139,11 +126,9 @@ def upload():
 @app.route('/download', methods=['GET'])
 def download():
     iD = request.args.get('id')
-    print("id " + iD)
 
     relative_path = getTotalPath("resources/database/files")
     fullPath = relative_path + ("/" + iD + ".pdf")
-    print("path "+ fullPath)
 
     if not os.path.exists(fullPath):
         # Wenn die Datei nicht existiert, sende einen 500-Fehler
@@ -172,7 +157,6 @@ def upvote():
     fileID = request.args.get('fileID')
     userID = getJWTPayload(request.headers.get('Authorization'))["id"]
     databaseAccess = DatabaseAccessObject()
-    databaseAccess.printTable(Table.FILES)
     userRow = databaseAccess.findOne(Table.USER, {"id": userID})
 
     addBookmarkFlag = True
@@ -180,15 +164,17 @@ def upvote():
         if key == fileID:
             addBookmarkFlag = False
 
-    databaseAccess.calculateRankValues()
     rankgain = rankGainCalculator(userRow["rank"], databaseAccess.averageRank, databaseAccess.rankMultiplier["upvote"])
     if addBookmarkFlag:
+        temp = userRow["rank"] + rankgain
         databaseAccess.addToList(Table.USER, {"id": userID}, {"upvotedFiles": fileID})
-        databaseAccess.update(Table.USER, {"id": userID}, {"rank": userID[rank] + rankgain})
+        databaseAccess.update(Table.USER, {"id": userID}, {"rank": temp})
     else:
+        temp = userRow["rank"] - rankgain if userRow["rank"] - rankgain > 0 else 0
         databaseAccess.deleteFromList(Table.USER, {"id": userID}, {"upvotedFiles": fileID})
-        databaseAccess.update(Table.USER, {"id": userID}, {"rank": userID[rank] - rankgain})
+        databaseAccess.update(Table.USER, {"id": userID}, {"rank": temp})
     databaseAccess.update(Table.FILES, {"id": fileID}, {"upvotes": "+1" if addBookmarkFlag else "-1"})
+    databaseAccess.calculateRankValues()
     return make_response("", 200)
 
 
@@ -233,7 +219,7 @@ def rank():
 
     user = databaseAccess.findOne(Table.USER, {"id": userID})
     return jsonify(
-        {"rankPoints": user["rank"], "rank": calculateRankString(user["rank"], databaseAccess.rankDict)}), 200
+        {"rankPoints": math.floor(user["rank"]), "rank": calculateRankString(user["rank"], databaseAccess.rankDict)}), 200
 
 
 @app.route('/rankList', methods=['GET'])

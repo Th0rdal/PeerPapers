@@ -39,16 +39,12 @@ def isJWTValid(token):
 
         # check expiration date
         if dt.strptime(decodedToken["expires"], "%Y-%m-%d-%H:%M") < datetime.datetime.utcnow():
-            print("THERE")
             return False
     except jwt.ExpiredSignatureError:
-        print("THERE2")
         return False
     except jwt.InvalidTokenError:
-        print("THERE3")
         return False
     except IndexError:
-        print("THERE4")
         return False
     return True
 
@@ -105,6 +101,8 @@ def createUUID():
 
 
 def rankGainCalculator(currentRank, averageRank, multiplier):
+    if currentRank == 0:
+        currentRank = 1
     rankBasedMultiplier = min((averageRank / currentRank), 5) if (averageRank / currentRank) > 1 else max(
         (averageRank / currentRank), 0.625)
     logMultiplier = 4.95 * math.pow(10, -4) * averageRank + 0.0404
@@ -112,7 +110,6 @@ def rankGainCalculator(currentRank, averageRank, multiplier):
 
 
 def calculateRankString(currentRank, rankDict):
-    print(rankDict)
     for key in rankDict:
         if currentRank <= rankDict[key]:
             return key
