@@ -238,6 +238,7 @@ def startServer():
     path = os.path.abspath(os.path.join(os.path.abspath(__file__), "..", "..", "..", "log", "logFile.log"))
     logging.basicConfig(filename=path, level=logging.INFO, format="%(asctime)s:%(filename)s:%(message)s")
     logging.info('Starting the server')
+    print("server Runs on Port 25202")
     app.run(debug=True, port=25202)
 
 

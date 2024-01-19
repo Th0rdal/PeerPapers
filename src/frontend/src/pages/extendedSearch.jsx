@@ -11,7 +11,7 @@ const ExtendedSearch = () => {
   const [department, setDepartment] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [upvoteAdded, setUpvoteAdded] = useState(false);
-
+  const [bookmarks, setBookmarks] = useState({});
   const token = Cookies.get("token");
 
   const params = new URLSearchParams();
@@ -59,7 +59,7 @@ const ExtendedSearch = () => {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, [upvoteAdded]);
+  }, [upvoteAdded, bookmarks]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -119,6 +119,7 @@ const ExtendedSearch = () => {
       )
       .then((response) => {
         if (response.status === 200) {
+          setBookmarks((prev) => ({ ...prev, [id]: !prev[id] }));
           alert("bookmarked");
         }
       })
@@ -256,7 +257,7 @@ const ExtendedSearch = () => {
                       className="btn btn-primary"
                       onClick={() => bookmark(item.id)}
                     >
-                      Bookmark
+                      {bookmarks[item.id] ? "Bookmark aufheben" : "Bookmark"}
                     </button>
                   </div>
                   <div className="col">
