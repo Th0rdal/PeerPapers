@@ -200,20 +200,7 @@ class DatabaseAccessObject:
         with self.conn:
             self.c.execute(executionText[:-3], searchData)
         rows = self.c.fetchall()
-        result = []
-        for row in rows:
-            dict = {}
-            for type, element in zip(self.typeCheckMap[table], row):
-                if self.typeCheckMap[table][type] == "list":
-                    if element == '""':
-                        dict[type] = []
-                        continue
-                    tempData = json.loads(element)
-                    dict[type] = [key["value"] for key in tempData]
-                    continue
-                dict[type] = element
-            result.append(dict)
-        return result
+        return self.__createDictOutOfRow(rows, table)
 
     def calculateRankValues(self):
         """
@@ -239,14 +226,16 @@ class DatabaseAccessObject:
         :return: List of object
         """
         self.c.execute(f"SELECT * FROM USER ORDER BY rank DESC LIMIT {amount}")
-        temp = self.c.fetchall()
-        tempDict = {}
+        temp = self.__createDictOutOfRow(self.c.fetchall(), Table.USER)
+
         self.topRanks = []
         for key in temp:
-            tempDict["rankPoints"] = temp[key]["rank"]
-            tempDict[key] = tempDict[key]["username"]
-            tempDict["rank"] = calculateRankString(tempDict["rank"], self.rankDict)
-            self.topRanks.append = tempDict
+            tempDict = {}
+            tempDict["rankPoints"] = key["rank"]
+            tempDict["username"] = key["username"]
+            tempDict["rank"] = calculateRankString(key["rank"], self.rankDict)
+            self.topRanks.append(tempDict)
+        return self.topRanks
 
     def __createNewDatabase(self, path):
         """
@@ -390,3 +379,19 @@ class DatabaseAccessObject:
             if self.typeCheckMap[table][key] == "list":
                 listColumns.append(key)
         return listColumns
+
+    def __createDictOutOfRow(self, rows, table):
+        result = []
+        for row in rows:
+            dict = {}
+            for type, element in zip(self.typeCheckMap[table], row):
+                if self.typeCheckMap[table][type] == "list":
+                    if element == '""':
+                        dict[type] = []
+                        continue
+                    tempData = json.loads(element)
+                    dict[type] = [key["value"] for key in tempData]
+                    continue
+                dict[type] = element
+            result.append(dict)
+        return result

@@ -112,7 +112,7 @@ def rankGainCalculator(currentRank, averageRank, multiplier):
 
 
 def calculateRankString(currentRank, rankDict):
+    print(rankDict)
     for key in rankDict:
-        if currentRank < rankDict[key]:
+        if currentRank <= rankDict[key]:
             return key
-
