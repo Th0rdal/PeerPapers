@@ -226,11 +226,15 @@ def bookmark():
 
 @app.route('/rank', methods=['GET'])
 def rank():
+    #nur zum testen es sollte einfach der rang wie hier unten als zahl returnt werden sonst nichts
+    return make_response("495", 200)
     pass
 
 
 @app.route('/rankList', methods=['GET'])
 def rankList():
+    #sollte name rang und rangpunkte returnen im format -> name, rank, rankPoints
+    return make_response("Passt", 200)
     pass
 
 

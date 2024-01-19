@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
 import {
   CNavbar,
   CContainer,
@@ -24,13 +24,10 @@ import "@coreui/coreui/dist/css/coreui.min.css";
 
 function Navbar() {
   const [visible, setVisible] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [rank, setRank] = useState("");
+
   const navigate = useNavigate();
   const token = Cookies.get("token");
-
-  const searchQuery = {
-    title: searchTerm,
-  };
 
   const logout = async (e) => {
     Cookies.remove("token");
@@ -40,24 +37,23 @@ function Navbar() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Query" + JSON.stringify(searchQuery));
+  };
+
+  useEffect(() => {
     axios
-      .get(`api/filter?title=${searchQuery}`, {
+      .get(`api/rank`, {
         headers: {
           Authorization: `${token}`,
         },
       })
       .then((response) => {
-        if (response.data[1].length === 0) {
-          alert("keine passende Datei gefunden");
-        } else {
-          setSearchResults(response.data[1]);
-        }
+        setRank(response.data);
         console.log("Response:", response.data);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  };
+  }, [rank]);
 
   return (
     <>
@@ -109,6 +105,7 @@ function Navbar() {
               <CButton color="success" variant="outline" onClick={logout}>
                 Logout
               </CButton>
+              <p className="ms-4">Rang: {rank}</p>
             </CForm>
           </CCollapse>
         </CContainer>
