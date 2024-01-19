@@ -76,7 +76,7 @@ function Navbar() {
 
               <CNavItem>
                 <CNavLink href="/upload" active>
-                  Upload File
+                  Datei Hochladen
                 </CNavLink>
               </CNavItem>
               {/* <CNavItem>

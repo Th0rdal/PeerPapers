@@ -171,7 +171,8 @@ def filter():
 @app.route('/upvote', methods=['PUT'])
 def upvote():
 
-    fileID = request.args.get('fileID')
+    data = request.get_json()
+    fileID = data.get('fileID')
     userID = getJWTPayload(request.headers.get('Authorization'))["id"]
     databaseAccess = DatabaseAccessObject()
     databaseAccess.printTable(Table.FILES)

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { saveAs } from "file-saver";
 import Cookies from "js-cookie";
 
@@ -10,6 +10,7 @@ const ExtendedSearch = () => {
   const [semester, setSemester] = useState("");
   const [department, setDepartment] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [upvoteAdded, setUpvoteAdded] = useState(false);
 
   const token = Cookies.get("token");
 
@@ -40,6 +41,26 @@ const ExtendedSearch = () => {
     setDepartment(event.target.value);
   };
 
+  useEffect(() => {
+    axios
+      .get(`api/filter?${params.toString()}`, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      })
+      .then((response) => {
+        if (response.data[1].length === 0) {
+          alert("keine passende Datei gefunden");
+        } else {
+          setSearchResults(response.data[1]);
+        }
+        console.log("Response:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, [upvoteAdded]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log("token: " + token);
@@ -54,34 +75,30 @@ const ExtendedSearch = () => {
         if (response.data[1].length === 0) {
           alert("keine passende Datei gefunden");
         } else {
-          setSearchResults(response.data[1]); // Annahme, dass die Daten im zweiten Element sind
+          setSearchResults(response.data[1]);
         }
-        // Verarbeiten der Antwort
         console.log("Response:", response.data);
       })
       .catch((error) => {
-        // Fehlerbehandlung
         console.error("Error fetching data:", error);
       });
-    // Perform search with title, author, year, semester, and department
     console.log("Searching with", params.toString());
   };
 
   const download = (id, title) => {
-    // Zeigt ein Bestätigungsfenster an
     if (window.confirm("Möchten Sie die Datei wirklich herunterladen?")) {
       axios
         .get(`api/download?id=${id}`, {
           responseType: "blob",
           headers: {
-            Authorization: `${token}`, // Bearer-Token aus dem Cookie holen
+            Authorization: `${token}`,
           },
         })
         .then((response) => {
           const pdfBlob = new Blob([response.data], {
             type: "application/pdf",
           });
-          saveAs(pdfBlob, `${title}.pdf`); // Speichert die Datei als PDF
+          saveAs(pdfBlob, `${title}.pdf`);
         })
         .catch((error) => {
           console.error("Fehler beim Herunterladen der Datei:", error);
@@ -90,7 +107,6 @@ const ExtendedSearch = () => {
   };
 
   const bookmark = (id) => {
-    console.log("token: " + token);
     axios
       .put(
         `api/bookmark`,
@@ -112,7 +128,30 @@ const ExtendedSearch = () => {
       });
   };
 
-  const upvote = (id) => {};
+  const upvote = (id) => {
+    axios
+      .put(
+        "api/upvote",
+        { fileID: id },
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("upvote 1" + upvoteAdded);
+          setUpvoteAdded(!upvoteAdded);
+          console.log("upvote 2" + upvoteAdded);
+        }
+      })
+      .catch((error) => {
+        alert("Server Fehler");
+        console.error("Fehler beim bookmarken der Datei:", error);
+      });
+    console.log(`Upvote ID ${id}`);
+  };
 
   return (
     <div className="container my-4">
