@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 
 // import of pages -> always also define the name of the page
-import Test from "./pages/test";
 import HomePage from "./pages/homePage";
 import Navbar from "./modules/components/navbar";
 import Register from "./pages/register";
@@ -15,6 +14,7 @@ import ExtendedSearch from "./pages/extendedSearch";
 
 import { isAuthenticated } from "./auth";
 import Upload from "./pages/upload";
+import Rangliste from "./pages/rangliste";
 
 function App() {
   return (
@@ -27,8 +27,8 @@ function App() {
           element={isAuthenticated() ? <HomePage /> : <Navigate to="/" />}
         />
         <Route
-          path="/test"
-          element={isAuthenticated() ? <Test /> : <Navigate to="/" />}
+          path="/rangliste"
+          element={isAuthenticated() ? <Rangliste /> : <Navigate to="/" />}
         />
         <Route
           path="/erweiterteSuche"

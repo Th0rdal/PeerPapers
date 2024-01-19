@@ -1,6 +1,7 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { saveAs } from "file-saver";
+import Cookies from "js-cookie";
 
 const ExtendedSearch = () => {
   const [title, setTitle] = useState("");
@@ -8,6 +9,10 @@ const ExtendedSearch = () => {
   const [year, setYear] = useState("");
   const [semester, setSemester] = useState("");
   const [department, setDepartment] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [upvoteAdded, setUpvoteAdded] = useState(false);
+  const [bookmarks, setBookmarks] = useState({});
+  const token = Cookies.get("token");
 
   const params = new URLSearchParams();
   if (title) params.append("title", title);
@@ -15,7 +20,6 @@ const ExtendedSearch = () => {
   if (year) params.append("year", year);
   if (semester) params.append("semester", semester);
   if (department) params.append("department", department);
-  const [searchResults, setSearchResults] = useState([]);
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
@@ -37,43 +41,116 @@ const ExtendedSearch = () => {
     setDepartment(event.target.value);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
+  useEffect(() => {
     axios
-      .get(`api/filter?${params.toString()}`)
+      .get(`api/filter?${params.toString()}`, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      })
       .then((response) => {
         if (response.data[1].length === 0) {
           alert("keine passende Datei gefunden");
         } else {
-          setSearchResults(response.data[1]); // Annahme, dass die Daten im zweiten Element sind
+          setSearchResults(response.data[1]);
         }
-        // Verarbeiten der Antwort
         console.log("Response:", response.data);
       })
       .catch((error) => {
-        // Fehlerbehandlung
         console.error("Error fetching data:", error);
       });
-    // Perform search with title, author, year, semester, and department
+  }, [upvoteAdded, bookmarks]);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log("token: " + token);
+
+    axios
+      .get(`api/filter?${params.toString()}`, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      })
+      .then((response) => {
+        if (response.data[1].length === 0) {
+          alert("keine passende Datei gefunden");
+        } else {
+          setSearchResults(response.data[1]);
+        }
+        console.log("Response:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
     console.log("Searching with", params.toString());
   };
 
-  const download = (id) => {
-    // Zeigt ein Bestätigungsfenster an
+  const download = (id, title) => {
     if (window.confirm("Möchten Sie die Datei wirklich herunterladen?")) {
       axios
-        .get(`api/download?id=${id}`, { responseType: "blob" })
+        .get(`api/download?id=${id}`, {
+          responseType: "blob",
+          headers: {
+            Authorization: `${token}`,
+          },
+        })
         .then((response) => {
           const pdfBlob = new Blob([response.data], {
             type: "application/pdf",
           });
-          saveAs(pdfBlob, `${title}.pdf`); // Speichert die Datei als PDF
+          saveAs(pdfBlob, `${title}.pdf`);
         })
         .catch((error) => {
           console.error("Fehler beim Herunterladen der Datei:", error);
         });
     }
+  };
+
+  const bookmark = (id) => {
+    axios
+      .put(
+        `api/bookmark`,
+        { fileID: id },
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          setBookmarks((prev) => ({ ...prev, [id]: !prev[id] }));
+        }
+      })
+      .catch((error) => {
+        alert("Server Fehler");
+        console.error("Fehler beim bookmarken der Datei:", error);
+      });
+  };
+
+  const upvote = (id) => {
+    axios
+      .put(
+        "api/upvote",
+        { fileID: id },
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("upvote 1" + upvoteAdded);
+          setUpvoteAdded(!upvoteAdded);
+          console.log("upvote 2" + upvoteAdded);
+        }
+      })
+      .catch((error) => {
+        alert("Server Fehler");
+        console.error("Fehler beim bookmarken der Datei:", error);
+      });
+    console.log(`Upvote ID ${id}`);
   };
 
   return (
@@ -165,12 +242,32 @@ const ExtendedSearch = () => {
                 <p className="card-text">Department: {item.department}</p>
                 <p className="card-text">Upvotes: {item.upvotes}</p>
 
-                <button
-                  className="btn btn-primary"
-                  onClick={() => download(item.id)}
-                >
-                  Download
-                </button>
+                <div className="row">
+                  <div className="col">
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => download(item.id, item.title)}
+                    >
+                      Download
+                    </button>
+                  </div>
+                  <div className="col">
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => bookmark(item.id)}
+                    >
+                      {bookmarks[item.id] ? "Bookmark aufheben" : "Bookmark"}
+                    </button>
+                  </div>
+                  <div className="col">
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => upvote(item.id)}
+                    >
+                      Upvote
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

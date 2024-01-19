@@ -143,7 +143,7 @@ def download():
 
     relative_path = getTotalPath("resources/database/files")
     fullPath = relative_path + ("/" + iD + ".pdf")
-    print("path " + fullPath)
+    print("path "+ fullPath)
 
     if not os.path.exists(fullPath):
         # Wenn die Datei nicht existiert, sende einen 500-Fehler
@@ -202,7 +202,7 @@ def bookmarks():
     for bookmark in bookmarks:
         row = databaseAccess.findOne(Table.FILES, {"id": bookmark})
         result[row["id"]] = row
-    return jsonify(result), 200
+    return jsonify({'message': 'successful filtered'}, result), 200
 
 
 @app.route('/bookmark', methods=['PUT'])

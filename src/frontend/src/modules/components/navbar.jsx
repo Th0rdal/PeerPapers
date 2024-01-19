@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
 import {
   CNavbar,
   CContainer,
@@ -24,12 +24,10 @@ import "@coreui/coreui/dist/css/coreui.min.css";
 
 function Navbar() {
   const [visible, setVisible] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const navigate = useNavigate();
+  const [rank, setRank] = useState("");
 
-  const searchQuery = {
-    searchTerm: searchTerm,
-  };
+  const navigate = useNavigate();
+  const token = Cookies.get("token");
 
   const logout = async (e) => {
     Cookies.remove("token");
@@ -39,22 +37,23 @@ function Navbar() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Query" + JSON.stringify(searchQuery));
-    fetch(`/api/filter?searchQuery=${searchQuery}`, {
-      method: "GET",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response;
+  };
+
+  useEffect(() => {
+    axios
+      .get(`api/rank`, {
+        headers: {
+          Authorization: `${token}`,
+        },
       })
-      .then((jsonData) => {
-        console.log("Response JSON: " + jsonData.status);
+      .then((response) => {
+        setRank(response.data);
+        console.log("Response:", response.data);
       })
       .catch((error) => {
-        console.error("An error occurred:", error);
+        console.error("Error fetching data:", error);
       });
-  };
+  }, [rank]);
 
   return (
     <>
@@ -70,24 +69,31 @@ function Navbar() {
             <CNavbarNav>
               <CNavItem>
                 <CNavLink href="/home" active>
-                  Home
+                  Home/Bookmarks
+                </CNavLink>
+              </CNavItem>
+              <CNavItem>
+                <CNavLink href="/rangliste" active>
+                  Rangliste
                 </CNavLink>
               </CNavItem>
 
               <CNavItem>
                 <CNavLink href="/upload" active>
-                  Upload File
+                  Datei Hochladen
                 </CNavLink>
               </CNavItem>
               {/* <CNavItem>
                 <CNavLink href="/register">Register/Login</CNavLink>
               </CNavItem> */}
               <CNavItem>
-                <CNavLink href="/erweiterteSuche">Erweiterte Suche</CNavLink>
+                <CNavLink href="/erweiterteSuche">
+                  Suche/Erweitertesuche
+                </CNavLink>
               </CNavItem>
             </CNavbarNav>
             <CForm className="d-flex" onSubmit={handleSubmit}>
-              <CFormInput
+              {/* <CFormInput
                 type="search"
                 className="me-2"
                 placeholder="Search"
@@ -95,10 +101,11 @@ function Navbar() {
               />
               <CButton type="submit" color="success" variant="outline">
                 Search
-              </CButton>
+              </CButton> */}
               <CButton color="success" variant="outline" onClick={logout}>
                 Logout
               </CButton>
+              <p className="ms-4">Rang: {rank}</p>
             </CForm>
           </CCollapse>
         </CContainer>
