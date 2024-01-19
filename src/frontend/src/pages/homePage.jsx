@@ -70,7 +70,6 @@ const HomePage = () => {
       .then((response) => {
         if (response.status === 200) {
           setBookmarkAdded(!bookmarkAdded);
-          alert("bookmarked");
         }
       })
       .catch((error) => {

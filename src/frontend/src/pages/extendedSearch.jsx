@@ -120,7 +120,6 @@ const ExtendedSearch = () => {
       .then((response) => {
         if (response.status === 200) {
           setBookmarks((prev) => ({ ...prev, [id]: !prev[id] }));
-          alert("bookmarked");
         }
       })
       .catch((error) => {
