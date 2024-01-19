@@ -180,8 +180,8 @@ def upvote():
         if key == fileID:
             addBookmarkFlag = False
 
-    rankgain = rankGainCalculator(userRow["rank"], databaseAccess.averageRank, databaseAccess.rankMultiplier["upvote"])
     databaseAccess.calculateRankValues()
+    rankgain = rankGainCalculator(userRow["rank"], databaseAccess.averageRank, databaseAccess.rankMultiplier["upvote"])
     if addBookmarkFlag:
         databaseAccess.addToList(Table.USER, {"id": userID}, {"upvotedFiles": fileID})
         databaseAccess.update(Table.USER, {"id": userID}, {"rank": userID[rank] + rankgain})
