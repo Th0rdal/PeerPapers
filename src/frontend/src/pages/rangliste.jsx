@@ -3,54 +3,53 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const Rangliste = () => {
-  const [rankList, setRanklist] = useState([]);
+  const [rankData, setRankData] = useState([]);
+
   const token = Cookies.get("token");
 
   useEffect(() => {
     axios
-      .get(`api/rankList`, {
+      .get("api/rankList", {
         headers: {
           Authorization: `${token}`,
         },
       })
       .then((response) => {
-        // Überprüfen Sie die Datenstruktur der Antwort
-        if (response.data && response.data.length > 0) {
-          setRanklist(response.data);
+        if (Array.isArray(response.data)) {
+          setRankData(response.data);
         } else {
-          alert("Keine Daten in der Rangliste gefunden");
+          console.error("Ungültige Antwortstruktur:", response.data);
         }
-        console.log("Response:", response.data);
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        console.error("Es gab ein Problem mit der API-Abfrage", error);
       });
   }, []);
 
-  return (
-    <div>
-      <main>
-        <h1>Rangliste</h1>
-        <p>Hier werden die Top-User in einer Rangliste angezeigt</p>
-        <div className="row">
-          {Array.isArray(rankList) ? (
-            rankList.map((item, index) => (
-              // Hier Ihren Code für das Mapping der Liste einfügen
-              <div key={index} className="col-md-6 mb-3">
-                <div className="card">
-                  <div className="card-body">
-                    <h5 className="card-text">Name: {item.name}</h5>
-                    <p className="card-text">Rang: {item.rang}</p>
-                    <p className="card-text">Rangpunkte: {item.rankPoints}</p>
-                  </div>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p>Server Fehler</p>
-          )}
+  const renderRankCards = () => {
+    return rankData.map((data, index) => (
+      <div key={index} className="col-md-6 mb-3">
+        <div className="card">
+          <div className="card-body">
+            <h5 className="card-title">Username: {data.username}</h5>
+            <p className="card-text">Rangpunkte: {data.rankPoints}</p>
+            <p className="card-text">Rang: {data.rank}</p>
+          </div>
         </div>
-      </main>
+      </div>
+    ));
+  };
+
+  return (
+    <div className="container">
+      <h1>Rangliste</h1>
+      <div className="row">
+        {rankData.length === 0 ? (
+          <p>Es wurden keine Rangdaten gefunden.</p>
+        ) : (
+          renderRankCards()
+        )}
+      </div>
     </div>
   );
 };

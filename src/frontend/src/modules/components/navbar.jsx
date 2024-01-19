@@ -25,6 +25,7 @@ import "@coreui/coreui/dist/css/coreui.min.css";
 function Navbar() {
   const [visible, setVisible] = useState(false);
   const [rank, setRank] = useState("");
+  const [rankPoints, setRankPoints] = useState("");
 
   const navigate = useNavigate();
   const token = Cookies.get("token");
@@ -47,7 +48,11 @@ function Navbar() {
         },
       })
       .then((response) => {
-        setRank(response.data);
+        const { rank } = response.data;
+        const { rankPoints } = response.data;
+
+        setRank(rank);
+        setRankPoints(rankPoints);
         console.log("Response:", response.data);
       })
       .catch((error) => {
@@ -106,6 +111,7 @@ function Navbar() {
                 Logout
               </CButton>
               <p className="ms-4">Rang: {rank}</p>
+              <p className="ms-4">Rang-Punkte: {rankPoints}</p>
             </CForm>
           </CCollapse>
         </CContainer>
