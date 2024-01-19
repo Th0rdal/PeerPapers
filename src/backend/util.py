@@ -1,3 +1,4 @@
+import math
 from datetime import datetime as dt
 import datetime
 import os
@@ -38,12 +39,16 @@ def isJWTValid(token):
 
         # check expiration date
         if dt.strptime(decodedToken["expires"], "%Y-%m-%d-%H:%M") < datetime.datetime.utcnow():
+            print("THERE")
             return False
     except jwt.ExpiredSignatureError:
+        print("THERE2")
         return False
     except jwt.InvalidTokenError:
+        print("THERE3")
         return False
     except IndexError:
+        print("THERE4")
         return False
     return True
 
@@ -55,7 +60,6 @@ def getJWTPayload(token):
     :return: payload of token as dict
     """
     return jwt.decode(token.split(" ")[1], secret, algorithms=["HS256"])
-
 
 
 def allowed_file(file):
@@ -98,3 +102,17 @@ def createUUID():
     :return: uuid as string
     """
     return str(uuid.uuid4())
+
+
+def rankGainCalculator(currentRank, averageRank, multiplier):
+    rankBasedMultiplier = min((averageRank / currentRank), 5) if (averageRank / currentRank) > 1 else max(
+        (averageRank / currentRank), 0.625)
+    logMultiplier = 4.95 * math.pow(10, -4) * averageRank + 0.0404
+    return math.log(averageRank) * logMultiplier * rankBasedMultiplier * multiplier
+
+
+def calculateRankString(currentRank, rankDict):
+    for key in rankDict:
+        if currentRank < rankDict[key]:
+            return key
+

@@ -3,7 +3,8 @@ import os
 
 from flask import Flask, abort, request, jsonify, send_file, make_response
 
-from util import hashPassword, checkHashedPassword, getTotalPath, createJWTToken, createUUID, isJWTValid, getJWTPayload
+from util import hashPassword, checkHashedPassword, getTotalPath, createJWTToken, createUUID, isJWTValid, getJWTPayload, \
+    calculateRankString, rankGainCalculator
 
 from database.Table import Table
 from database.database import DatabaseAccessObject
@@ -11,15 +12,17 @@ from database.exceptions import NoRowFoundException
 
 app = Flask(__name__)
 
+
 # app.config['SECRET_KEY'] = '1234'
 # app.config['ALLOWED_EXTENSIONS'] = {'pdf'}
 @app.before_request
 def checkAuthentication():
-     if "/register" in request.full_path or "/login" in request.full_path:
-         return
-     if isJWTValid(request.headers.get('Authorization')):
+    if "/register" in request.full_path or "/login" in request.full_path:
         return
-     return jsonify("error: invalid token!"), 400
+    if isJWTValid(request.headers.get('Authorization')):
+        return
+    return jsonify("error: invalid token!"), 400
+
 
 # MUST
 @app.route('/register', methods=['POST'])
@@ -69,8 +72,9 @@ def login():
         row = databaseAccess.findOne(Table.AUTHENTICATION,
                                      {'username': username})  # checks if username and pw matches with existing one
         if checkHashedPassword(row["password"], password):
-            userRow = databaseAccess.findOne(Table.USER, {"username":username})
-            return jsonify({'message': 'Login successful', "token": f"Bearer {createJWTToken(username, userRow['id'])}"})
+            userRow = databaseAccess.findOne(Table.USER, {"username": username})
+            return jsonify(
+                {'message': 'Login successful', "token": f"Bearer {createJWTToken(username, userRow['id'])}"})
         return jsonify({"message": "Username or Password incorrect"}, 400)
     except NoRowFoundException as e:  # When NoRowFoundException is triggered, username is not taken.
         logging.info('Login not successful, username or password incorrect')
@@ -83,7 +87,7 @@ def upload():
     databaseAccess = DatabaseAccessObject()
 
     fileUUID = createUUID()
-      # Zugriff auf die gesendeten Daten und Dateien mit request
+    # Zugriff auf die gesendeten Daten und Dateien mit request
     title = request.form.get('title')
     author = request.form.get('author')
     semester = request.form.get('semester')
@@ -93,8 +97,6 @@ def upload():
     relative_path = getTotalPath("resources/database/files")
     print("relative Path: " + relative_path)
 
-
-
     # Kombiniere den relativen Pfad mit dem Dateinamen
     save_path = os.path.join(relative_path, fileUUID + ".pdf")
 
@@ -102,14 +104,14 @@ def upload():
     print("save Path " + save_path)
 
     uploadFile = {
-                "id": fileUUID,
-                "title": title,
-                "author": author,
-                "semester": semester,
-                "year": year,
-                "department": department,
-                "upvotes": 0
-                }
+        "id": fileUUID,
+        "title": title,
+        "author": author,
+        "semester": semester,
+        "year": year,
+        "department": department,
+        "upvotes": 0
+    }
 
     databaseAccess.newEntry(Table.FILES, uploadFile)
 
@@ -118,10 +120,10 @@ def upload():
     print("semester " + semester)
     print("year " + year)
     print("department " + department)
-    
+
     # Zugriff auf die hochgeladene Datei
     file = request.files.get('file')
-    
+
     if not file:
         return jsonify({'error': 'Keine Datei hochgeladen'}), 400
 
@@ -132,7 +134,6 @@ def upload():
 
     # Gib eine Erfolgsmeldung zurück
     return jsonify({'message': 'Datei erfolgreich hochgeladen'}), 200
-    
 
 
 @app.route('/download', methods=['GET'])
@@ -142,13 +143,11 @@ def download():
 
     relative_path = getTotalPath("resources/database/files")
     fullPath = relative_path + ("/" + iD + ".pdf")
-    print("path "+ fullPath)
-
+    print("path " + fullPath)
 
     if not os.path.exists(fullPath):
         # Wenn die Datei nicht existiert, sende einen 500-Fehler
         abort(404)
-        
 
     return send_file(fullPath, as_attachment=True)
 
@@ -170,22 +169,24 @@ def filter():
 
 @app.route('/upvote', methods=['PUT'])
 def upvote():
-
     fileID = request.args.get('fileID')
     userID = getJWTPayload(request.headers.get('Authorization'))["id"]
     databaseAccess = DatabaseAccessObject()
     databaseAccess.printTable(Table.FILES)
-    upvotedFilesList = databaseAccess.findOne(Table.USER, {"id": userID})["upvotedFiles"]
+    userRow = databaseAccess.findOne(Table.USER, {"id": userID})
 
     addBookmarkFlag = True
-    for key in upvotedFilesList:
+    for key in userRow["upvotedFiles"]:
         if key == fileID:
             addBookmarkFlag = False
 
+    rankgain = rankGainCalculator(userRow["rank"], databaseAccess.averageRank, databaseAccess.rankMultiplier["upvote"])
     if addBookmarkFlag:
         databaseAccess.addToList(Table.USER, {"id": userID}, {"upvotedFiles": fileID})
+        databaseAccess.update(Table.USER, {"id": userID}, {"rank": userID[rank] + rankgain})
     else:
         databaseAccess.deleteFromList(Table.USER, {"id": userID}, {"upvotedFiles": fileID})
+        databaseAccess.update(Table.USER, {"id": userID}, {"rank": userID[rank] - rankgain})
     databaseAccess.update(Table.FILES, {"id": fileID}, {"upvotes": "+1" if addBookmarkFlag else "-1"})
     return make_response("", 200)
 
@@ -223,14 +224,20 @@ def bookmark():
         databaseAccess.deleteFromList(Table.USER, {"id": userID}, {"bookmarks": fileID})
     return make_response("", 200)
 
+
 @app.route('/rank', methods=['GET'])
 def rank():
-    pass
+    userID = getJWTPayload(request.headers.get('Authorization'))
+    databaseAccess = DatabaseAccessObject()
+
+    user = databaseAccess.findOne(Table.USER, {"id": userID})
+    return jsonify(
+        {"rankPoints": user["rank"], "rank": calculateRankString(user["rank"], databaseAccess.rankDict)}), 200
 
 
 @app.route('/rankList', methods=['GET'])
 def rankList():
-    pass
+    return jsonify(DatabaseAccessObject().getTopRanks(100)), 200
 
 
 def startServer():

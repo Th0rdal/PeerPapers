@@ -6,7 +6,8 @@ import uuid
 
 from .Table import Table
 from . import exceptions
-from util import getTotalPath, createUUID
+from util import getTotalPath, createUUID, calculateRankString
+
 
 class DatabaseAccessObject:
     """
@@ -15,7 +16,24 @@ class DatabaseAccessObject:
     is possible, but highly recommended not to. Especially when the list is empty, because python sometimes puts an empty string
     in a dict in extra '' do differentiate it from an empty dict, but it is not consistent in doing so.
     """
-
+    topRanks = []
+    averageRank = 100
+    rankDict = {
+        "bronze": 0,
+        "silver": 0,
+        "gold": 0,
+        "platin": 0
+    }
+    rankDivision = {
+        "bronze": 30,
+        "silver": 60,
+        "gold": 90,
+        "platin": 100
+    }
+    rankMultiplier = {
+        "upvote": 1,
+        "download": 0.5
+    }
     typeCheckMap = {Table.AUTHENTICATION: {"username": "str", "password": "str"},
                     Table.USER: {"id": "id", "username": "str", "rank": "int", "bookmarks": "list",
                                  "upvotedFiles": "list"},
@@ -36,7 +54,6 @@ class DatabaseAccessObject:
             self.c = self.conn.cursor()
         except sqlite3.OperationalError as e:
             self.__createNewDatabase(getTotalPath("resources/database/database.db"))
-
 
     def printTable(self, table):
         print(self.getTable(table))
@@ -174,7 +191,10 @@ class DatabaseAccessObject:
         logging.info(f"Querying database for rows that fit the search criteria {searchData}")
         executionText = f"SELECT * FROM {table.value} WHERE"
         for key in searchData:
-            executionText = executionText + f" {key} = :{key} AND"
+            if self.typeCheckMap[table][key] == "str":
+                executionText = executionText + f" {key} LIKE :{key} AND"
+            else:
+                executionText = executionText + f" {key} = :{key} AND"
             if searchData[key] == '' or searchData[key] == []:
                 searchData[key] = '""'
         with self.conn:
@@ -194,6 +214,39 @@ class DatabaseAccessObject:
                 dict[type] = element
             result.append(dict)
         return result
+
+    def calculateRankValues(self):
+        """
+        Calculates average, userNumber and rankDivision numbers.
+        :return: None
+        """
+
+        self.c.execute("SELECT SUM(rank) FROM USER")
+        self.averageRank = self.c.fetchone()[0]
+
+        self.c.execute("SELECT COUNT(*) FROM USER")
+        userNumber = self.c.fetchone()[0]
+
+        # get rank values for each division
+        for key in self.rankDivision:
+            temp = (userNumber / 100) * self.rankDivision[key]
+            self.c.execute(f"SELECT * FROM USER ORDER BY rank ASC LIMIT 1 OFFSET {temp}")
+            self.rankDict[key] = self.c.fetchone()[0]["rank"]
+
+    def getTopRanks(self, amount):
+        """
+        Returns a list of the top x ranked users.
+        :return: List of object
+        """
+        self.c.execute(f"SELECT * FROM USER ORDER BY rank DESC LIMIT {amount}")
+        temp = self.c.fetchall()
+        tempDict = {}
+        self.topRanks = []
+        for key in temp:
+            tempDict["rankPoints"] = temp[key]["rank"]
+            tempDict[key] = tempDict[key]["username"]
+            tempDict["rank"] = calculateRankString(tempDict["rank"], self.rankDict)
+            self.topRanks.append = tempDict
 
     def __createNewDatabase(self, path):
         """
