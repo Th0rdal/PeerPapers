@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const Upload = () => {
   const [title, setTitle] = useState("");
@@ -11,6 +12,7 @@ const Upload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState("");
   const navigate = useNavigate();
+  const token = Cookies.get("token");
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
@@ -58,6 +60,7 @@ const Upload = () => {
       .post("api/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `${token}`,
         },
       })
       .then((response) => {

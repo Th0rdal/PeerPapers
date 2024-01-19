@@ -201,7 +201,7 @@ def bookmarks():
     for bookmark in bookmarks:
         row = databaseAccess.findOne(Table.FILES, {"id": bookmark})
         result[row["id"]] = row
-    return jsonify(result), 200
+    return jsonify({'message': 'successful filtered'}, result), 200
 
 
 @app.route('/bookmark', methods=['PUT'])
