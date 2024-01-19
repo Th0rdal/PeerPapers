@@ -4,8 +4,6 @@ import Cookies from "js-cookie";
 
 const Rangliste = () => {
   const [rankData, setRankData] = useState([]);
-  const [bookmarkAdded, setBookmarkAdded] = useState(false);
-  const [upvoteAdded, setUpvoteAdded] = useState(false);
 
   const token = Cookies.get("token");
 
@@ -26,7 +24,7 @@ const Rangliste = () => {
       .catch((error) => {
         console.error("Es gab ein Problem mit der API-Abfrage", error);
       });
-  }, [bookmarkAdded, upvoteAdded, token]);
+  }, []);
 
   const renderRankCards = () => {
     return rankData.map((data, index) => (
