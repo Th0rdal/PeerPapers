@@ -44,7 +44,7 @@ def register():
         return jsonify({'message': 'Username is already taken'}), 400
     except NoRowFoundException as e:  # When NoRowFoundException is triggered, username is not taken.
         databaseAccess.newEntry(Table.AUTHENTICATION, {'username': username, 'password': hashPassword(password)})
-        databaseAccess.newEntry(Table.USER, {'username': username, 'rank': 1, 'bookmarks': '', 'upvotedFiles': ''})
+        databaseAccess.newEntry(Table.USER, {'username': username, 'rank': 1, 'bookmarks': '', 'upvotedFiles': '', "downloadedFiles": ""})
     logging.info('Registration successful')
     return jsonify({'message': 'Registration successful'}), 200
 
@@ -125,10 +125,25 @@ def upload():
 
 @app.route('/download', methods=['GET'])
 def download():
-    iD = request.args.get('id')
-
+    fileID = request.args.get('id')
+    userID = getJWTPayload(request.headers.get('Authorization'))["id"]
+    databaseAccess = DatabaseAccessObject()
     relative_path = getTotalPath("resources/database/files")
-    fullPath = relative_path + ("/" + iD + ".pdf")
+    fullPath = os.path.join(relative_path, fileID + ".pdf")
+
+    userRow = databaseAccess.findOne(Table.USER, {"id": userID})
+    DatabaseAccessObject.update(Table.USER, {"id": fileID}, {"downloads": "+1"})
+
+    downloadedFilesFlag = False
+    for key in userRow["downloadedFiles"]:
+        if key == fileID:
+            downloadedFilesFlag = True
+
+    if not downloadedFilesFlag:
+        rankgain = rankGainCalculator(databaseAccess.rankMultiplier["upvote"])
+        temp = userRow["rank"] + rankgain
+        databaseAccess.addToList(Table.USER, {"id": userID}, {"downloadedFiles": fileID})
+        databaseAccess.update(Table.USER, {"id": userID}, {"rank": temp})
 
     if not os.path.exists(fullPath):
         # Wenn die Datei nicht existiert, sende einen 500-Fehler
@@ -164,7 +179,7 @@ def upvote():
         if key == fileID:
             addBookmarkFlag = False
 
-    rankgain = rankGainCalculator(userRow["rank"], databaseAccess.averageRank, databaseAccess.rankMultiplier["upvote"])
+    rankgain = rankGainCalculator(databaseAccess.rankMultiplier["upvote"])
     if addBookmarkFlag:
         temp = userRow["rank"] + rankgain
         databaseAccess.addToList(Table.USER, {"id": userID}, {"upvotedFiles": fileID})

@@ -36,10 +36,10 @@ class DatabaseAccessObject:
     }
     typeCheckMap = {Table.AUTHENTICATION: {"username": "str", "password": "str"},
                     Table.USER: {"id": "id", "username": "str", "rank": "int", "bookmarks": "list",
-                                 "upvotedFiles": "list"},
+                                 "upvotedFiles": "list", "downloadedFiles": "list"},
                     Table.FILES: {"id": "id", "title": "str", "author": "str", "semester": "int",
                                   "year": "int",
-                                  "department": "str", "upvotes": "int"}}
+                                  "department": "str", "upvotes": "int", "downloads": "int"}}
 
     def __init__(self, testing=False):
         logging.info("Initializing DatabaseAccessObject")
@@ -260,9 +260,10 @@ class DatabaseAccessObject:
                                   'a' || substr(lower(hex(randomblob(2))),2) || 
                                   lower(hex(randomblob(6)))),
               username TEXT,
-              rank integer,
+              rank real,
               bookmarks TEXT,
-              upvotedFiles TEXT
+              upvotedFiles TEXT,
+              downloadedFiles TEXT
         )""")
         self.c.execute("""CREATE TABLE FILES (
             id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(4))) || 
@@ -275,7 +276,8 @@ class DatabaseAccessObject:
               semester integer,
               year integer,
               department TEXT,
-              upvotes integer
+              upvotes integer,
+              downloads integer
         )""")
 
     # private methods

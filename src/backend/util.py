@@ -100,13 +100,8 @@ def createUUID():
     return str(uuid.uuid4())
 
 
-def rankGainCalculator(currentRank, averageRank, multiplier):
-    if currentRank == 0:
-        currentRank = 1
-    rankBasedMultiplier = min((averageRank / currentRank), 5) if (averageRank / currentRank) > 1 else max(
-        (averageRank / currentRank), 0.625)
-    logMultiplier = 4.95 * math.pow(10, -4) * averageRank + 0.0404
-    return math.log(averageRank) * logMultiplier * rankBasedMultiplier * multiplier
+def rankGainCalculator(multiplier):
+    return math.log(100) * multiplier
 
 
 def calculateRankString(currentRank, rankDict):
