@@ -181,6 +181,7 @@ def upvote():
             addBookmarkFlag = False
 
     rankgain = rankGainCalculator(userRow["rank"], databaseAccess.averageRank, databaseAccess.rankMultiplier["upvote"])
+    databaseAccess.calculateRankValues()
     if addBookmarkFlag:
         databaseAccess.addToList(Table.USER, {"id": userID}, {"upvotedFiles": fileID})
         databaseAccess.update(Table.USER, {"id": userID}, {"rank": userID[rank] + rankgain})
@@ -227,7 +228,7 @@ def bookmark():
 
 @app.route('/rank', methods=['GET'])
 def rank():
-    userID = getJWTPayload(request.headers.get('Authorization'))
+    userID = getJWTPayload(request.headers.get('Authorization'))["id"]
     databaseAccess = DatabaseAccessObject()
 
     user = databaseAccess.findOne(Table.USER, {"id": userID})
