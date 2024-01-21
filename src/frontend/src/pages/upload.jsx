@@ -31,10 +31,6 @@ const Upload = () => {
     setTitle(event.target.value);
   };
 
-  const handleAuthorChange = (event) => {
-    setAuthor(event.target.value);
-  };
-
   const handleSemesterChange = (event) => {
     setSemester(event.target.value);
   };
@@ -113,17 +109,6 @@ const Upload = () => {
             placeholder="Title..."
             value={title}
             onChange={handleTitleChange}
-          />
-        </div>
-
-        <div className="mb-3">
-          <input
-            type="text"
-            required
-            className="form-control"
-            placeholder="Autor..."
-            value={author}
-            onChange={handleAuthorChange}
           />
         </div>
 
