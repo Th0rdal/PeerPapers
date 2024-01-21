@@ -13,7 +13,7 @@ Software engineering project
 1. Install python3 *
 2. First make sure to update pip interpreter ** -> pip install --upgrade pip
 3. Install python flask -> pip install flask
-4. Install JasonWebToken for Python -> pip install PyJWT
+4. Install JsonWebToken for Python -> pip install PyJWT
 5. Install bcrypt -> pip install bcrypt
 
   *python flask only runs on python3.8 version or newer
