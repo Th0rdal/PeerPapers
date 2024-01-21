@@ -29,4 +29,3 @@ Software engineering project
   - services -> Functions and modules for handling external interactions like API requests, data processing, and business logic.
 - pages -> Contains all the React pages. Each page and module has its own subdirectory where you put the page/module and the corresponding CSS file
 - backend folder contains the whole sourcecode of the backend, which consists of endpoints and database
-  - 
