@@ -155,7 +155,7 @@ class DatabaseAccessObject:
             self.__checkIfDataIsList(table, insertData, False)
             row = self.findOne(table, searchData)
             for element in insertData:
-                if self.typeCheckMap[table][element] == "str":
+                if self.typeCheckMap[table][element] == "int" and type(insertData[element]) == type(""):
                     if insertData[element].startswith("+"):
                         insertData[element] = row[element] + int(insertData[element][1:])
                     elif insertData[element].startswith("-"):
@@ -231,7 +231,8 @@ class DatabaseAccessObject:
         userNumber = self.c.fetchone()[0]
         # get rank values for each division
         for key in self.rankDivision:
-            temp = int((userNumber / 100) * self.rankDivision[key]) if int((userNumber / 100) * self.rankDivision[key]) < userNumber else userNumber-1
+            temp = int((userNumber / 100) * self.rankDivision[key]) if int(
+                (userNumber / 100) * self.rankDivision[key]) < userNumber else userNumber - 1
             self.c.execute(f"SELECT * FROM USER ORDER BY rank ASC LIMIT 1 OFFSET {temp}")
             temp2 = self.c.fetchone()
             temp = self.__createDictOutOfRow([temp2], Table.USER)[0]["rank"]
