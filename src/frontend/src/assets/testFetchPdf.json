@@ -1,0 +1,92 @@
+[
+  {
+    "path": "test/sdf",
+    "titel": "Test PDF TITEL 2",
+    "author": "John Doe",
+    "semester": 3,
+    "year": 2022,
+    "department": "Computer Science",
+    "upvotes": 12
+  },
+  {
+    "path": "example/file",
+    "titel": "Example Report",
+    "author": "Alice Smith",
+    "semester": 4,
+    "year": 2023,
+    "department": "Engineering",
+    "upvotes": 32
+  },
+  {
+    "path": "project/docs",
+    "titel": "Project Documentation",
+    "author": "Bob Johnson",
+    "semester": 6,
+    "year": 2021,
+    "department": "Information Technology",
+    "upvotes": 20
+  },
+  {
+    "path": "thesis/final",
+    "titel": "Final Thesis",
+    "author": "Eva Brown",
+    "semester": 7,
+    "year": 2020,
+    "department": "Computer Engineering",
+    "upvotes": 55
+  },
+  {
+    "path": "research/paper",
+    "titel": "Research Paper",
+    "author": "David Lee",
+    "semester": 4,
+    "year": 2024,
+    "department": "Science",
+    "upvotes": 8
+  },
+  {
+    "path": "presentation/slides",
+    "titel": "Presentation Slides",
+    "author": "Sophia Clark",
+    "semester": 2,
+    "year": 2023,
+    "department": "Business",
+    "upvotes": 15
+  },
+  {
+    "path": "code/documentation",
+    "titel": "Code Documentation",
+    "author": "Michael Taylor",
+    "semester": 5,
+    "year": 2022,
+    "department": "Software Engineering",
+    "upvotes": 25
+  },
+  {
+    "path": "project/report",
+    "titel": "Project Report",
+    "author": "Linda Wilson",
+    "semester": 4,
+    "year": 2021,
+    "department": "Electrical Engineering",
+    "upvotes": 7
+  },
+  {
+    "path": "experiment/results",
+    "titel": "Experiment Results",
+    "author": "James Anderson",
+    "semester": 6,
+    "year": 2020,
+    "department": "Physics",
+    "upvotes": 42
+  },
+  {
+    "path": "survey/data",
+    "titel": "Survey Data",
+    "author": "Olivia Martin",
+    "semester": 3,
+    "year": 2024,
+    "department": "Social Sciences",
+    "upvotes": 10
+  }
+]
