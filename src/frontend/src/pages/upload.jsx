@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 const Upload = () => {
   const [title, setTitle] = useState("");
@@ -14,12 +15,20 @@ const Upload = () => {
   const navigate = useNavigate();
   const token = Cookies.get("token");
 
+  useEffect(() => {
+    // JWT aus dem Cookie holen und den Benutzernamen extrahieren
+    const jwtFromCookie = Cookies.get("token"); // Passe dies entsprechend deiner Cookie-Struktur an
+
+    if (jwtFromCookie) {
+      const decodedToken = jwtDecode(jwtFromCookie);
+      const usernameFromJWT = decodedToken.username; // Stelle sicher, dass dies dem Schlüssel in deinem JWT entspricht
+
+      setAuthor(usernameFromJWT);
+    }
+  }, []);
+
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
-  };
-
-  const handleAuthorChange = (event) => {
-    setAuthor(event.target.value);
   };
 
   const handleSemesterChange = (event) => {
@@ -27,7 +36,19 @@ const Upload = () => {
   };
 
   const handleYearChange = (event) => {
-    setYear(event.target.value);
+    const regex =
+      /^(200[0-9]|20[1-9][0-9]|2[1-9][0-9]{2}|[3-9][0-9]{3}|[1-9][0-9]{4})$/;
+
+    const currentYear = new Date().getFullYear();
+    const inputYear = event.target.value;
+
+    if (regex.test(inputYear) || inputYear === "") {
+      // Wenn die Eingabe den Anforderungen entspricht oder leer ist, setze das Jahr
+      setYear(inputYear);
+    } else {
+      // Andernfalls setze das Jahr auf das aktuelle Jahr
+      setYear(currentYear.toString());
+    }
   };
 
   const handleDepartmentChange = (event) => {
@@ -84,19 +105,10 @@ const Upload = () => {
           <input
             type="text"
             className="form-control"
+            required
             placeholder="Title..."
             value={title}
             onChange={handleTitleChange}
-          />
-        </div>
-
-        <div className="mb-3">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Author..."
-            value={author}
-            onChange={handleAuthorChange}
           />
         </div>
 
@@ -105,9 +117,11 @@ const Upload = () => {
             <input
               type="number"
               className="form-control"
-              placeholder="Year..."
+              required
+              placeholder="Jahr..."
               value={year}
-              onChange={handleYearChange}
+              onBlur={handleYearChange}
+              onChange={(event) => setYear(event.target.value)}
             />
           </div>
 
@@ -116,7 +130,7 @@ const Upload = () => {
             value={semester}
             onChange={handleSemesterChange}
           >
-            <option value="">Select Semester</option>
+            <option value="">Semesteer Auswählen</option>
             <option value="1">Semester 1</option>
             <option value="2">Semester 2</option>
             <option value="3">Semester 3</option>
@@ -130,7 +144,7 @@ const Upload = () => {
             value={department}
             onChange={handleDepartmentChange}
           >
-            <option value="">Select Program</option>
+            <option value="">Studiengang Auswählen</option>
             <option value="Molekulare Biotechnologie">
               Molekulare Biotechnologie
             </option>
