@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 const Upload = () => {
   const [title, setTitle] = useState("");
@@ -13,6 +14,18 @@ const Upload = () => {
   const [fileName, setFileName] = useState("");
   const navigate = useNavigate();
   const token = Cookies.get("token");
+
+  useEffect(() => {
+    // JWT aus dem Cookie holen und den Benutzernamen extrahieren
+    const jwtFromCookie = Cookies.get("token"); // Passe dies entsprechend deiner Cookie-Struktur an
+
+    if (jwtFromCookie) {
+      const decodedToken = jwtDecode(jwtFromCookie);
+      const usernameFromJWT = decodedToken.username; // Stelle sicher, dass dies dem Schlüssel in deinem JWT entspricht
+
+      setAuthor(usernameFromJWT);
+    }
+  }, []);
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
