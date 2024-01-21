@@ -1,6 +1,7 @@
 import logging
 import math
 import os
+from pathlib import Path
 
 from flask import Flask, abort, request, jsonify, send_file, make_response
 
@@ -151,7 +152,7 @@ def download():
         # Wenn die Datei nicht existiert, sende einen 500-Fehler
         abort(404)
 
-    return send_file(fullPath, as_attachment=True)
+    return send_file(fullPath, as_attachment=True, download_name="TESTTEST")
 
     pass
 
@@ -166,7 +167,6 @@ def filter():
         searchDict[key] = value
 
     filteredFiles = databaseAccess.find(Table.FILES, searchDict)
-    databaseAccess.printTable(Table.USER)
     print()
     return jsonify({'message': 'successful filtered',
                     "yearFilter": list(databaseAccess.getAllValuesFromColumn(Table.FILES, "year")),
@@ -252,7 +252,8 @@ def rankList():
 
 
 def startServer():
-    path = os.path.abspath(os.path.join(os.path.abspath(__file__), "..", "..", "..", "log", "logFile.log"))
+    Path(getTotalPath("log")).mkdir(parents=True, exist_ok=True)
+    path = getTotalPath("log/logfile.log")
     logging.basicConfig(filename=path, level=logging.INFO, format="%(asctime)s:%(filename)s:%(message)s")
     logging.info('Starting the server')
     app.run(debug=True, port=25202)

@@ -3,6 +3,7 @@ import sqlite3 as sl
 import logging
 import json
 import uuid
+from pathlib import Path
 
 from .Table import Table
 from . import exceptions
@@ -41,14 +42,13 @@ class DatabaseAccessObject:
                                   "year": "int",
                                   "department": "str", "upvotes": "int", "downloads": "int"}}
 
-    def __init__(self, testing=False):
+    def __init__(self):
         logging.info("Initializing DatabaseAccessObject")
-        if testing:
-            logging.info("Creating test database in memory")
-            self.__createNewDatabase(":memory:")
-            return
-        # should connect to database here
         logging.info("Connecting to database")
+
+        Path(getTotalPath("resources/database")).mkdir(parents=True, exist_ok=True)
+        Path(getTotalPath("resources/database/files")).mkdir(parents=True, exist_ok=True)
+
         try:
             self.conn = sl.connect(f'file:{getTotalPath("resources/database/database.db")}?mode=rw', uri=True)
             self.c = self.conn.cursor()
@@ -250,7 +250,7 @@ class DatabaseAccessObject:
         self.topRanks = []
         for key in temp:
             tempDict = {}
-            tempDict["rankPoints"] = key["rank"]
+            tempDict["rankPoints"] = int(key["rank"])
             tempDict["username"] = key["username"]
             tempDict["rank"] = calculateRankString(key["rank"], self.rankDict)
             self.topRanks.append(tempDict)
