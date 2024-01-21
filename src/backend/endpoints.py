@@ -6,7 +6,7 @@ from pathlib import Path
 from flask import Flask, abort, request, jsonify, send_file, make_response
 
 from util import hashPassword, checkHashedPassword, getTotalPath, createJWTToken, createUUID, isJWTValid, getJWTPayload, \
-    calculateRankString, rankGainCalculator
+    calculateRankString, rankGainCalculator, isPDF
 
 from database.Table import Table
 from database.database import DatabaseAccessObject
@@ -86,7 +86,7 @@ def upload():
     databaseAccess = DatabaseAccessObject()
 
     fileUUID = createUUID()
-    # Zugriff auf die gesendeten Daten und Dateien mit request
+
     title = request.form.get('title')
     author = request.form.get('author')
     semester = request.form.get('semester')
@@ -94,8 +94,6 @@ def upload():
     department = request.form.get('department')
 
     relative_path = getTotalPath("resources/database/files")
-
-    # Kombiniere den relativen Pfad mit dem Dateinamen
     save_path = os.path.join(relative_path, fileUUID + ".pdf")
 
     uploadFile = {
@@ -110,21 +108,18 @@ def upload():
     }
 
     databaseAccess.newEntry(Table.FILES, uploadFile)
-
-    # Zugriff auf die hochgeladene Datei
     file = request.files.get('file')
 
     if not file:
         return jsonify({'error': 'Keine Datei hochgeladen'}), 400
 
-    # Erstelle den relativen Pfad, z.B. "Peerpapers/resources/database/files"
-
-    # Speichere die Datei auf dem Server im relativen Pfad
     file.save(save_path)
 
-    # Gib eine Erfolgsmeldung zurück
-    return jsonify({'message': 'Datei erfolgreich hochgeladen'}), 200
-
+    if isPDF(save_path):
+        return jsonify({'message': 'Datei erfolgreich hochgeladen'}), 200
+    else:
+        os.remove(save_path)
+        return jsonify({"error": "File is not a pdf or corrupted"}), 400
 
 @app.route('/download', methods=['GET'])
 def download():
@@ -207,7 +202,11 @@ def bookmarks():
     data = getJWTPayload(request.headers.get('Authorization'))
     databaseAccess = DatabaseAccessObject()
 
-    bookmarks = databaseAccess.findOne(Table.USER, {"id": data["id"]})["bookmarks"]
+    try:
+        bookmarks = databaseAccess.findOne(Table.USER, {"id": data["id"]})["bookmarks"]
+    except NoRowFoundException as e:
+        bookmarks = []
+
     result = {}
     for bookmark in bookmarks:
         row = databaseAccess.findOne(Table.FILES, {"id": bookmark})

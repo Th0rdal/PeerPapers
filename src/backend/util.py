@@ -5,6 +5,8 @@ import os
 import uuid
 import bcrypt
 import jwt
+from pypdf import PdfReader
+from pypdf.errors import PdfReadError
 
 secret = "PeerPaper"
 
@@ -111,3 +113,10 @@ def calculateRankString(currentRank, rankDict):
             return key
     t = min(rankDict, key=lambda k: rankDict[k])
     return t
+
+def isPDF(filepath):
+    try:
+        PdfReader(filepath)
+    except PdfReadError:
+        return False
+    return True
