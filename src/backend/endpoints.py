@@ -37,8 +37,8 @@ def register():
     """
 
     data = request.get_json()
-    username = data.get('username')
-    password = data.get('password')
+    username = data.get('username').strip()
+    password = data.get('password').strip()
     logging.info(f"Received register request from user {username}")
     if not username or not password:
         logging.info('Registration not successful')
@@ -63,8 +63,8 @@ def login():
     :return: 400 if the credentials are not matching, else 200 and the Token
     """
     data = request.get_json()
-    username = data.get('username')
-    password = data.get('password')
+    username = data.get('username').strip()
+    password = data.get('password').strip()
     logging.info(f"Received login request from user {username}")
     if not data or not username or not password:
         logging.info('Login not successful, username and password are required')
