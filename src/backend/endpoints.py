@@ -285,7 +285,7 @@ def rank():
 @app.route('/rankList', methods=['GET'])
 def rankList():
     logging.info(
-        f"Received a get ranklist request from user {getJWTPayload(request.headers.get('Authentication'))['id']}")
+        f"Received a get ranklist request from user {getJWTPayload(request.headers.get('Authorization'))['id']}")
     return jsonify(DatabaseAccessObject().getTopRanks(100)), 200
 
 
