@@ -402,6 +402,12 @@ class DatabaseAccessObject:
         return listColumns
 
     def __createDictOutOfRow(self, rows, table):
+        """
+        This function takes rows from the database and turns each of them into a dictionary with the corresponding keys.
+        :param rows: A list of rows from the database
+        :param table: The table the rows are from
+        :return: A list of dictionaries with each dictionary being one line from rows
+        """
         result = []
         for row in rows:
             dict = {}

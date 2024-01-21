@@ -15,6 +15,7 @@ Software engineering project
 3. Install python flask -> pip install flask
 4. Install JsonWebToken for Python -> pip install PyJWT
 5. Install bcrypt -> pip install bcrypt
+6. Install pypdf -> pip install pypdf
 
   *python flask only runs on python3.8 version or newer
   **pip interpreter is installed by default with python3.9 version or newer
