@@ -12,6 +12,9 @@ const ExtendedSearch = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [upvoteAdded, setUpvoteAdded] = useState(false);
   const [bookmarks, setBookmarks] = useState({});
+  const [departmentFilter, setDepartmentFilter] = useState([]);
+  const [yearFilter, setYearFilter] = useState([]);
+  const [semesterFilter, setSemesterFilter] = useState([]);
   const token = Cookies.get("token");
 
   const params = new URLSearchParams();
@@ -53,6 +56,9 @@ const ExtendedSearch = () => {
           alert("keine passende Datei gefunden");
         } else {
           setSearchResults(response.data[1]);
+          setDepartmentFilter(response.data[0].departmentFilter);
+          setSemesterFilter(response.data[0].semesterFilter);
+          setYearFilter(response.data[0].yearFilter);
         }
         console.log("Response:", response.data);
       })
@@ -78,6 +84,9 @@ const ExtendedSearch = () => {
           setSearchResults(response.data[1]);
         }
         console.log("Response:", response.data);
+        console.log("department:", departmentFilter);
+        console.log("semseter:", semesterFilter);
+        console.log("year:", yearFilter);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -120,7 +129,7 @@ const ExtendedSearch = () => {
       .then((response) => {
         if (response.status === 200) {
           setBookmarks((prev) => ({ ...prev, [id]: !prev[id] }));
-        } else alert("server Error")
+        } else alert("server Error");
       })
       .catch((error) => {
         alert("Server Fehler");
@@ -174,15 +183,18 @@ const ExtendedSearch = () => {
         </div>
 
         <div className="mb-3 d-flex justify-content-start align-items-center">
-          <div className="me-3">
-            <input
-              type="number"
-              className="form-control"
-              placeholder="Year..."
-              value={year}
-              onChange={handleYearChange}
-            />
-          </div>
+          <select
+            className="form-select me-3"
+            value={year}
+            onChange={handleYearChange}
+          >
+            <option value="">Select Year</option>
+            {yearFilter.map((yearOption, index) => (
+              <option key={index} value={yearOption}>
+                {yearOption}
+              </option>
+            ))}
+          </select>
 
           <select
             className="form-select me-3"
@@ -190,12 +202,11 @@ const ExtendedSearch = () => {
             onChange={handleSemesterChange}
           >
             <option value="">Select Semester</option>
-            <option value="1">Semester 1</option>
-            <option value="2">Semester 2</option>
-            <option value="3">Semester 3</option>
-            <option value="4">Semester 4</option>
-            <option value="5">Semester 5</option>
-            <option value="6">Semester 6</option>
+            {semesterFilter.map((semesterOption, index) => (
+              <option key={index} value={semesterOption}>
+                {semesterOption}
+              </option>
+            ))}
           </select>
 
           <select
@@ -204,21 +215,11 @@ const ExtendedSearch = () => {
             onChange={handleDepartmentChange}
           >
             <option value="">Select Program</option>
-            <option value="Molekulare Biotechnologie">
-              Molekulare Biotechnologie
-            </option>
-            <option value="Computer Science and Digital Communications">
-              Computer Science and Digital Communications
-            </option>
-            <option value="Architektur - Green Building">
-              Architektur - Green Building
-            </option>
-            <option value="Public Management">Public Management</option>
-            <option value="Orthoptik">Orthoptik</option>
-            <option value="Gesundheits- und Krankenpflege">
-              Gesundheits- und Krankenpflege
-            </option>
-            <option value="Soziale Arbeit">Soziale Arbeit</option>
+            {departmentFilter.map((departmentOption, index) => (
+              <option key={index} value={departmentOption}>
+                {departmentOption}
+              </option>
+            ))}
           </select>
         </div>
 

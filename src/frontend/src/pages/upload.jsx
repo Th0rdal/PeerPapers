@@ -27,7 +27,19 @@ const Upload = () => {
   };
 
   const handleYearChange = (event) => {
-    setYear(event.target.value);
+    const regex =
+      /^(200[0-9]|20[1-9][0-9]|2[1-9][0-9]{2}|[3-9][0-9]{3}|[1-9][0-9]{4})$/;
+
+    const currentYear = new Date().getFullYear();
+    const inputYear = event.target.value;
+
+    if (regex.test(inputYear) || inputYear === "") {
+      // Wenn die Eingabe den Anforderungen entspricht oder leer ist, setze das Jahr
+      setYear(inputYear);
+    } else {
+      // Andernfalls setze das Jahr auf das aktuelle Jahr
+      setYear(currentYear.toString());
+    }
   };
 
   const handleDepartmentChange = (event) => {
@@ -84,6 +96,7 @@ const Upload = () => {
           <input
             type="text"
             className="form-control"
+            required
             placeholder="Title..."
             value={title}
             onChange={handleTitleChange}
@@ -93,8 +106,9 @@ const Upload = () => {
         <div className="mb-3">
           <input
             type="text"
+            required
             className="form-control"
-            placeholder="Author..."
+            placeholder="Autor..."
             value={author}
             onChange={handleAuthorChange}
           />
@@ -105,9 +119,11 @@ const Upload = () => {
             <input
               type="number"
               className="form-control"
-              placeholder="Year..."
+              required
+              placeholder="Jahr..."
               value={year}
-              onChange={handleYearChange}
+              onBlur={handleYearChange}
+              onChange={(event) => setYear(event.target.value)}
             />
           </div>
 
@@ -116,7 +132,7 @@ const Upload = () => {
             value={semester}
             onChange={handleSemesterChange}
           >
-            <option value="">Select Semester</option>
+            <option value="">Semesteer Auswählen</option>
             <option value="1">Semester 1</option>
             <option value="2">Semester 2</option>
             <option value="3">Semester 3</option>
@@ -130,7 +146,7 @@ const Upload = () => {
             value={department}
             onChange={handleDepartmentChange}
           >
-            <option value="">Select Program</option>
+            <option value="">Studiengang Auswählen</option>
             <option value="Molekulare Biotechnologie">
               Molekulare Biotechnologie
             </option>
