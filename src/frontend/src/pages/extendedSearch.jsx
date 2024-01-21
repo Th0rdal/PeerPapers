@@ -120,7 +120,7 @@ const ExtendedSearch = () => {
       .then((response) => {
         if (response.status === 200) {
           setBookmarks((prev) => ({ ...prev, [id]: !prev[id] }));
-        }
+        } else alert("server Error")
       })
       .catch((error) => {
         alert("Server Fehler");
@@ -130,7 +130,8 @@ const ExtendedSearch = () => {
 
   const upvote = (id) => {
     axios
-      .put(`api/upvote?fileID=${id}`, {
+      .put(`api/upvote?fileID=${id}`, null, {
+        // Den Request-Body auf null setzen
         headers: {
           Authorization: `${token}`,
         },
