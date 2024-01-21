@@ -46,9 +46,6 @@ class DatabaseAccessObject:
         logging.info("Initializing DatabaseAccessObject")
         logging.info("Connecting to database")
 
-        Path(getTotalPath("resources/database")).mkdir(parents=True, exist_ok=True)
-        Path(getTotalPath("resources/database/files")).mkdir(parents=True, exist_ok=True)
-
         try:
             self.conn = sl.connect(f'file:{getTotalPath("resources/database/database.db")}?mode=rw', uri=True)
             self.c = self.conn.cursor()

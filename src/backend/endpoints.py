@@ -307,7 +307,11 @@ def userLists():
 
 
 def startServer():
+    #checking if important paths exists
     Path(getTotalPath("log")).mkdir(parents=True, exist_ok=True)
+    Path(getTotalPath("resources/database")).mkdir(parents=True, exist_ok=True)
+    Path(getTotalPath("resources/database/files")).mkdir(parents=True, exist_ok=True)
+
     path = getTotalPath("log/logfile.log")
     logging.basicConfig(filename=path, level=logging.INFO, format="%(asctime)s:%(filename)s:%(message)s")
     logging.info('Starting the server')
