@@ -6,6 +6,7 @@ const HomePage = () => {
   const [bookmarks, setBookmarks] = useState([]);
   const [bookmarkAdded, setBookmarkAdded] = useState(false); // Zustand für die Aktualisierung
   const [upvoteAdded, setUpvoteAdded] = useState(false);
+  const [downloadBool, setDownloadBool] = useState(false);
 
   const token = Cookies.get("token");
   useEffect(() => {
@@ -30,7 +31,7 @@ const HomePage = () => {
       .catch((error) => {
         console.error("Es gab ein Problem mit der API-Abfrage", error);
       });
-  }, [bookmarkAdded, upvoteAdded]);
+  }, [bookmarkAdded, upvoteAdded, downloadBool]);
 
   // Funktionen für die Buttons (diese müssen noch implementiert werden)
   const download = (id, title) => {
@@ -47,6 +48,7 @@ const HomePage = () => {
           const pdfBlob = new Blob([response.data], {
             type: "application/pdf",
           });
+          setDownloadBool(!downloadBool);
           saveAs(pdfBlob, `${title}.pdf`); // Speichert die Datei als PDF
         })
         .catch((error) => {
@@ -112,11 +114,12 @@ const HomePage = () => {
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title">{item.title}</h5>
-                <p className="card-text">Author: {item.author}</p>
+                <p className="card-text">Autor: {item.author}</p>
                 <p className="card-text">Semester: {item.semester}</p>
-                <p className="card-text">Year: {item.year}</p>
-                <p className="card-text">Department: {item.department}</p>
+                <p className="card-text">Jahr: {item.year}</p>
+                <p className="card-text">Studiengang: {item.department}</p>
                 <p className="card-text">Upvotes: {item.upvotes}</p>
+                <p className="card-text">Gesamt Downloads: {item.downloads}</p>
 
                 <div className="row">
                   <div className="col">

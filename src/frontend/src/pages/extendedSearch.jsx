@@ -15,6 +15,7 @@ const ExtendedSearch = () => {
   const [departmentFilter, setDepartmentFilter] = useState([]);
   const [yearFilter, setYearFilter] = useState([]);
   const [semesterFilter, setSemesterFilter] = useState([]);
+  const [downloadBool, setDownloadBool] = useState(false);
   const token = Cookies.get("token");
 
   const params = new URLSearchParams();
@@ -65,7 +66,7 @@ const ExtendedSearch = () => {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, [upvoteAdded, bookmarks]);
+  }, [upvoteAdded, bookmarks, downloadBool]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -107,6 +108,7 @@ const ExtendedSearch = () => {
           const pdfBlob = new Blob([response.data], {
             type: "application/pdf",
           });
+          setDownloadBool(!downloadBool);
           saveAs(pdfBlob, `${title}.pdf`);
         })
         .catch((error) => {
@@ -234,11 +236,12 @@ const ExtendedSearch = () => {
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title">{item.title}</h5>
-                <p className="card-text">Author: {item.author}</p>
+                <p className="card-text">Autor: {item.author}</p>
                 <p className="card-text">Semester: {item.semester}</p>
-                <p className="card-text">Year: {item.year}</p>
-                <p className="card-text">Department: {item.department}</p>
+                <p className="card-text">Jahr: {item.year}</p>
+                <p className="card-text">Studiengang: {item.department}</p>
                 <p className="card-text">Upvotes: {item.upvotes}</p>
+                <p className="card-text">Gesamt Downloads: {item.downloads}</p>
 
                 <div className="row">
                   <div className="col">
