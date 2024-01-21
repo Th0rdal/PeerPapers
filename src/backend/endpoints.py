@@ -202,17 +202,15 @@ def upvote():
 
     rankgain = rankGainCalculator(databaseAccess.rankMultiplier["upvote"])
     rankGainUsername = databaseAccess.findOne(Table.FILES, {"id": fileID})["author"]
-    rankGainUser = databaseAccess.findOne(Table.USER, {"username": rankGainUsername})
+    rankGainUser = databaseAccess.findOne(Table.USER, {"username": rankGainUsername})["id"]
     if addUpvoteFlag:
         temp = userRow["rank"] + rankgain
-        logging.info(
-            f"User {rankGainUser} received {rankgain} points (current rank points: {temp}) for an upvote of file {fileID}")
+        logging.info(f"User {rankGainUser} received {rankgain} points (current rank points: {temp}) for an upvote of file {fileID}")
         databaseAccess.addToList(Table.USER, {"id": userID}, {"upvotedFiles": fileID})
-        databaseAccess.update(Table.USER, {"id": rankGainUser}, {"rank": temp})
+        databaseAccess.update(Table.USER, {"id": rankGainUser, "username": rankGainUsername}, {"rank": temp})
     else:
         temp = userRow["rank"] - rankgain if userRow["rank"] - rankgain > 0 else 0
-        logging.info(
-            f"User {rankGainUser} lost {rankgain} points (current rank points: {temp}) for a lost upvote of file {fileID}")
+        logging.info(f"User {rankGainUser} lost {rankgain} points (current rank points: {temp}) for a lost upvote of file {fileID}")
         databaseAccess.deleteFromList(Table.USER, {"id": userID}, {"upvotedFiles": fileID})
         databaseAccess.update(Table.USER, {"id": rankGainUser}, {"rank": temp})
 
