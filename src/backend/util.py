@@ -19,7 +19,7 @@ def createJWTToken(username, id):
     payload = {
         "username": username,
         "id": id,
-        "expires": (datetime.datetime.utcnow() + datetime.timedelta(hours=5)).strftime("%Y-%m-%d-%H:%M")
+        "exp": int((datetime.datetime.utcnow() + datetime.timedelta(hours=5)).timestamp())
     }
     return jwt.encode(payload, secret, algorithm="HS256")
 
@@ -38,7 +38,7 @@ def isJWTValid(token):
         decodedToken = jwt.decode(token, secret, algorithms=["HS256"])
 
         # check expiration date
-        if dt.strptime(decodedToken["expires"], "%Y-%m-%d-%H:%M") < datetime.datetime.utcnow():
+        if int(decodedToken["exp"]) < datetime.datetime.utcnow().timestamp():
             return False
     except jwt.ExpiredSignatureError:
         return False
