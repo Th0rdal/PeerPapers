@@ -72,6 +72,7 @@ const Upload = () => {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("author", author);
+
     formData.append("semester", semester);
     formData.append("year", year);
     formData.append("department", department);
@@ -88,13 +89,11 @@ const Upload = () => {
         if (response.status === 200) {
           alert("Datei erfolgreich hochgeladen");
           navigate("/home");
-        } else {
-          alert("Etwas ist schief gelaufen. Bitte versuche es erneut");
         }
       })
       .catch((error) => {
-        alert("Keine Verbindung zum Server");
-        console.error("Fehler bei der API-Anfrage:", error);
+        alert(error.response.data.error);
+        console.log("Fehler bei der API-Anfrage:", error.response.data.error);
       });
   };
 
@@ -129,8 +128,9 @@ const Upload = () => {
             className="form-select me-3"
             value={semester}
             onChange={handleSemesterChange}
+            required
           >
-            <option value="">Semesteer Auswählen</option>
+            <option value="">Semester Auswählen</option>
             <option value="1">Semester 1</option>
             <option value="2">Semester 2</option>
             <option value="3">Semester 3</option>
@@ -143,6 +143,7 @@ const Upload = () => {
             className="form-select"
             value={department}
             onChange={handleDepartmentChange}
+            required
           >
             <option value="">Studiengang Auswählen</option>
             <option value="Molekulare Biotechnologie">
