@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+
 import {
   CNavbar,
   CContainer,
@@ -26,6 +28,7 @@ function Navbar() {
   const [visible, setVisible] = useState(false);
   const [rank, setRank] = useState("");
   const [rankPoints, setRankPoints] = useState("");
+  const [username, setUsername] = useState("");
 
   const navigate = useNavigate();
   const token = Cookies.get("token");
@@ -41,6 +44,21 @@ function Navbar() {
   };
 
   useEffect(() => {
+    if (!token) {
+      // console.log("token fehlt");
+      setUsername("");
+    } else {
+      try {
+        const tokenWithoutBearer = token.replace("Bearer ", "");
+
+        const decodedToken = jwtDecode(tokenWithoutBearer);
+
+        setUsername(decodedToken.username);
+      } catch (error) {
+        setUsername("");
+      }
+    }
+
     axios
       .get(`api/rank`, {
         headers: {
@@ -110,6 +128,7 @@ function Navbar() {
               <CButton color="success" variant="outline" onClick={logout}>
                 Logout
               </CButton>
+              <p className="ms-4">Username: {username}</p>
               <p className="ms-4">Rang: {rank}</p>
               <p className="ms-4">Rang-Punkte: {rankPoints}</p>
             </CForm>
