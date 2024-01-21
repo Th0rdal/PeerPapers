@@ -118,7 +118,7 @@ def rankGainCalculator(multiplier):
     :param multiplier: The multiplier to use for the rank gain
     :return: integer with the rank gain for the user
     """
-    return math.log(100) * multiplier
+    return math.log(100, 10) * multiplier
 
 
 def calculateRankString(currentRank, rankDict):
