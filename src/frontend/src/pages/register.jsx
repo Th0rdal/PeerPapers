@@ -25,10 +25,11 @@ const Register = () => {
 
     if (response.status === 200) {
       Cookies.set("token", data.token);
-      navigate("/home"); // return to home when successfully login
-      alert("login Succesfull");
+      alert("Login erfolgreich");
+      await navigate("/home");
+      console.log("Navigating to /home...");
     } else if (response.status === 401 || response.status === 400) {
-      alert("Wrong username or Password!");
+      alert("Falscher Benutzername oder Passwort!");
     }
   };
 

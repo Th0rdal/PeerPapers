@@ -23,6 +23,7 @@ import {
   CButton,
 } from "@coreui/react";
 import "@coreui/coreui/dist/css/coreui.min.css";
+import { isAuthenticated } from "../../auth";
 
 function Navbar() {
   const [visible, setVisible] = useState(false);
@@ -35,6 +36,9 @@ function Navbar() {
 
   const logout = async (e) => {
     Cookies.remove("token");
+    setUsername("");
+    setRankPoints("");
+    setRank("");
     navigate("/");
   };
 
@@ -76,7 +80,7 @@ function Navbar() {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, [rank]);
+  }, [rank, logout]);
 
   return (
     <>
