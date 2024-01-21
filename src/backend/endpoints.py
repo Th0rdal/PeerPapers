@@ -164,7 +164,13 @@ def filter():
         searchDict[key] = value
 
     filteredFiles = databaseAccess.find(Table.FILES, searchDict)
-    return jsonify({'message': 'successful filtered'}, filteredFiles, 200)
+    databaseAccess.printTable(Table.USER)
+    print()
+    return jsonify({'message': 'successful filtered',
+                    "yearFilter": databaseAccess.getAllValuesFromColumn(Table.FILES, "year"),
+                    "semesterFilter": databaseAccess.getAllValuesFromColumn(Table.FILES, "semester"),
+                    "departmentFilter": databaseAccess.getAllValuesFromColumn(Table.FILES, "department")},
+                   filteredFiles, 200)
 
 
 @app.route('/upvote', methods=['PUT'])
@@ -239,6 +245,7 @@ def rank():
 
 @app.route('/rankList', methods=['GET'])
 def rankList():
+
     return jsonify(DatabaseAccessObject().getTopRanks(100)), 200
 
 

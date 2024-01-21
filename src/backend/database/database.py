@@ -86,11 +86,11 @@ class DatabaseAccessObject:
             executionText = "INSERT INTO AUTHENTICATION VALUES (:username, :password)"
         elif table == Table.USER:
             data["id"] = createUUID()
-            executionText = "INSERT INTO USER VALUES (:id, :username, :rank, :bookmarks, :upvotedFiles)"
+            executionText = "INSERT INTO USER VALUES (:id, :username, :rank, :bookmarks, :upvotedFiles, :downloadedFiles)"
         elif table == Table.FILES:
             if "id" not in data:
                 data["id"] = createUUID()
-            executionText = "INSERT INTO FILES VALUES (:id, :title, :author, :semester, :year, :department, :upvotes)"
+            executionText = "INSERT INTO FILES VALUES (:id, :title, :author, :semester, :year, :department, :upvotes, :downloads)"
         with self.conn:
             self.c.execute(executionText, data)
 
@@ -190,17 +190,35 @@ class DatabaseAccessObject:
         """
         logging.info(f"Querying database for rows that fit the search criteria {searchData}")
         executionText = f"SELECT * FROM {table.value} WHERE"
-        for key in searchData:
-            if self.typeCheckMap[table][key] == "str":
-                executionText = executionText + f" {key} LIKE :{key} AND"
-            else:
-                executionText = executionText + f" {key} = :{key} AND"
-            if searchData[key] == '' or searchData[key] == []:
-                searchData[key] = '""'
+
+        if not searchData:
+            executionText = executionText[:-2]
+        else:
+            for key in searchData:
+                if self.typeCheckMap[table][key] == "str":
+                    executionText = executionText + f" {key} LIKE :{key} AND"
+                else:
+                    executionText = executionText + f" {key} = :{key} AND"
+                if searchData[key] == '' or searchData[key] == []:
+                    searchData[key] = '""'
         with self.conn:
             self.c.execute(executionText[:-3], searchData)
         rows = self.c.fetchall()
         return self.__createDictOutOfRow(rows, table)
+
+    def getAllValuesFromColumn(self, table, column):
+        """
+        Returns a set with all values that are in the column. It takes all rows into account to do that.
+        :param column: The column you want the values of
+        :return: Set of values from columns
+        """
+
+        rows = self.find(table, {})
+        print(rows)
+        result = set([])
+        for row in rows:
+            result.add(row[column])
+        return result
 
     def calculateRankValues(self):
         """
@@ -208,11 +226,7 @@ class DatabaseAccessObject:
         :return: None
         """
 
-        self.c.execute("SELECT SUM(rank) FROM USER")
-        self.averageRank = self.c.fetchone()[0]
-        if self.averageRank < 100:
-            self.averageRank = 100
-
+        logging.info("Calculating ranked values")
         self.c.execute("SELECT COUNT(*) FROM USER")
         userNumber = self.c.fetchone()[0]
         # get rank values for each division
@@ -228,8 +242,9 @@ class DatabaseAccessObject:
         Returns a list of the top x ranked users.
         :return: List of object
         """
+        logging.info(f"Fetching top {amount} ranked users")
         self.c.execute(f"SELECT * FROM USER ORDER BY rank DESC LIMIT {amount}")
-        temp = self.__createDictOutOfRow0(self.c.fetchall(), Table.USER)
+        temp = self.__createDictOutOfRow(self.c.fetchall(), Table.USER)
 
         self.topRanks = []
         for key in temp:

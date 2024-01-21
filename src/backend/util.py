@@ -105,6 +105,9 @@ def rankGainCalculator(multiplier):
 
 
 def calculateRankString(currentRank, rankDict):
+
     for key in rankDict:
         if currentRank <= rankDict[key]:
             return key
+    t = min(rankDict, key=lambda k: rankDict[k])
+    return t
