@@ -103,7 +103,8 @@ def upload():
         "semester": semester,
         "year": year,
         "department": department,
-        "upvotes": 0
+        "upvotes": 0,
+        "downloads": 0
     }
 
     databaseAccess.newEntry(Table.FILES, uploadFile)
@@ -132,7 +133,7 @@ def download():
     fullPath = os.path.join(relative_path, fileID + ".pdf")
 
     userRow = databaseAccess.findOne(Table.USER, {"id": userID})
-    DatabaseAccessObject.update(Table.USER, {"id": fileID}, {"downloads": "+1"})
+    databaseAccess.update(Table.FILES, {"id": fileID}, {"downloads": "+1"})
 
     downloadedFilesFlag = False
     for key in userRow["downloadedFiles"]:
@@ -167,9 +168,9 @@ def filter():
     databaseAccess.printTable(Table.USER)
     print()
     return jsonify({'message': 'successful filtered',
-                    "yearFilter": databaseAccess.getAllValuesFromColumn(Table.FILES, "year"),
-                    "semesterFilter": databaseAccess.getAllValuesFromColumn(Table.FILES, "semester"),
-                    "departmentFilter": databaseAccess.getAllValuesFromColumn(Table.FILES, "department")},
+                    "yearFilter": list(databaseAccess.getAllValuesFromColumn(Table.FILES, "year")),
+                    "semesterFilter": list(databaseAccess.getAllValuesFromColumn(Table.FILES, "semester")),
+                    "departmentFilter": list(databaseAccess.getAllValuesFromColumn(Table.FILES, "department"))},
                    filteredFiles, 200)
 
 

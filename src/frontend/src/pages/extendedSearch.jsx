@@ -130,15 +130,11 @@ const ExtendedSearch = () => {
 
   const upvote = (id) => {
     axios
-      .put(
-        "api/upvote",
-        { fileID: id },
-        {
-          headers: {
-            Authorization: `${token}`,
-          },
-        }
-      )
+      .put(`api/upvote?fileID=${id}`, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      })
       .then((response) => {
         if (response.status === 200) {
           console.log("upvote 1" + upvoteAdded);
@@ -148,7 +144,7 @@ const ExtendedSearch = () => {
       })
       .catch((error) => {
         alert("Server Fehler");
-        console.error("Fehler beim bookmarken der Datei:", error);
+        console.error("Fehler beim upvoten der Datei:", error);
       });
     console.log(`Upvote ID ${id}`);
   };
