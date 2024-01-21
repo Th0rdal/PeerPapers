@@ -20,6 +20,8 @@ export const isAuthenticated = () => {
     // console.log("Decoded Token:", decodedToken);
     // Check if the token has expired
     const currentTime = Date.now() / 1000; // Current time in seconds
+    console.log("expiration time: " + decodedToken.exp);
+    console.log("datenow " + Date.now() / 1000);
     if (decodedToken.exp < currentTime) {
       console.log("Token ist abgelaufen");
       return false; // Token has expired

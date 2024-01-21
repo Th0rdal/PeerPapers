@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { saveAs } from "file-saver";
 import Cookies from "js-cookie";
+import { isAuthenticated } from "../auth";
+import { useNavigate } from "react-router-dom";
 
 const ExtendedSearch = () => {
   const [title, setTitle] = useState("");
@@ -16,7 +18,10 @@ const ExtendedSearch = () => {
   const [yearFilter, setYearFilter] = useState([]);
   const [semesterFilter, setSemesterFilter] = useState([]);
   const [downloadBool, setDownloadBool] = useState(false);
+  const [istAuthenticatedBool, setIstAuthenticatedBool] =
+    useState(isAuthenticated);
   const token = Cookies.get("token");
+  const navigate = useNavigate();
 
   const params = new URLSearchParams();
   if (title) params.append("title", title);
@@ -46,6 +51,9 @@ const ExtendedSearch = () => {
   };
 
   useEffect(() => {
+    if (isAuthenticated() === false) {
+      navigate("/");
+    }
     axios
       .get(`api/filter?${params.toString()}`, {
         headers: {
@@ -155,6 +163,10 @@ const ExtendedSearch = () => {
         }
       })
       .catch((error) => {
+        console.log("isAuthenciated value: " + isAuthenticated());
+        if (isAuthenticated() === false) {
+          navigate("/");
+        }
         alert("Server Fehler");
         console.error("Fehler beim upvoten der Datei:", error);
       });
