@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { isAuthenticated } from "../auth";
 
 const HomePage = () => {
   const [bookmarks, setBookmarks] = useState([]);
   const [bookmarkAdded, setBookmarkAdded] = useState(false); // Zustand für die Aktualisierung
   const [upvoteAdded, setUpvoteAdded] = useState(false);
   const [downloadBool, setDownloadBool] = useState(false);
-
+  const [upvotedFilesList, setUpvotedFilesList] = useState([]);
+  const [bookmarksList, setBookmarksList] = useState([]);
   const token = Cookies.get("token");
   useEffect(() => {
+    if (isAuthenticated() === false) {
+      navigate("/");
+    }
     axios
       .get("api/bookmarks", {
         headers: {
@@ -30,6 +35,19 @@ const HomePage = () => {
       })
       .catch((error) => {
         console.error("Es gab ein Problem mit der API-Abfrage", error);
+      });
+    axios
+      .get(`api/userLists`, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      })
+      .then((response) => {
+        setBookmarksList(response.data.bookmarks);
+        setUpvotedFilesList(response.data.upvotedFiles);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
       });
   }, [bookmarkAdded, upvoteAdded, downloadBool]);
 
@@ -82,23 +100,26 @@ const HomePage = () => {
 
   const upvote = (id) => {
     axios
-      .put(
-        "api/upvote",
-        { fileID: id },
-        {
-          headers: {
-            Authorization: `${token}`,
-          },
-        }
-      )
+      .put(`api/upvote?fileID=${id}`, null, {
+        // Den Request-Body auf null setzen
+        headers: {
+          Authorization: `${token}`,
+        },
+      })
       .then((response) => {
         if (response.status === 200) {
+          console.log("upvote 1" + upvoteAdded);
           setUpvoteAdded(!upvoteAdded);
+          console.log("upvote 2" + upvoteAdded);
         }
       })
       .catch((error) => {
+        console.log("isAuthenciated value: " + isAuthenticated());
+        if (isAuthenticated() === false) {
+          navigate("/");
+        }
         alert("Server Fehler");
-        console.error("Fehler beim bookmarken der Datei:", error);
+        console.error("Fehler beim upvoten der Datei:", error);
       });
     console.log(`Upvote ID ${id}`);
   };
@@ -135,15 +156,19 @@ const HomePage = () => {
                       className="btn btn-primary"
                       onClick={() => bookmark(item.id)}
                     >
-                      Bookmark
+                      Bookmark aufheben
                     </button>
                   </div>
                   <div className="col">
                     <button
-                      className="btn btn-primary"
+                      className={`btn ${
+                        upvotedFilesList.includes(item.id)
+                          ? "btn-success"
+                          : "btn-primary"
+                      }`}
                       onClick={() => upvote(item.id)}
                     >
-                      Upvote
+                      upvote
                     </button>
                   </div>
                 </div>

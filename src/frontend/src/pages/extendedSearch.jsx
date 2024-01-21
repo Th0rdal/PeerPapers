@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { saveAs } from "file-saver";
 import Cookies from "js-cookie";
+import { isAuthenticated } from "../auth";
+import { useNavigate } from "react-router-dom";
 
 const ExtendedSearch = () => {
   const [title, setTitle] = useState("");
@@ -16,7 +18,10 @@ const ExtendedSearch = () => {
   const [yearFilter, setYearFilter] = useState([]);
   const [semesterFilter, setSemesterFilter] = useState([]);
   const [downloadBool, setDownloadBool] = useState(false);
+  const [upvotedFilesList, setUpvotedFilesList] = useState([]);
+  const [bookmarksList, setBookmarksList] = useState([]);
   const token = Cookies.get("token");
+  const navigate = useNavigate();
 
   const params = new URLSearchParams();
   if (title) params.append("title", title);
@@ -46,6 +51,9 @@ const ExtendedSearch = () => {
   };
 
   useEffect(() => {
+    if (isAuthenticated() === false) {
+      navigate("/");
+    }
     axios
       .get(`api/filter?${params.toString()}`, {
         headers: {
@@ -62,6 +70,20 @@ const ExtendedSearch = () => {
           setYearFilter(response.data[0].yearFilter);
         }
         console.log("Response:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+
+    axios
+      .get(`api/userLists`, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      })
+      .then((response) => {
+        setBookmarksList(response.data.bookmarks);
+        setUpvotedFilesList(response.data.upvotedFiles);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -84,6 +106,8 @@ const ExtendedSearch = () => {
         } else {
           setSearchResults(response.data[1]);
         }
+        console.log("BookmarksList:", bookmarksList);
+        console.log("upvotedList:", upvotedFilesList);
         console.log("Response:", response.data);
         console.log("department:", departmentFilter);
         console.log("semseter:", semesterFilter);
@@ -155,6 +179,10 @@ const ExtendedSearch = () => {
         }
       })
       .catch((error) => {
+        console.log("isAuthenciated value: " + isAuthenticated());
+        if (isAuthenticated() === false) {
+          navigate("/");
+        }
         alert("Server Fehler");
         console.error("Fehler beim upvoten der Datei:", error);
       });
@@ -257,15 +285,21 @@ const ExtendedSearch = () => {
                       className="btn btn-primary"
                       onClick={() => bookmark(item.id)}
                     >
-                      {bookmarks[item.id] ? "Bookmark aufheben" : "Bookmark"}
+                      {bookmarksList.includes(item.id)
+                        ? "Bookmark aufheben"
+                        : "Bookmark"}
                     </button>
                   </div>
                   <div className="col">
                     <button
-                      className="btn btn-primary"
+                      className={`btn ${
+                        upvotedFilesList.includes(item.id)
+                          ? "btn-success"
+                          : "btn-primary"
+                      }`}
                       onClick={() => upvote(item.id)}
                     >
-                      Upvote
+                      upvote
                     </button>
                   </div>
                 </div>
