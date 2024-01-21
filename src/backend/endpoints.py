@@ -44,7 +44,8 @@ def register():
         return jsonify({'message': 'Username is already taken'}), 400
     except NoRowFoundException as e:  # When NoRowFoundException is triggered, username is not taken.
         databaseAccess.newEntry(Table.AUTHENTICATION, {'username': username, 'password': hashPassword(password)})
-        databaseAccess.newEntry(Table.USER, {'username': username, 'rank': 1, 'bookmarks': '', 'upvotedFiles': '', "downloadedFiles": ""})
+        databaseAccess.newEntry(Table.USER, {'username': username, 'rank': 1, 'bookmarks': '', 'upvotedFiles': '',
+                                             "downloadedFiles": ""})
     logging.info('Registration successful')
     return jsonify({'message': 'Registration successful'}), 200
 
@@ -241,12 +242,12 @@ def rank():
 
     user = databaseAccess.findOne(Table.USER, {"id": userID})
     return jsonify(
-        {"rankPoints": math.floor(user["rank"]), "rank": calculateRankString(user["rank"], databaseAccess.rankDict)}), 200
+        {"rankPoints": math.floor(user["rank"]),
+         "rank": calculateRankString(user["rank"], databaseAccess.rankDict)}), 200
 
 
 @app.route('/rankList', methods=['GET'])
 def rankList():
-
     return jsonify(DatabaseAccessObject().getTopRanks(100)), 200
 
 
@@ -255,6 +256,19 @@ def startServer():
     logging.basicConfig(filename=path, level=logging.INFO, format="%(asctime)s:%(filename)s:%(message)s")
     logging.info('Starting the server')
     app.run(debug=True, port=25202)
+
+
+@app.route("/userLists", methods=["GET"])
+def userLists():
+    databaseAccess = DatabaseAccessObject()
+    userID = getJWTPayload(request.headers.get('Authorization'))["id"]
+    userRow = databaseAccess.findOne(Table.USER, {"id": userID})
+    returnDict = {
+        "upvotedFiles": userRow["upvotedFiles"],
+        "downloadedFiles": userRow["downloadedFiles"],
+        "bookmarks": userRow["bookmarks"]
+    }
+    return jsonify(returnDict), 200
 
 
 if __name__ == '__main__':

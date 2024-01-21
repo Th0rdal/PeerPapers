@@ -19,7 +19,7 @@ def createJWTToken(username, id):
     payload = {
         "username": username,
         "id": id,
-        "expires": (datetime.datetime.utcnow() + datetime.timedelta(hours=1)).strftime("%Y-%m-%d-%H:%M")
+        "expires": (datetime.datetime.utcnow() + datetime.timedelta(hours=5)).strftime("%Y-%m-%d-%H:%M")
     }
     return jwt.encode(payload, secret, algorithm="HS256")
 
