@@ -18,8 +18,8 @@ const ExtendedSearch = () => {
   const [yearFilter, setYearFilter] = useState([]);
   const [semesterFilter, setSemesterFilter] = useState([]);
   const [downloadBool, setDownloadBool] = useState(false);
-  const [istAuthenticatedBool, setIstAuthenticatedBool] =
-    useState(isAuthenticated);
+  const [upvotedFilesList, setUpvotedFilesList] = useState([]);
+  const [bookmarksList, setBookmarksList] = useState([]);
   const token = Cookies.get("token");
   const navigate = useNavigate();
 
@@ -74,6 +74,20 @@ const ExtendedSearch = () => {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
+
+    axios
+      .get(`api/userLists`, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      })
+      .then((response) => {
+        setBookmarksList(response.data.bookmarks);
+        setUpvotedFilesList(response.data.upvotedFiles);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
   }, [upvoteAdded, bookmarks, downloadBool]);
 
   const handleSubmit = (event) => {
@@ -92,6 +106,8 @@ const ExtendedSearch = () => {
         } else {
           setSearchResults(response.data[1]);
         }
+        console.log("BookmarksList:", bookmarksList);
+        console.log("upvotedList:", upvotedFilesList);
         console.log("Response:", response.data);
         console.log("department:", departmentFilter);
         console.log("semseter:", semesterFilter);
@@ -269,15 +285,21 @@ const ExtendedSearch = () => {
                       className="btn btn-primary"
                       onClick={() => bookmark(item.id)}
                     >
-                      {bookmarks[item.id] ? "Bookmark aufheben" : "Bookmark"}
+                      {bookmarksList.includes(item.id)
+                        ? "Bookmark aufheben"
+                        : "Bookmark"}
                     </button>
                   </div>
                   <div className="col">
                     <button
-                      className="btn btn-primary"
+                      className={`btn ${
+                        upvotedFilesList.includes(item.id)
+                          ? "btn-success"
+                          : "btn-primary"
+                      }`}
                       onClick={() => upvote(item.id)}
                     >
-                      Upvote
+                      upvote
                     </button>
                   </div>
                 </div>
