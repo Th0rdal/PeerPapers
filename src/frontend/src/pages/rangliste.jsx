@@ -47,6 +47,7 @@ const Rangliste = () => {
   return (
     <div className="container">
       <h1>Rangliste</h1>
+      <p>Top 100 User</p>
       <div className="row">
         {rankData.length === 0 ? (
           <p>Es wurden keine Rangdaten gefunden.</p>
