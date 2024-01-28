@@ -4,9 +4,10 @@ import token from "../token";
 import { isAuthenticated } from "../../auth";
 import { useNavigate } from "react-router-dom";
 import download from "../api/download";
+import bookmark from "../api/bookmark";
+import userLists from "../api/userLists";
 
 const FileCard = ({ initialFile }) => {
-  const [file, setFile] = useState(initialFile);
   const [upvoteAdded, setUpvoteAdded] = useState(false);
   const [bookmarks, setBookmarks] = useState({});
   const [upvotedFilesList, setUpvotedFilesList] = useState([]);
@@ -19,46 +20,27 @@ const FileCard = ({ initialFile }) => {
     if (isAuthenticated() === false) {
       navigate("/");
     }
-    axios
-      .get(`api/userLists`, {
-        headers: {
-          Authorization: `${token}`,
-        },
-      })
+
+    userLists()
       .then((response) => {
-        setBookmarksList(response.data.bookmarks);
-        setUpvotedFilesList(response.data.upvotedFiles);
+        // Setze die Bookmarks und UpvotedFiles, wenn die Promise aufgelöst ist
+        setBookmarksList(response.bookmarks);
+        setUpvotedFilesList(response.upvotedFiles);
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        console.error("Fehler beim Abrufen der Benutzerlisten:", error);
       });
   }, [upvoteAdded, bookmarks]);
 
-  const bookmark = async (id) => {
-    axios
-      .put(
-        `api/bookmark`,
-        { fileID: id },
-        {
-          headers: {
-            Authorization: `${token}`,
-          },
-        }
-      )
-      .then((response) => {
-        if (response.status === 200) {
-          // Entferne die betroffene Datei aus der file-Liste
-          const updatedFileList = file.filter((item) => item.id !== id);
-          // Aktualisiere die file-Props
-          setFile(updatedFileList);
-          // Aktualisiere die bookmarks
-          setBookmarks((prev) => ({ ...prev, [id]: !prev[id] }));
-        } else alert("server Error");
-      })
-      .catch((error) => {
-        alert("Server Fehler");
-        console.error("Fehler beim bookmarken der Datei:", error);
-      });
+  const handleBookmark = async (id) => {
+    try {
+      const updatedId = await bookmark(id);
+      // Aktualisiere die bookmarks mit der zurückgegebenen ID
+      setBookmarks((prev) => ({ ...prev, [updatedId]: !prev[updatedId] }));
+    } catch (error) {
+      alert(error.message);
+      console.error("Fehler beim bookmarken der Datei:", error);
+    }
   };
 
   const upvote = (id) => {
@@ -114,7 +96,7 @@ const FileCard = ({ initialFile }) => {
                   <div className="col">
                     <button
                       className="btn btn-primary"
-                      onClick={async () => await bookmark(item.id)}
+                      onClick={async () => await handleBookmark(item.id)}
                     >
                       {bookmarksList.includes(item.id)
                         ? "Bookmark aufheben"
