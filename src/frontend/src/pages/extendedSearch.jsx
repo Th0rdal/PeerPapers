@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import Cookies from "js-cookie";
+import token from "../modules/token";
 import { isAuthenticated } from "../auth";
 import { useNavigate } from "react-router-dom";
 import FileCard from "../modules/components/fileCard";
@@ -17,7 +17,6 @@ const ExtendedSearch = () => {
   const [semesterFilter, setSemesterFilter] = useState([]);
   const [upvotedFilesList, setUpvotedFilesList] = useState([]);
   const [bookmarksList, setBookmarksList] = useState([]);
-  const token = Cookies.get("token");
   const navigate = useNavigate();
 
   const params = new URLSearchParams();

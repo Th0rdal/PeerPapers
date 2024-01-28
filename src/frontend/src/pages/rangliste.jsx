@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Cookies from "js-cookie";
+import token from "../modules/token";
 import { isAuthenticated } from "../auth";
 
 const Rangliste = () => {
   const [rankData, setRankData] = useState([]);
-
-  const token = Cookies.get("token");
 
   useEffect(() => {
     if (isAuthenticated() === false) {

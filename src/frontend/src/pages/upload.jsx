@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
+import token from "../modules/token";
 import { jwtDecode } from "jwt-decode";
 
 const Upload = () => {
@@ -13,11 +13,10 @@ const Upload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState("");
   const navigate = useNavigate();
-  const token = Cookies.get("token");
 
   useEffect(() => {
     // JWT aus dem Cookie holen und den Benutzernamen extrahieren
-    const jwtFromCookie = Cookies.get("token"); // Passe dies entsprechend deiner Cookie-Struktur an
+    const jwtFromCookie = token; // Passe dies entsprechend deiner Cookie-Struktur an
 
     if (jwtFromCookie) {
       const decodedToken = jwtDecode(jwtFromCookie);

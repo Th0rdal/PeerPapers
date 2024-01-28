@@ -1,20 +1,18 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { saveAs } from "file-saver";
-import Cookies from "js-cookie";
+import token from "../token";
 import { isAuthenticated } from "../../auth";
 import { useNavigate } from "react-router-dom";
+import download from "../api/download";
 
 const FileCard = ({ initialFile }) => {
   const [file, setFile] = useState(initialFile);
   const [upvoteAdded, setUpvoteAdded] = useState(false);
   const [bookmarks, setBookmarks] = useState({});
-  const [downloadBool, setDownloadBool] = useState(false);
   const [upvotedFilesList, setUpvotedFilesList] = useState([]);
   const [bookmarksList, setBookmarksList] = useState([]);
 
   // get Cookie
-  const token = Cookies.get("token");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,31 +32,9 @@ const FileCard = ({ initialFile }) => {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, [upvoteAdded, bookmarks, downloadBool]);
+  }, [upvoteAdded, bookmarks]);
 
-  const download = (id, title) => {
-    if (window.confirm("Möchten Sie die Datei wirklich herunterladen?")) {
-      axios
-        .get(`api/download?id=${id}`, {
-          responseType: "blob",
-          headers: {
-            Authorization: `${token}`,
-          },
-        })
-        .then((response) => {
-          const pdfBlob = new Blob([response.data], {
-            type: "application/pdf",
-          });
-          setDownloadBool(!downloadBool);
-          saveAs(pdfBlob, `${title}.pdf`);
-        })
-        .catch((error) => {
-          console.error("Fehler beim Herunterladen der Datei:", error);
-        });
-    }
-  };
-
-  const bookmark = (id) => {
+  const bookmark = async (id) => {
     axios
       .put(
         `api/bookmark`,
@@ -130,7 +106,7 @@ const FileCard = ({ initialFile }) => {
                   <div className="col">
                     <button
                       className="btn btn-primary"
-                      onClick={() => download(item.id, item.title)}
+                      onClick={async () => await download(item.id, item.title)}
                     >
                       Download
                     </button>
@@ -138,7 +114,7 @@ const FileCard = ({ initialFile }) => {
                   <div className="col">
                     <button
                       className="btn btn-primary"
-                      onClick={() => bookmark(item.id)}
+                      onClick={async () => await bookmark(item.id)}
                     >
                       {bookmarksList.includes(item.id)
                         ? "Bookmark aufheben"

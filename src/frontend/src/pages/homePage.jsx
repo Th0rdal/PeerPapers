@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Cookies from "js-cookie";
+import token from "../modules/token";
 import { isAuthenticated } from "../auth";
 import FileCard from "../modules/components/fileCard";
 
 const HomePage = () => {
   const [bookmarks, setBookmarks] = useState([]);
 
-  const token = Cookies.get("token");
   useEffect(() => {
     if (isAuthenticated() === false) {
       navigate("/");
