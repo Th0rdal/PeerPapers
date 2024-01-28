@@ -3,6 +3,7 @@ import axios from "axios";
 import token from "../modules/token";
 import { isAuthenticated } from "../auth";
 import FileCard from "../modules/components/fileCard";
+import bookmarksList from "../modules/api/bookmarksList";
 
 const HomePage = () => {
   const [bookmarks, setBookmarks] = useState([]);
@@ -11,26 +12,13 @@ const HomePage = () => {
     if (isAuthenticated() === false) {
       navigate("/");
     }
-    axios
-      .get("api/bookmarks", {
-        headers: {
-          Authorization: `${token}`,
-        },
-      })
-      .then((response) => {
-        // Überprüfen, ob response.data ein Array ist und mindestens 2 Elemente enthält
-        if (Array.isArray(response.data) && response.data.length > 1) {
-          // Die eigentlichen Daten befinden sich im Objekt an der zweiten Stelle des Arrays
-          const data = response.data[1];
-          // Umwandeln des Objekts in ein Array von Werten
-          const bookmarksArray = Object.values(data);
-          setBookmarks(bookmarksArray);
-        } else {
-          console.error("Ungültige Antwortstruktur:", response.data);
-        }
+
+    bookmarksList()
+      .then((data) => {
+        setBookmarks(data);
       })
       .catch((error) => {
-        console.error("Es gab ein Problem mit der API-Abfrage", error);
+        console.error("Es gab ein Problem beim Abrufen der Bookmarks:", error);
       });
   }, [bookmarks]);
 

@@ -237,7 +237,7 @@ def bookmarks():
         row = databaseAccess.findOne(Table.FILES, {"id": bookmark})
         result[row["id"]] = row
 
-    return jsonify({'message': 'successful filtered'}, result), 200
+    return jsonify(result), 200
 
 
 @app.route('/bookmark', methods=['PUT'])

@@ -71,19 +71,7 @@ const ExtendedSearch = () => {
         console.error("Error fetching data:", error);
       });
 
-    axios
-      .get(`api/userLists`, {
-        headers: {
-          Authorization: `${token}`,
-        },
-      })
-      .then((response) => {
-        setBookmarksList(response.data.bookmarks);
-        setUpvotedFilesList(response.data.upvotedFiles);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
+    
   }, []);
 
   const handleSubmit = (event) => {
