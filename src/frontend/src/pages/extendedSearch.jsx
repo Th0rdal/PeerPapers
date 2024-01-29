@@ -4,6 +4,7 @@ import token from "../modules/token";
 import { isAuthenticated } from "../auth";
 import { useNavigate } from "react-router-dom";
 import FileCard from "../modules/components/fileCard";
+import filter from "../modules/api/filter";
 
 const ExtendedSearch = () => {
   const [title, setTitle] = useState("");
@@ -50,57 +51,35 @@ const ExtendedSearch = () => {
     if (isAuthenticated() === false) {
       navigate("/");
     }
-    axios
-      .get(`api/filter?${params.toString()}`, {
-        headers: {
-          Authorization: `${token}`,
-        },
-      })
-      .then((response) => {
-        if (response.data[1].length === 0) {
-          alert("keine passende Datei gefunden");
-        } else {
-          setSearchResults(response.data[1]);
-          setDepartmentFilter(response.data[0].departmentFilter);
-          setSemesterFilter(response.data[0].semesterFilter);
-          setYearFilter(response.data[0].yearFilter);
+    filter(params)
+      .then((data) => {
+        if (data == null) {
+          alert("keine Ergbnisse gefunden");
         }
-        console.log("Response:", response.data);
+        const { searchResults, departmentFilter, semesterFilter, yearFilter } =
+          data;
+        setSearchResults(searchResults);
+        setDepartmentFilter(departmentFilter);
+        setSemesterFilter(semesterFilter);
+        setYearFilter(yearFilter);
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        console.error("Es gab ein Problem beim Abrufen der filter:", error);
       });
-
-    
   }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("token: " + token);
+    
 
-    axios
-      .get(`api/filter?${params.toString()}`, {
-        headers: {
-          Authorization: `${token}`,
-        },
-      })
-      .then((response) => {
-        if (response.data[1].length === 0) {
-          alert("keine passende Datei gefunden");
-        } else {
-          setSearchResults(response.data[1]);
-        }
-        console.log("BookmarksList:", bookmarksList);
-        console.log("upvotedList:", upvotedFilesList);
-        console.log("Response:", response.data);
-        console.log("department:", departmentFilter);
-        console.log("semseter:", semesterFilter);
-        console.log("year:", yearFilter);
+    filter(params)
+      .then((data) => {
+        setSearchResults(data.searchResults);
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        alert("keine passende Datei gefunden");
+        console.error("Es gab ein Problem beim Abrufen der filter:", error);
       });
-    console.log("Searching with", params.toString());
   };
 
   return (
