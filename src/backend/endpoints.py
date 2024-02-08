@@ -14,6 +14,22 @@ from database.exceptions import NoRowFoundException
 
 app = Flask(__name__)
 
+# TODO check username and password for sql injection
+# TODO Logo einfügen HP
+# TODO PWA aus frontend
+# TODO Frontend refactor
+# TODO own register page with double password
+# TODO Email registering (maybe with fh mail)
+# TODO config page (change username, pw, etc)
+# TODO User page
+# TODO share button
+# TODO teacher account to verify pdf
+# TODO life pdf view
+# TODO admin accounts
+# TODO CSS design
+# TODO Footer
+# TODO save userID in Authentication
+# TODO document page
 
 @app.before_request
 def checkAuthentication():
